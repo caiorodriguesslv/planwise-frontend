@@ -4,14 +4,13 @@ import { HomeComponent } from './features/home/home.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  // Rotas comentadas temporariamente até criarmos os módulos
-  // {
-  //   path: 'auth',
-  //   loadChildren: () => import('./features/auth/auth.routes').then(m => m.authRoutes)
-  // },
-  // {
-  //   path: 'dashboard',
-  //   loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.dashboardRoutes)
-  // },
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes').then(m => m.authRoutes)
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.dashboardRoutes)
+  },
   { path: '**', redirectTo: '/home' }
 ];
