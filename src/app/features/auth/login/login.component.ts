@@ -279,13 +279,20 @@ export class LoginComponent implements OnInit {
       
       this.authService.login(credentials).subscribe({
         next: () => {
-          // Sucesso - AuthService já faz o redirecionamento
-          // Mas vamos garantir que vai para a URL correta
+          console.log('✅ Login component: Login realizado com sucesso');
+          // AuthService já faz o redirecionamento automático para dashboard
+          // Só redirecionamos aqui se for para uma URL específica diferente
           if (this.returnUrl && this.returnUrl !== '/dashboard') {
-            this.router.navigateByUrl(this.returnUrl);
+            console.log('🔄 Login component: Redirecionando para URL específica:', this.returnUrl);
+            setTimeout(() => {
+              this.router.navigateByUrl(this.returnUrl);
+            }, 200); // Aguarda um pouco mais para garantir que AuthService terminou
+          } else {
+            console.log('🔄 Login component: Deixando AuthService fazer o redirecionamento padrão');
           }
         },
-        error: () => {
+        error: (error) => {
+          console.error('❌ Login component: Erro no login:', error);
           // Erro já é tratado pelo AuthService e interceptors
           // Limpa apenas a senha por segurança
           this.loginForm.patchValue({ password: '' });

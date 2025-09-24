@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CanActivateFn, CanMatchFn } from '@angular/router';
+import { map, take, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 
@@ -12,22 +13,42 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const notificationService = inject(NotificationService);
 
-  if (authService.isLoggedIn) {
-    return true;
-  }
-
-  // Armazena a URL de destino para redirecionamento após login
-  const returnUrl = state.url;
-  
-  // Notifica sobre necessidade de login
-  notificationService.warning('Você precisa fazer login para acessar esta página.');
-  
-  // Redireciona para login com URL de retorno
-  router.navigate(['/auth/login'], { 
-    queryParams: { returnUrl } 
+  console.log('🔐 AuthGuard: Verificando autenticação...', {
+    isLoggedIn: authService.isLoggedIn,
+    hasToken: authService.userId !== null,
+    url: state.url
   });
-  
-  return false;
+
+  // Aguarda a inicialização completa do AuthService
+  return authService.waitForInitialization().pipe(
+    tap(isAuthenticated => {
+      console.log('🔐 AuthGuard: Estado verificado após inicialização:', isAuthenticated);
+    }),
+    map(isAuthenticated => {
+      // Dupla verificação: tanto o Observable quanto a propriedade direta
+      const finalCheck = isAuthenticated || authService.isLoggedIn;
+      
+      if (finalCheck) {
+        console.log('✅ AuthGuard: Usuário autenticado, permitindo acesso');
+        return true;
+      }
+
+      console.log('❌ AuthGuard: Usuário não autenticado, redirecionando para login');
+      
+      // Armazena a URL de destino para redirecionamento após login
+      const returnUrl = state.url;
+      
+      // Notifica sobre necessidade de login
+      notificationService.warning('Você precisa fazer login para acessar esta página.');
+      
+      // Redireciona para login com URL de retorno
+      router.navigate(['/auth/login'], { 
+        queryParams: { returnUrl } 
+      });
+      
+      return false;
+    })
+  );
 };
 
 /**
@@ -45,13 +66,27 @@ export const guestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isLoggedIn) {
-    return true;
-  }
+  console.log('👤 GuestGuard: Verificando se usuário é guest...', {
+    isLoggedIn: authService.isLoggedIn,
+    url: state.url
+  });
 
-  // Se já está logado, redireciona para dashboard
-  router.navigate(['/dashboard']);
-  return false;
+  // Aguarda a inicialização completa do AuthService
+  return authService.waitForInitialization().pipe(
+    map(isAuthenticated => {
+      const isLoggedIn = isAuthenticated || authService.isLoggedIn;
+      
+      if (!isLoggedIn) {
+        console.log('✅ GuestGuard: Usuário não autenticado, permitindo acesso à página guest');
+        return true;
+      }
+
+      console.log('🔄 GuestGuard: Usuário já está logado, redirecionando para dashboard');
+      // Se já está logado, redireciona para dashboard
+      router.navigate(['/dashboard']);
+      return false;
+    })
+  );
 };
 
 /**

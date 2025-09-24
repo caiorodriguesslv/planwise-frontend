@@ -36,6 +36,17 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           console.warn('Recurso não encontrado:', req.url);
           break;
 
+        case 400:
+          // Erro de bad request
+          console.warn('Erro 400 (Bad Request):', {
+            url: req.url,
+            method: req.method,
+            body: req.body,
+            error: error.error,
+            message: error.message
+          });
+          break;
+
         case 422:
           // Erro de validação
           console.warn('Erro de validação:', error.error);
