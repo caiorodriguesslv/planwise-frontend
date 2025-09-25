@@ -195,21 +195,41 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
             <div class="quick-actions">
               <h2>Ações Rápidas</h2>
               <div class="actions-grid">
-                <div class="action-card" (click)="selectModule('receitas', $event)">
-                  <mat-icon>add_circle</mat-icon>
-                  <span>Nova Receita</span>
+                <div class="action-card income-action" (click)="selectModule('receitas', $event)">
+                  <div class="action-icon">
+                    <mat-icon>add</mat-icon>
+                  </div>
+                  <div class="action-content">
+                    <h3>Nova Receita</h3>
+                    <p>Registrar entrada</p>
+                  </div>
                 </div>
-                <div class="action-card" (click)="selectModule('despesas', $event)">
-                  <mat-icon>remove_circle</mat-icon>
-                  <span>Nova Despesa</span>
+                <div class="action-card expense-action" (click)="selectModule('despesas', $event)">
+                  <div class="action-icon">
+                    <mat-icon>remove</mat-icon>
+                  </div>
+                  <div class="action-content">
+                    <h3>Nova Despesa</h3>
+                    <p>Registrar gasto</p>
+                  </div>
                 </div>
-                <div class="action-card" (click)="selectModule('metas', $event)">
-                  <mat-icon>emoji_events</mat-icon>
-                  <span>Nova Meta</span>
+                <div class="action-card goal-action" (click)="selectModule('metas', $event)">
+                  <div class="action-icon">
+                    <mat-icon>flag</mat-icon>
+                  </div>
+                  <div class="action-content">
+                    <h3>Nova Meta</h3>
+                    <p>Definir objetivo</p>
+                  </div>
                 </div>
-                <div class="action-card" (click)="selectModule('relatorios', $event)">
-                  <mat-icon>assessment</mat-icon>
-                  <span>Ver Relatórios</span>
+                <div class="action-card report-action" (click)="selectModule('relatorios', $event)">
+                  <div class="action-icon">
+                    <mat-icon>analytics</mat-icon>
+                  </div>
+                  <div class="action-content">
+                    <h3>Ver Relatórios</h3>
+                    <p>Analisar dados</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -571,39 +591,97 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
       
       .actions-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
         
         .action-card {
           background: white;
-          border-radius: 12px;
-          padding: 20px;
+          border-radius: 16px;
+          padding: 24px;
           display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 12px;
-          text-align: center;
+          gap: 16px;
           cursor: pointer;
           transition: all 0.3s ease;
           border: 1px solid #e2e8f0;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
           
-          mat-icon {
-            font-size: 32px;
-            color: #ff6b6b;
+          .action-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            
+            mat-icon {
+              font-size: 28px;
+              width: 28px;
+              height: 28px;
+              color: white;
+            }
           }
           
-          span {
-            font-weight: 600;
-            color: #1a202c;
+          .action-content {
+            flex: 1;
+            
+            h3 {
+              margin: 0 0 4px 0;
+              font-size: 16px;
+              font-weight: 600;
+              color: #1a202c;
+            }
+            
+            p {
+              margin: 0;
+              font-size: 13px;
+              color: #64748b;
+            }
           }
           
           &:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.15);
-            border-color: #ff6b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+          }
+          
+          &.income-action {
+            .action-icon {
+              background: linear-gradient(135deg, #10b981, #059669);
+            }
             
-            mat-icon {
-              color: #e84393;
+            &:hover {
+              border-color: #10b981;
+            }
+          }
+          
+          &.expense-action {
+            .action-icon {
+              background: linear-gradient(135deg, #ef4444, #dc2626);
+            }
+            
+            &:hover {
+              border-color: #ef4444;
+            }
+          }
+          
+          &.goal-action {
+            .action-icon {
+              background: linear-gradient(135deg, #f59e0b, #d97706);
+            }
+            
+            &:hover {
+              border-color: #f59e0b;
+            }
+          }
+          
+          &.report-action {
+            .action-icon {
+              background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            }
+            
+            &:hover {
+              border-color: #8b5cf6;
             }
           }
         }
