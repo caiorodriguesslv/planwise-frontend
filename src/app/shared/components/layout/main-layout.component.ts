@@ -27,7 +27,7 @@ import { AuthService } from '../../../core/services/auth.service';
         <div class="sidebar-header">
           <div class="logo">
             <mat-icon>account_balance_wallet</mat-icon>
-            <span>PlanWise</span>
+            <span>Plan Wise</span>
           </div>
         </div>
 

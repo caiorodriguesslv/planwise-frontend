@@ -118,7 +118,7 @@ import { PageRequest } from '../../../core/models/api.model';
             <span class="active-filters" *ngIf="getActiveFiltersCount() > 0">
               {{ getActiveFiltersCount() }} filtro(s) ativo(s)
             </span>
-            <button mat-button (click)="clearFilters()" [disabled]="getActiveFiltersCount() === 0">
+            <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0">
               <mat-icon>clear</mat-icon>
               Limpar
             </button>
@@ -138,7 +138,7 @@ import { PageRequest } from '../../../core/models/api.model';
 
               <mat-form-field appearance="outline" class="filter-category">
                 <mat-label>Categoria</mat-label>
-                <mat-select formControlName="categoryId" [disabled]="categories.length === 0">
+                <mat-select formControlName="categoryId">
                   <mat-option value="">
                     <span class="select-all-option">
                       <mat-icon>category</mat-icon>
@@ -186,85 +186,94 @@ import { PageRequest } from '../../../core/models/api.model';
             <p>Por favor, aguarde enquanto buscamos seus dados.</p>
           </div>
 
-          <!-- Tabela -->
+          <!-- Tabela ou Estado Vazio -->
           <div *ngIf="!isLoading" class="table-container">
-            <table mat-table [dataSource]="expenses" class="expenses-table">
-              <!-- Coluna Descrição -->
-              <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                <td mat-cell *matCellDef="let expense">
-                  <div class="description-cell">
-                    <strong>{{ expense.description }}</strong>
-                    <small *ngIf="expense.category">{{ expense.category.name }}</small>
-                  </div>
-                </td>
-              </ng-container>
+            <!-- Tabela de dados -->
+            <div *ngIf="expenses.length > 0" class="data-table">
+              <table mat-table [dataSource]="expenses" class="expenses-table">
+                <!-- Coluna Descrição -->
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef class="description-header">Descrição</th>
+                  <td mat-cell *matCellDef="let expense" class="description-cell">
+                    <div class="description-content">
+                      <strong>{{ expense.description }}</strong>
+                      <small *ngIf="expense.category">{{ expense.category.name }}</small>
+                    </div>
+                  </td>
+                </ng-container>
 
-              <!-- Coluna Valor -->
-              <ng-container matColumnDef="value">
-                <th mat-header-cell *matHeaderCellDef>Valor</th>
-                <td mat-cell *matCellDef="let expense">
-                  <span class="expense-value">
-                    {{ expense.value | currency:'BRL':'symbol':'1.2-2' }}
-                  </span>
-                </td>
-              </ng-container>
+                <!-- Coluna Valor -->
+                <ng-container matColumnDef="value">
+                  <th mat-header-cell *matHeaderCellDef class="value-header">Valor</th>
+                  <td mat-cell *matCellDef="let expense" class="value-cell">
+                    <span class="expense-value">
+                      {{ expense.value | currency:'BRL':'symbol':'1.2-2' }}
+                    </span>
+                  </td>
+                </ng-container>
 
-              <!-- Coluna Data -->
-              <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Data</th>
-                <td mat-cell *matCellDef="let expense">
-                  {{ expense.date | date:'dd/MM/yyyy' }}
-                </td>
-              </ng-container>
+                <!-- Coluna Data -->
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef class="date-header">Data</th>
+                  <td mat-cell *matCellDef="let expense" class="date-cell">
+                    {{ expense.date | date:'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
 
-              <!-- Coluna Categoria -->
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Categoria</th>
-                <td mat-cell *matCellDef="let expense">
-                  <mat-chip *ngIf="expense.category" 
-                           [style.background-color]="expense.category.color || '#e0e0e0'">
-                    {{ expense.category.name }}
-                  </mat-chip>
-                  <span *ngIf="!expense.category" class="no-category">Sem categoria</span>
-                </td>
-              </ng-container>
+                <!-- Coluna Categoria -->
+                <ng-container matColumnDef="category">
+                  <th mat-header-cell *matHeaderCellDef class="category-header">Categoria</th>
+                  <td mat-cell *matCellDef="let expense" class="category-cell">
+                    <mat-chip *ngIf="expense.category" 
+                             [style.background-color]="expense.category.color || '#e0e0e0'"
+                             class="category-chip">
+                      {{ expense.category.name }}
+                    </mat-chip>
+                    <span *ngIf="!expense.category" class="no-category">Sem categoria</span>
+                  </td>
+                </ng-container>
 
-              <!-- Coluna Ações -->
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Ações</th>
-                <td mat-cell *matCellDef="let expense">
-                  <button mat-icon-button (click)="viewExpense(expense)" matTooltip="Ver detalhes">
-                    <mat-icon>visibility</mat-icon>
+                <!-- Coluna Ações -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef class="actions-header">Ações</th>
+                  <td mat-cell *matCellDef="let expense" class="actions-cell">
+                    <div class="action-buttons">
+                      <button mat-icon-button (click)="viewExpense(expense)" matTooltip="Ver detalhes" class="action-btn view">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="editExpense(expense)" matTooltip="Editar" class="action-btn edit">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="deleteExpense(expense)" matTooltip="Excluir" class="action-btn delete">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-header"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+              </table>
+            </div>
+
+            <!-- Estado vazio melhorado -->
+            <div *ngIf="expenses.length === 0" class="empty-state">
+              <div class="empty-state-content">
+                <div class="empty-icon">
+                  <mat-icon>receipt_long</mat-icon>
+                </div>
+                <h3>{{ getActiveFiltersCount() > 0 ? 'Nenhuma despesa encontrada' : 'Nenhuma despesa cadastrada' }}</h3>
+                <p>{{ getActiveFiltersCount() > 0 ? 'Tente ajustar os filtros de busca ou limpar todos os filtros.' : 'Comece criando sua primeira despesa para começar a controlar seus gastos.' }}</p>
+                <div class="empty-actions">
+                  <button *ngIf="getActiveFiltersCount() > 0" mat-stroked-button (click)="clearFilters()" class="clear-btn">
+                    <mat-icon>clear</mat-icon>
+                    Limpar Filtros
                   </button>
-                  <button mat-icon-button (click)="editExpense(expense)" matTooltip="Editar">
-                    <mat-icon>edit</mat-icon>
+                  <button mat-raised-button color="primary" (click)="createNew()" class="create-btn">
+                    <mat-icon>add</mat-icon>
+                    Nova Despesa
                   </button>
-                  <button mat-icon-button (click)="deleteExpense(expense)" 
-                          matTooltip="Excluir" color="warn">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-
-            <!-- Mensagem quando não há dados -->
-            <div *ngIf="expenses.length === 0" class="no-data">
-              <mat-icon>receipt_long</mat-icon>
-              <h3>{{ getActiveFiltersCount() > 0 ? 'Nenhuma despesa encontrada para os filtros aplicados' : 'Nenhuma despesa cadastrada' }}</h3>
-              <p>{{ getActiveFiltersCount() > 0 ? 'Tente ajustar os filtros de busca ou limpar todos os filtros.' : 'Comece criando sua primeira despesa para começar a controlar seus gastos.' }}</p>
-              <div class="no-data-actions">
-                <button *ngIf="getActiveFiltersCount() > 0" mat-button (click)="clearFilters()">
-                  <mat-icon>clear</mat-icon>
-                  Limpar Filtros
-                </button>
-                <button mat-raised-button color="primary" (click)="createNew()">
-                  <mat-icon>add</mat-icon>
-                  Nova Despesa
-                </button>
+                </div>
               </div>
             </div>
           </div>
@@ -479,6 +488,11 @@ import { PageRequest } from '../../../core/models/api.model';
       gap: 16px;
     }
 
+    .filters-actions button.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     .active-filters {
       background: #dbeafe;
       color: #2563eb;
@@ -551,66 +565,247 @@ import { PageRequest } from '../../../core/models/api.model';
     }
 
     .table-container {
-      overflow-x: auto;
-    }
-
-    .expenses-table {
-      width: 100%;
-    }
-
-    .description-cell {
+      min-height: 400px;
       display: flex;
       flex-direction: column;
     }
 
-    .description-cell small {
-      color: #666;
-      font-size: 0.8em;
+    .data-table {
+      flex: 1;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: white;
+    }
+
+    .expenses-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    /* Headers da tabela */
+    .table-header {
+      background: #f8fafc;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .description-header {
+      width: 35%;
+      padding: 16px 24px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .value-header {
+      width: 15%;
+      padding: 16px 24px;
+      font-weight: 600;
+      color: #374151;
+      text-align: right;
+    }
+
+    .date-header {
+      width: 15%;
+      padding: 16px 24px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .category-header {
+      width: 20%;
+      padding: 16px 24px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .actions-header {
+      width: 15%;
+      padding: 16px 24px;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+    }
+
+    /* Células da tabela */
+    .table-row {
+      border-bottom: 1px solid #f3f4f6;
+      transition: background-color 0.2s ease;
+    }
+
+    .table-row:hover {
+      background-color: #f9fafb;
+    }
+
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .description-cell {
+      padding: 16px 24px;
+    }
+
+    .description-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .description-content strong {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .description-content small {
+      color: #6b7280;
+      font-size: 0.85em;
+    }
+
+    .value-cell {
+      padding: 16px 24px;
+      text-align: right;
     }
 
     .expense-value {
+      font-weight: 600;
+      color: #dc2626;
+      font-size: 1.05em;
+    }
+
+    .date-cell {
+      padding: 16px 24px;
+      color: #4b5563;
       font-weight: 500;
-      color: #d32f2f;
+    }
+
+    .category-cell {
+      padding: 16px 24px;
+    }
+
+    .category-chip {
+      color: white;
+      font-weight: 500;
+      font-size: 0.8em;
     }
 
     .no-category {
-      color: #999;
+      color: #9ca3af;
       font-style: italic;
+      font-size: 0.9em;
     }
 
-    .no-data {
-      text-align: center;
-      padding: 80px 20px;
-      color: #666;
+    .actions-cell {
+      padding: 16px 24px;
     }
 
-    .no-data mat-icon {
-      font-size: 72px;
-      width: 72px;
-      height: 72px;
-      margin-bottom: 24px;
-      color: #ddd;
-    }
-
-    .no-data h3 {
-      margin: 20px 0 15px 0;
-      color: #424242;
-      font-weight: 500;
-    }
-
-    .no-data p {
-      margin-bottom: 30px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.5;
-    }
-
-    .no-data-actions {
+    .action-buttons {
       display: flex;
-      gap: 15px;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn.view {
+      color: #3b82f6;
+    }
+
+    .action-btn.view:hover {
+      background-color: #dbeafe;
+    }
+
+    .action-btn.edit {
+      color: #f59e0b;
+    }
+
+    .action-btn.edit:hover {
+      background-color: #fef3c7;
+    }
+
+    .action-btn.delete {
+      color: #ef4444;
+    }
+
+    .action-btn.delete:hover {
+      background-color: #fee2e2;
+    }
+
+    /* Estado vazio melhorado */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      background: white;
+      border-radius: 12px;
+      border: 1px dashed #d1d5db;
+    }
+
+    .empty-state-content {
+      text-align: center;
+      max-width: 480px;
+      padding: 40px;
+    }
+
+    .empty-icon {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-icon mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #9ca3af;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 16px 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .empty-state p {
+      margin: 0 0 32px 0;
+      color: #6b7280;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .empty-actions {
+      display: flex;
+      gap: 16px;
       justify-content: center;
       flex-wrap: wrap;
+    }
+
+    .clear-btn {
+      border-color: #d1d5db;
+      color: #6b7280;
+    }
+
+    .clear-btn:hover {
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .create-btn {
+      padding: 12px 24px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
 
     .debug-card {
@@ -682,6 +877,60 @@ import { PageRequest } from '../../../core/models/api.model';
       .stat-content h2 {
         font-size: 24px;
       }
+
+      /* Tabela responsiva */
+      .data-table {
+        overflow-x: auto;
+      }
+
+      .description-header, .description-cell {
+        width: auto;
+        min-width: 200px;
+      }
+
+      .value-header, .value-cell {
+        width: auto;
+        min-width: 120px;
+      }
+
+      .date-header, .date-cell {
+        width: auto;
+        min-width: 100px;
+      }
+
+      .category-header, .category-cell {
+        width: auto;
+        min-width: 140px;
+      }
+
+      .actions-header, .actions-cell {
+        width: auto;
+        min-width: 120px;
+      }
+
+      .empty-state-content {
+        padding: 32px 20px;
+      }
+
+      .empty-icon {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 24px;
+      }
+
+      .empty-icon mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .empty-state h3 {
+        font-size: 20px;
+      }
+
+      .empty-actions {
+        flex-direction: column;
+      }
     }
 
     @media (max-width: 480px) {
@@ -749,7 +998,7 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     // Inicializar form de filtros
     this.filterForm = this.fb.group({
       search: [''],
-      categoryId: [''],
+      categoryId: [{ value: '', disabled: true }], // Inicialmente disabled até carregar categorias
       startDate: [''],
       endDate: ['']
     });
@@ -805,6 +1054,15 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
       )
       .subscribe((categories: CategoryResponse[]) => {
         this.categories = categories;
+        
+        // Controlar estado disabled do campo categoria
+        const categoryControl = this.filterForm.get('categoryId');
+        if (categories.length === 0) {
+          categoryControl?.disable();
+        } else {
+          categoryControl?.enable();
+        }
+        
         // console.log('✅ Categorias carregadas:', categories.length);
       });
   }
@@ -852,7 +1110,8 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   }
 
   private buildFilters(): ExpenseFilters {
-    const formValue = this.filterForm.value;
+    // Usar getRawValue() para incluir campos disabled
+    const formValue = this.filterForm.getRawValue();
     const filters: ExpenseFilters = {};
 
     if (formValue.search?.trim()) {
@@ -905,7 +1164,7 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   }
 
   getActiveFiltersCount(): number {
-    const formValue = this.filterForm.value;
+    const formValue = this.filterForm.getRawValue();
     let count = 0;
     
     if (formValue.search?.trim()) count++;

@@ -27,7 +27,7 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
         <div class="sidebar-header">
           <div class="logo">
             <mat-icon>account_balance_wallet</mat-icon>
-            <span>PlanWise</span>
+            <span>Plan Wise</span>
           </div>
         </div>
 
@@ -38,7 +38,7 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
                  [class.active]="selectedModule === 'dashboard'"
                  (click)="selectModule('dashboard', $event)">
               <mat-icon>dashboard</mat-icon>
-              <span>Dashboard</span>
+              <span>Home</span>
             </div>
           </div>
 
