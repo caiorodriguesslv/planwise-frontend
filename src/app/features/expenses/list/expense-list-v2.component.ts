@@ -1148,7 +1148,11 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   }
 
   createNew() {
-    this.notificationService.info('Funcionalidade "Nova Despesa" será implementada em breve');
+    // Emitir evento para o dashboard mudar para o módulo de nova despesa
+    window.dispatchEvent(new CustomEvent('navigate-to-module', { 
+      detail: { module: 'nova-despesa' } 
+    }));
+    this.notificationService.info('Carregando formulário de nova despesa...');
   }
 
   viewExpense(expense: ExpenseResponse) {

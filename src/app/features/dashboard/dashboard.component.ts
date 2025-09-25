@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AuthService } from '../../core/services/auth.service';
 import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.component';
+import { ExpenseFormComponent } from '../expenses/form/expense-form.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,8 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    ExpenseListV2Component
+    ExpenseListV2Component,
+    ExpenseFormComponent
   ],
   template: `
     <div class="dashboard-layout">
@@ -258,9 +260,14 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
             <div *ngIf="selectedModule === 'despesas'" class="expense-module">
               <app-expense-list-v2></app-expense-list-v2>
             </div>
+
+            <!-- Nova Despesa Module -->
+            <div *ngIf="selectedModule === 'nova-despesa'" class="expense-form-module">
+              <app-expense-form></app-expense-form>
+            </div>
             
             <!-- Outros Módulos - Coming Soon -->
-            <div *ngIf="selectedModule !== 'dashboard' && selectedModule !== 'despesas'" class="coming-soon">
+            <div *ngIf="selectedModule !== 'dashboard' && selectedModule !== 'despesas' && selectedModule !== 'nova-despesa'" class="coming-soon">
               <mat-icon>build</mat-icon>
               <h2>{{ getModuleTitle() }}</h2>
               <p>Esta funcionalidade está em desenvolvimento</p>
@@ -835,9 +842,10 @@ import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.compone
     }
   `]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   selectedModule: string = 'dashboard';
+  private navigationListener: ((event: any) => void) | null = null;
 
   private moduleData: { [key: string]: { title: string; subtitle: string } } = {
     dashboard: {
@@ -851,6 +859,10 @@ export class DashboardComponent implements OnInit {
     despesas: {
       title: 'Despesas',
       subtitle: 'Monitore e controle seus gastos'
+    },
+    'nova-despesa': {
+      title: 'Nova Despesa',
+      subtitle: 'Registre uma nova despesa'
     },
     categorias: {
       title: 'Categorias',
@@ -884,7 +896,17 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Implementação adicional se necessário
+    // Listener para navegação entre módulos
+    this.navigationListener = (event: any) => {
+      this.selectModule(event.detail.module, undefined);
+    };
+    window.addEventListener('navigate-to-module', this.navigationListener);
+  }
+
+  ngOnDestroy(): void {
+    if (this.navigationListener) {
+      window.removeEventListener('navigate-to-module', this.navigationListener);
+    }
   }
 
   selectModule(module: string, event?: Event): void {

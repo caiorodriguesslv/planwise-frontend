@@ -40,182 +40,274 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
   ],
   template: `
     <div class="expense-form-container">
-      <!-- Header -->
-      <div class="header">
-        <button mat-icon-button (click)="goBack()" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <div class="header-content">
-          <h1>
-            <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
-            {{ isEditMode ? 'Editar Despesa' : 'Nova Despesa' }}
-          </h1>
-          <p>{{ isEditMode ? 'Modifique os dados da despesa' : 'Adicione uma nova despesa ao seu controle' }}</p>
+      <!-- Header aprimorado -->
+      <div class="page-header">
+        <div class="header-left">
+          <button mat-icon-button (click)="goBack()" class="back-button">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <div class="header-content">
+            <div class="title-section">
+              <div class="title-icon">
+                <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
+              </div>
+              <div class="title-text">
+                <h1>{{ isEditMode ? 'Editar Despesa' : 'Nova Despesa' }}</h1>
+                <p>{{ isEditMode ? 'Modifique os dados da despesa' : 'Adicione uma nova despesa ao seu controle' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="progress-indicator" *ngIf="!isEditMode">
+            <span class="step active">1</span>
+            <span class="step-label">Criar Despesa</span>
+          </div>
         </div>
       </div>
 
-      <!-- Form Card -->
-      <mat-card class="form-card">
-        <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="expense-form">
+      <!-- Form moderno -->
+      <div class="form-wrapper">
+        <mat-card class="form-card">
+          <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="expense-form">
           
-          <!-- Step 1: Basic Information -->
-          <div class="form-section">
+          <!-- Seção: Informações Básicas -->
+          <div class="form-section basic-info">
             <div class="section-header">
-              <mat-icon>description</mat-icon>
-              <h3>Informações Básicas</h3>
+              <div class="section-icon">
+                <mat-icon>description</mat-icon>
+              </div>
+              <div class="section-content">
+                <h3>Informações Básicas</h3>
+                <p>Dados principais da despesa</p>
+              </div>
             </div>
             
-            <div class="form-grid">
-              <!-- Description -->
-              <mat-form-field class="full-width">
-                <mat-label>Descrição da Despesa</mat-label>
-                <input matInput 
-                       formControlName="description"
-                       placeholder="Ex: Compra no supermercado"
-                       maxlength="100">
-                <mat-hint align="end">
-                  {{ expenseForm.get('description')?.value?.length || 0 }}/100
-                </mat-hint>
-                <mat-error *ngIf="expenseForm.get('description')?.hasError('required')">
-                  Descrição é obrigatória
-                </mat-error>
-                <mat-error *ngIf="expenseForm.get('description')?.hasError('minlength')">
-                  Descrição deve ter pelo menos 3 caracteres
-                </mat-error>
-                <mat-error *ngIf="expenseForm.get('description')?.hasError('maxlength')">
-                  Descrição deve ter no máximo 100 caracteres
-                </mat-error>
-              </mat-form-field>
+            <div class="section-body">
+              <div class="field-group">
+                <!-- Description -->
+                <div class="field-wrapper full-width">
+                  <mat-form-field appearance="outline" class="modern-field">
+                    <mat-label>Descrição da Despesa</mat-label>
+                    <input matInput 
+                           formControlName="description"
+                           placeholder="Ex: Compra no supermercado, Conta de luz..."
+                           maxlength="100">
+                    <mat-hint align="end">
+                      {{ expenseForm.get('description')?.value?.length || 0 }}/100 caracteres
+                    </mat-hint>
+                    <mat-error *ngIf="expenseForm.get('description')?.hasError('required')">
+                      Descrição é obrigatória
+                    </mat-error>
+                    <mat-error *ngIf="expenseForm.get('description')?.hasError('minlength')">
+                      Descrição deve ter pelo menos 3 caracteres
+                    </mat-error>
+                    <mat-error *ngIf="expenseForm.get('description')?.hasError('maxlength')">
+                      Descrição deve ter no máximo 100 caracteres
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
-              <!-- Category -->
-              <mat-form-field class="full-width">
-                <mat-label>Categoria</mat-label>
-                <mat-select formControlName="categoryId" placeholder="Selecione uma categoria">
-                  <mat-option *ngFor="let category of categories" [value]="category.id">
-                    {{ category.name }}
-                    <span class="category-description" *ngIf="category.description">
-                      - {{ category.description }}
-                    </span>
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="expenseForm.get('categoryId')?.hasError('required')">
-                  Categoria é obrigatória
-                </mat-error>
-              </mat-form-field>
+                <!-- Category -->
+                <div class="field-wrapper full-width">
+                  <mat-form-field appearance="outline" class="modern-field">
+                    <mat-label>Categoria</mat-label>
+                    <mat-select formControlName="categoryId" placeholder="Selecione uma categoria">
+                      <mat-option disabled value="">
+                        <span class="placeholder-option">
+                          <mat-icon>category</mat-icon>
+                          Escolha uma categoria
+                        </span>
+                      </mat-option>
+                      <mat-option *ngFor="let category of categories" [value]="category.id">
+                        <span class="category-option">
+                          <span class="category-color" [style.background-color]="category.color || '#ccc'"></span>
+                          {{ category.name }}
+                          <small *ngIf="category.description">{{ category.description }}</small>
+                        </span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="expenseForm.get('categoryId')?.hasError('required')">
+                      Categoria é obrigatória
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
 
           <mat-divider></mat-divider>
 
-          <!-- Step 2: Financial Information -->
-          <div class="form-section">
+          <!-- Seção: Informações Financeiras -->
+          <div class="form-section financial-info">
             <div class="section-header">
-              <mat-icon>attach_money</mat-icon>
-              <h3>Informações Financeiras</h3>
+              <div class="section-icon">
+                <mat-icon>attach_money</mat-icon>
+              </div>
+              <div class="section-content">
+                <h3>Informações Financeiras</h3>
+                <p>Valor e data da despesa</p>
+              </div>
             </div>
             
-            <div class="form-grid">
-              <!-- Value -->
-              <mat-form-field class="value-field">
-                <mat-label>Valor</mat-label>
-                <input matInput 
-                       type="number"
-                       formControlName="value"
-                       placeholder="0,00"
-                       step="0.01"
-                       min="0.01">
-                <span matTextPrefix>R$ </span>
-                <mat-error *ngIf="expenseForm.get('value')?.hasError('required')">
-                  Valor é obrigatório
-                </mat-error>
-                <mat-error *ngIf="expenseForm.get('value')?.hasError('min')">
-                  Valor deve ser maior que zero
-                </mat-error>
-              </mat-form-field>
+            <div class="section-body">
+              <div class="field-group financial-grid">
+                <!-- Value -->
+                <div class="field-wrapper value-field">
+                  <mat-form-field appearance="outline" class="modern-field value-input">
+                    <mat-label>Valor da Despesa</mat-label>
+                    <input matInput 
+                           type="number"
+                           formControlName="value"
+                           placeholder="0,00"
+                           step="0.01"
+                           min="0.01">
+                    <span matTextPrefix class="currency-prefix">R$ </span>
+                    <mat-error *ngIf="expenseForm.get('value')?.hasError('required')">
+                      Valor é obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="expenseForm.get('value')?.hasError('min')">
+                      Valor deve ser maior que zero
+                    </mat-error>
+                  </mat-form-field>
+                  
+                  <!-- Preview do valor -->
+                  <div class="value-preview" *ngIf="expenseForm.get('value')?.value">
+                    <div class="preview-chip">
+                      <mat-icon>monetization_on</mat-icon>
+                      <span>{{ formatCurrency(expenseForm.get('value')?.value) }}</span>
+                    </div>
+                  </div>
+                </div>
 
-              <!-- Date -->
-              <mat-form-field class="date-field">
-                <mat-label>Data da Despesa</mat-label>
-                <input matInput 
-                       [matDatepicker]="picker"
-                       formControlName="date"
-                       [max]="maxDate">
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="expenseForm.get('date')?.hasError('required')">
-                  Data é obrigatória
-                </mat-error>
-                <mat-error *ngIf="expenseForm.get('date')?.hasError('matDatepickerMax')">
-                  Data não pode ser futura
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <!-- Value Preview -->
-            <div class="value-preview" *ngIf="expenseForm.get('value')?.value">
-              <div class="preview-label">Valor formatado:</div>
-              <div class="preview-value">{{ formatCurrency(expenseForm.get('value')?.value) }}</div>
+                <!-- Date -->
+                <div class="field-wrapper date-field">
+                  <mat-form-field appearance="outline" class="modern-field">
+                    <mat-label>Data da Despesa</mat-label>
+                    <input matInput 
+                           [matDatepicker]="picker"
+                           formControlName="date"
+                           [max]="maxDate"
+                           readonly>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="expenseForm.get('date')?.hasError('required')">
+                      Data é obrigatória
+                    </mat-error>
+                    <mat-error *ngIf="expenseForm.get('date')?.hasError('matDatepickerMax')">
+                      Data não pode ser futura
+                    </mat-error>
+                  </mat-form-field>
+                  
+                  <!-- Preview da data -->
+                  <div class="date-preview" *ngIf="expenseForm.get('date')?.value">
+                    <div class="preview-chip">
+                      <mat-icon>event</mat-icon>
+                      <span>{{ formatDate(expenseForm.get('date')?.value) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <mat-divider></mat-divider>
 
-          <!-- Form Summary -->
-          <div class="form-section" *ngIf="isFormValid()">
+          <!-- Resumo Final -->
+          <div class="form-section summary-section" *ngIf="isFormValid()">
             <div class="section-header">
-              <mat-icon>summarize</mat-icon>
-              <h3>Resumo</h3>
+              <div class="section-icon">
+                <mat-icon>summarize</mat-icon>
+              </div>
+              <div class="section-content">
+                <h3>Resumo da Despesa</h3>
+                <p>Revise os dados antes de salvar</p>
+              </div>
             </div>
             
-            <div class="summary-card">
-              <div class="summary-item">
-                <span class="label">Descrição:</span>
-                <span class="value">{{ expenseForm.get('description')?.value }}</span>
-              </div>
-              <div class="summary-item">
-                <span class="label">Categoria:</span>
-                <span class="value">{{ getCategoryName(expenseForm.get('categoryId')?.value) }}</span>
-              </div>
-              <div class="summary-item">
-                <span class="label">Valor:</span>
-                <span class="value expense-amount">{{ formatCurrency(expenseForm.get('value')?.value) }}</span>
-              </div>
-              <div class="summary-item">
-                <span class="label">Data:</span>
-                <span class="value">{{ formatDate(expenseForm.get('date')?.value) }}</span>
+            <div class="section-body">
+              <div class="summary-card">
+                <div class="summary-grid">
+                  <div class="summary-item">
+                    <div class="item-icon">
+                      <mat-icon>description</mat-icon>
+                    </div>
+                    <div class="item-content">
+                      <span class="label">Descrição</span>
+                      <span class="value">{{ expenseForm.get('description')?.value }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="summary-item">
+                    <div class="item-icon">
+                      <mat-icon>category</mat-icon>
+                    </div>
+                    <div class="item-content">
+                      <span class="label">Categoria</span>
+                      <span class="value">{{ getCategoryName(expenseForm.get('categoryId')?.value) || 'Não selecionada' }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="summary-item highlight">
+                    <div class="item-icon">
+                      <mat-icon>monetization_on</mat-icon>
+                    </div>
+                    <div class="item-content">
+                      <span class="label">Valor</span>
+                      <span class="value expense-amount">{{ formatCurrency(expenseForm.get('value')?.value) }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="summary-item">
+                    <div class="item-icon">
+                      <mat-icon>event</mat-icon>
+                    </div>
+                    <div class="item-content">
+                      <span class="label">Data</span>
+                      <span class="value">{{ formatDate(expenseForm.get('date')?.value) }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Form Actions -->
+          <!-- Actions aprimoradas -->
           <div class="form-actions">
-            <button type="button" 
-                    mat-button 
-                    (click)="goBack()"
-                    [disabled]="isSubmitting">
-              Cancelar
-            </button>
-            
-            <button type="button"
-                    mat-button
-                    (click)="resetForm()"
-                    [disabled]="isSubmitting || !expenseForm.dirty">
-              <mat-icon>refresh</mat-icon>
-              Limpar
-            </button>
-            
-            <button type="submit"
-                    mat-raised-button
-                    color="primary"
-                    [disabled]="!expenseForm.valid || isSubmitting"
-                    class="submit-button">
-              <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
-              <mat-icon *ngIf="!isSubmitting">{{ isEditMode ? 'save' : 'add' }}</mat-icon>
-              {{ isSubmitting ? 'Salvando...' : (isEditMode ? 'Salvar Alterações' : 'Criar Despesa') }}
-            </button>
+            <div class="action-buttons">
+              <button type="button" 
+                      mat-button 
+                      (click)="goBack()"
+                      [disabled]="isSubmitting"
+                      class="cancel-btn">
+                <mat-icon>close</mat-icon>
+                Cancelar
+              </button>
+              
+              <button type="button"
+                      mat-stroked-button
+                      (click)="resetForm()"
+                      [disabled]="isSubmitting || !expenseForm.dirty"
+                      class="reset-btn">
+                <mat-icon>refresh</mat-icon>
+                Limpar
+              </button>
+              
+              <button type="submit"
+                      mat-raised-button
+                      [disabled]="!expenseForm.valid || isSubmitting"
+                      class="submit-btn">
+                <div class="btn-content">
+                  <mat-spinner diameter="20" *ngIf="isSubmitting" class="btn-spinner"></mat-spinner>
+                  <mat-icon *ngIf="!isSubmitting">{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
+                  <span>{{ isSubmitting ? 'Salvando...' : (isEditMode ? 'Salvar Alterações' : 'Criar Despesa') }}</span>
+                </div>
+              </button>
+            </div>
           </div>
         </form>
-      </mat-card>
+        </mat-card>
+      </div>
 
       <!-- Loading Overlay -->
       <div class="loading-overlay" *ngIf="isLoading">
@@ -226,224 +318,467 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
   `,
   styles: [`
     .expense-form-container {
-      padding: 32px;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
       position: relative;
     }
 
-    .header {
+    /* Header moderno */
+    .page-header {
       display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 32px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 24px 32px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
       
-      .back-button {
-        margin-top: 8px;
-        color: #64748b;
-        
-        &:hover {
-          color: #1a202c;
-          background: rgba(0, 0, 0, 0.04);
-        }
-      }
-      
-      .header-content {
+      .header-left {
+        display: flex;
+        align-items: center;
         flex: 1;
         
-        h1 {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin: 0 0 8px 0;
-          font-size: 28px;
-          font-weight: 700;
-          color: #1a202c;
+        .back-button {
+          margin-right: 20px;
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+          color: #64748b;
+          border-radius: 12px;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          }
           
           mat-icon {
-            color: #ef4444;
-            font-size: 32px;
+            font-size: 24px;
           }
         }
         
-        p {
-          margin: 0;
-          color: #64748b;
-          font-size: 16px;
+        .header-content {
+          flex: 1;
+          
+          .title-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            
+            .title-icon {
+              width: 60px;
+              height: 60px;
+              background: linear-gradient(135deg, #ef4444, #dc2626);
+              border-radius: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              
+              mat-icon {
+                font-size: 32px;
+                color: white;
+              }
+            }
+            
+            .title-text {
+              h1 {
+                margin: 0 0 4px 0;
+                font-size: 28px;
+                font-weight: 700;
+                color: #1a202c;
+                line-height: 1.2;
+              }
+              
+              p {
+                margin: 0;
+                color: #64748b;
+                font-size: 15px;
+                line-height: 1.4;
+              }
+            }
+          }
+        }
+      }
+      
+      .header-right {
+        .progress-indicator {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 20px;
+          background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+          border-radius: 12px;
+          border: 1px solid #7dd3fc;
+          
+          .step {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+          }
+          
+          .step-label {
+            color: #0369a1;
+            font-weight: 600;
+            font-size: 14px;
+          }
         }
       }
     }
 
-    .form-card {
-      border-radius: 12px !important;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-      border: 1px solid #e2e8f0 !important;
+    /* Form wrapper */
+    .form-wrapper {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
     }
 
-    .expense-form {
-      .form-section {
-        padding: 24px 0;
+    /* Form e seções */
+    .form-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      
+      .expense-form {
+        padding: 32px;
+      }
+    }
+
+    .form-section {
+      margin-bottom: 32px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #f1f5f9;
+      overflow: hidden;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      &.basic-info {
+        border-left: 4px solid #3b82f6;
+      }
+      
+      &.financial-info {
+        border-left: 4px solid #10b981;
+      }
+      
+      &.summary-section {
+        border-left: 4px solid #f59e0b;
+        background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      }
+      
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 24px 32px 0;
+        margin-bottom: 24px;
         
-        &:first-child {
-          padding-top: 0;
-        }
-        
-        &:last-child {
-          padding-bottom: 0;
-        }
-        
-        .section-header {
+        .section-icon {
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+          border-radius: 12px;
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 24px;
+          justify-content: center;
           
           mat-icon {
-            color: #ef4444;
             font-size: 24px;
+            color: #64748b;
           }
+        }
+        
+        .section-content {
+          flex: 1;
           
           h3 {
-            margin: 0;
+            margin: 0 0 4px 0;
             font-size: 18px;
             font-weight: 600;
             color: #1a202c;
           }
-        }
-        
-        .form-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 20px;
           
-          @media (min-width: 768px) {
-            &:has(.value-field, .date-field) {
-              grid-template-columns: 1fr 1fr;
-            }
-          }
-        }
-        
-        .full-width {
-          grid-column: 1 / -1;
-          width: 100%;
-        }
-        
-        .value-field,
-        .date-field {
-          width: 100%;
-        }
-      }
-      
-      .category-description {
-        font-size: 12px;
-        color: #64748b;
-        font-style: italic;
-      }
-      
-      .value-preview {
-        margin-top: 16px;
-        padding: 16px;
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        border-radius: 8px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        
-        .preview-label {
-          font-size: 14px;
-          color: #64748b;
-        }
-        
-        .preview-value {
-          font-size: 18px;
-          font-weight: 600;
-          color: #dc2626;
-        }
-      }
-      
-      .summary-card {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 20px;
-        
-        .summary-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid #e2e8f0;
-          
-          &:last-child {
-            border-bottom: none;
-          }
-          
-          .label {
-            font-weight: 500;
+          p {
+            margin: 0;
+            font-size: 13px;
             color: #64748b;
           }
-          
-          .value {
-            font-weight: 600;
-            color: #1a202c;
-            
-            &.expense-amount {
-              color: #dc2626;
-              font-size: 18px;
-            }
-          }
         }
       }
       
-      .form-actions {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-        padding-top: 32px;
-        border-top: 1px solid #e2e8f0;
-        margin-top: 32px;
+      .section-body {
+        padding: 0 32px 32px;
         
-        button {
-          min-width: 120px;
+        .field-group {
+          display: grid;
+          gap: 24px;
           
-          &.submit-button {
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            color: white !important;
-            font-weight: 600 !important;
-            
-            mat-icon {
-              margin-right: 8px;
-            }
-            
-            mat-spinner {
-              margin-right: 8px;
-            }
+          &.financial-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
           }
-        }
-        
-        @media (max-width: 768px) {
-          flex-direction: column;
           
-          button {
-            width: 100%;
+          .field-wrapper {
+            &.full-width {
+              grid-column: 1 / -1;
+            }
+            
+            .modern-field {
+              width: 100%;
+            }
+            
+            .preview-chip {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              margin-top: 8px;
+              padding: 8px 16px;
+              background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+              border: 1px solid #bbf7d0;
+              border-radius: 8px;
+              color: #166534;
+              font-size: 13px;
+              font-weight: 500;
+              
+              mat-icon {
+                font-size: 18px;
+              }
+            }
           }
         }
       }
     }
 
+    /* Estilos para categorias */
+    .placeholder-option, .category-option {
+      display: flex !important;
+      align-items: center;
+      gap: 8px;
+      
+      .category-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      
+      small {
+        color: #64748b;
+        font-size: 11px;
+        margin-left: 4px;
+      }
+    }
+
+    /* Summary grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      
+      .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #f1f5f9;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        &.highlight {
+          background: linear-gradient(135deg, #fef2f2, #fee2e2);
+          border-color: #fecaca;
+          
+          .expense-amount {
+            color: #dc2626;
+            font-weight: 700;
+          }
+        }
+        
+        .item-icon {
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          mat-icon {
+            font-size: 20px;
+            color: #64748b;
+          }
+        }
+        
+        .item-content {
+          flex: 1;
+          
+          .label {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+          }
+          
+          .value {
+            display: block;
+            font-size: 14px;
+            color: #1a202c;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    /* Actions */
+    .form-actions {
+      padding: 32px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      
+      .action-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: flex-end;
+        align-items: center;
+        
+        .cancel-btn {
+          color: #64748b;
+          
+          mat-icon {
+            margin-right: 8px;
+          }
+          
+          &:hover {
+            color: #1a202c;
+            background: rgba(0, 0, 0, 0.04);
+          }
+        }
+        
+        .reset-btn {
+          color: #0ea5e9;
+          border-color: #0ea5e9;
+          
+          mat-icon {
+            margin-right: 8px;
+          }
+          
+          &:hover {
+            background: rgba(14, 165, 233, 0.04);
+          }
+        }
+        
+        .submit-btn {
+          background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+          color: white !important;
+          padding: 12px 32px;
+          font-weight: 600;
+          border-radius: 12px;
+          min-width: 160px;
+          
+          .btn-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .btn-spinner {
+              width: 20px;
+              height: 20px;
+            }
+            
+            mat-icon {
+              font-size: 20px;
+            }
+          }
+          
+          &:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+          }
+          
+          &:disabled {
+            opacity: 0.6;
+            transform: none !important;
+            box-shadow: none !important;
+          }
+        }
+      }
+    }
+
+    /* Customização do Material Design */
+    ::ng-deep .mat-mdc-form-field {
+      &.modern-field {
+        .mat-mdc-form-field-outline {
+          border-radius: 12px !important;
+        }
+        
+        &.mat-focused {
+          .mat-mdc-form-field-outline-thick {
+            border-color: #ef4444 !important;
+          }
+          
+          .mat-mdc-form-field-label {
+            color: #ef4444 !important;
+          }
+        }
+        
+        .mat-mdc-form-field-label {
+          font-weight: 500;
+        }
+        
+        .mat-mdc-input-element {
+          font-size: 14px;
+        }
+        
+        &.value-input {
+          .currency-prefix {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    /* Loading overlay */
     .loading-overlay {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      border-radius: 20px;
       
       mat-spinner {
         margin-bottom: 16px;
@@ -452,40 +787,91 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
       p {
         color: #64748b;
         font-weight: 500;
+        margin: 0;
       }
     }
 
-    // Form field customizations
-    .mat-mdc-form-field {
-      &.mat-focused .mat-mdc-form-field-label {
-        color: #ef4444 !important;
-      }
-      
-      &.mat-focused .mat-mdc-form-field-ripple {
-        background-color: #ef4444 !important;
-      }
-    }
-
-    .mat-mdc-select-panel {
-      .mat-mdc-option.mdc-list-item--selected {
-        background-color: rgba(239, 68, 68, 0.1) !important;
-      }
-    }
-
-    // Responsive adjustments
+    /* Responsividade */
     @media (max-width: 768px) {
       .expense-form-container {
         padding: 16px;
       }
       
-      .header {
-        .header-content h1 {
-          font-size: 24px;
+      .page-header {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+        
+        .header-left {
+          justify-content: center;
+          
+          .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            margin: 0;
+          }
+          
+          .header-content .title-section {
+            flex-direction: column;
+            text-align: center;
+            gap: 12px;
+          }
+        }
+        
+        .header-right {
+          order: -1;
         }
       }
       
-      .form-section .form-grid {
-        grid-template-columns: 1fr !important;
+      .form-section {
+        .section-header {
+          padding: 20px 24px 0;
+          
+          .section-icon {
+            width: 40px;
+            height: 40px;
+          }
+        }
+        
+        .section-body {
+          padding: 0 24px 24px;
+          
+          .field-group.financial-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+        }
+      }
+      
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-actions {
+        padding: 24px;
+        
+        .action-buttons {
+          flex-direction: column;
+          
+          .submit-btn {
+            order: -1;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-header .header-left .header-content .title-section .title-text h1 {
+        font-size: 24px;
+      }
+      
+      .form-section .section-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
       }
     }
   `]
@@ -633,7 +1019,8 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
               ? 'Despesa atualizada com sucesso' 
               : 'Despesa criada com sucesso';
             this.notificationService.success(message);
-            this.router.navigate(['/dashboard/expenses']);
+            // Voltar para a lista de despesas
+            this.goBack();
           }
         });
     } else {
@@ -655,7 +1042,10 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard/expenses']);
+    // Como estamos no dashboard, vamos emitir evento para voltar à lista
+    window.dispatchEvent(new CustomEvent('navigate-to-module', { 
+      detail: { module: 'despesas' } 
+    }));
   }
 
   isFormValid(): boolean {
