@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.routes').then(m => m.authRoutes)
@@ -12,5 +10,5 @@ export const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.dashboardRoutes)
   },
-  { path: '**', redirectTo: '/home' }
+  { path: '**', redirectTo: '/auth/login' }
 ];

@@ -66,7 +66,7 @@ import { LoadingService } from '../../../core/services/loading.service';
                   formControlName="email" 
                   placeholder="seu@email.com"
                   autocomplete="email">
-                <mat-icon matSuffix>email</mat-icon>
+                <mat-icon matSuffix>mail_outline</mat-icon>
                 <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
                   Email é obrigatório
                 </mat-error>
@@ -110,7 +110,7 @@ import { LoadingService } from '../../../core/services/loading.service';
                 [disabled]="loginForm.invalid || loadingService.isCurrentlyLoading">
                 
                 <span *ngIf="!loadingService.isCurrentlyLoading">
-                  <mat-icon>login</mat-icon>
+                  <mat-icon>account_circle</mat-icon>
                   Entrar
                 </span>
                 
@@ -132,15 +132,6 @@ import { LoadingService } from '../../../core/services/loading.service';
                 Criar conta gratuita
               </a>
             </p>
-            
-            <button 
-              mat-button 
-              color="accent" 
-              routerLink="/home"
-              class="back-button">
-              <mat-icon>arrow_back</mat-icon>
-              Voltar ao início
-            </button>
           </mat-card-actions>
 
         </mat-card>
@@ -154,33 +145,227 @@ import { LoadingService } from '../../../core/services/loading.service';
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+      
+      // Background com imagem e fallback vibrante
+      background-color: #ff6b6b;
+      background-image: url('/login-background.jpg');
+      
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      
+      
+      // Efeito de animação suave no background
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(63, 81, 181, 0.1) 0%,
+          transparent 50%,
+          rgba(156, 39, 176, 0.1) 100%
+        );
+        animation: backgroundShift 20s ease-in-out infinite;
+      }
+    }
+
+    @keyframes backgroundShift {
+      0%, 100% { 
+        background-position: 0% 50%; 
+      }
+      50% { 
+        background-position: 100% 50%; 
+      }
+    }
+
+    @keyframes gradientShift {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
     }
 
     .login-card {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
+      position: relative;
+      z-index: 2;
+      
+      mat-card {
+        border-radius: 24px !important;
+        box-shadow: 
+          0 25px 50px rgba(0, 0, 0, 0.4),
+          0 15px 30px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+        
+        // Animação de entrada mais dinâmica
+        animation: cardSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 6px;
+          background: linear-gradient(90deg, #ff6b6b, #ee5a24, #fd79a8, #e84393);
+          border-radius: 24px 24px 0 0;
+          background-size: 200% 100%;
+          animation: gradientShift 3s ease-in-out infinite;
+        }
+      }
+    }
+
+    @keyframes cardSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .header-content {
       text-align: center;
       width: 100%;
+      padding: 32px 24px 24px;
       
       .logo {
-        margin-bottom: 16px;
+        margin-bottom: 20px;
         
         svg {
-          height: 50px;
+          height: 55px;
           width: auto;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
+      }
+      
+      mat-card-title {
+        font-size: 28px !important;
+        font-weight: 700 !important;
+        color: #2c3e50 !important;
+        margin-bottom: 8px !important;
+        background: linear-gradient(135deg, #3f51b5, #9c27b0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      mat-card-subtitle {
+        font-size: 16px !important;
+        color: #64748b !important;
+        font-weight: 400 !important;
+        line-height: 1.5;
       }
     }
 
     .login-form {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-top: 24px;
+      gap: 24px;
+      padding: 0 24px;
+      margin-top: 8px;
+      
+      mat-form-field {
+        .mat-mdc-form-field-outline {
+          border-radius: 16px !important;
+          border-width: 2px !important;
+          border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+        
+        &.mat-focused {
+          .mat-mdc-form-field-outline-thick {
+            border-color: #ff6b6b !important;
+            border-width: 3px !important;
+          }
+          
+          .mat-mdc-form-field-label {
+            color: #ff6b6b !important;
+          }
+        }
+        
+        .mat-mdc-form-field-icon-suffix {
+          color: #ff6b6b !important;
+          font-size: 22px;
+          
+          mat-icon {
+            font-family: 'Material Icons' !important;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 22px !important;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+          }
+        }
+        
+        .mat-mdc-form-field-label {
+          color: rgba(255, 255, 255, 0.9) !important;
+          font-weight: 600 !important;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        }
+        
+        input {
+          font-size: 16px;
+          padding: 18px 16px;
+          color: #ffffff !important;
+          font-weight: 600 !important;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+          
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+            font-weight: 400;
+          }
+          
+          &:focus {
+            outline: none;
+          }
+        }
+        
+        // Hover effect
+        &:hover .mat-mdc-form-field-outline {
+          border-color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        // Error states
+        &.mat-form-field-invalid {
+          .mat-mdc-form-field-outline-thick {
+            border-color: #e53e3e !important;
+          }
+          
+          .mat-mdc-form-field-label {
+            color: #e53e3e !important;
+          }
+        }
+        
+        mat-error {
+          color: #e53e3e !important;
+          font-weight: 500;
+          font-size: 13px;
+          margin-top: 4px;
+        }
+      }
     }
 
     .full-width {
@@ -188,53 +373,247 @@ import { LoadingService } from '../../../core/services/loading.service';
     }
 
     .login-button {
-      height: 48px;
-      font-size: 16px;
-      font-weight: 600;
-      margin-top: 16px;
+      height: 56px !important;
+      font-size: 18px !important;
+      font-weight: 700 !important;
+      margin-top: 32px !important;
+      border-radius: 16px !important;
+      color: #ffffff !important;
+      border: none !important;
+      text-transform: none !important;
+      letter-spacing: 0.5px !important;
       
+      // Gradiente vibrante e colorido
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 25%, #fd79a8 75%, #e84393 100%) !important;
+      box-shadow: 
+        0 8px 32px rgba(238, 90, 36, 0.3),
+        0 4px 16px rgba(255, 107, 107, 0.2) !important;
+      
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      
+      // Efeito shimmer animado
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg, 
+          transparent, 
+          rgba(255, 255, 255, 0.4), 
+          transparent
+        );
+        transition: left 0.6s ease;
+      }
+      
+      &:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 
+          0 12px 40px rgba(238, 90, 36, 0.4),
+          0 8px 24px rgba(255, 107, 107, 0.3) !important;
+        background: linear-gradient(135deg, #ff7675 0%, #fd79a8 25%, #e84393 75%, #a29bfe 100%) !important;
+        
+        &::before {
+          left: 100%;
+        }
+      }
+      
+      &:active {
+        transform: translateY(-1px) scale(0.98);
+      }
+      
+      &:disabled {
+        background: linear-gradient(135deg, #b2bec3, #ddd) !important;
+        transform: none !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      
+      // Conteúdo do botão
       .loading-content {
         display: flex;
         align-items: center;
+        gap: 12px;
+        justify-content: center;
+      }
+      
+      mat-icon {
+        margin-right: 8px;
+        font-size: 20px !important;
+        color: #ffffff !important;
+        font-family: 'Material Icons' !important;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         gap: 8px;
       }
+    }
+
+    mat-divider {
+      margin: 24px 0 !important;
+      opacity: 0.1;
     }
 
     .card-actions {
       flex-direction: column;
       align-items: center;
-      gap: 16px;
-      padding: 16px 24px;
-    }
-
-    .register-text {
-      text-align: center;
-      margin: 0;
-      color: #666;
+      gap: 20px;
+      padding: 0 24px 32px;
       
-      .register-link {
-        color: #3f51b5;
-        text-decoration: none;
+      .register-text {
+        text-align: center;
+        margin: 0;
+        color: #64748b;
+        font-size: 16px;
         font-weight: 500;
         
-        &:hover {
-          text-decoration: underline;
+        .register-link {
+          color: #ff6b6b;
+          text-decoration: none;
+          font-weight: 700;
+          background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          transition: all 0.3s ease;
+          position: relative;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            transition: width 0.3s ease;
+          }
+          
+          &:hover {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            
+            &::after {
+              width: 100%;
+            }
+          }
         }
       }
     }
 
-    .back-button {
-      color: #666;
-    }
-
-    // Responsive
+    // Responsive Design
     @media (max-width: 480px) {
       .login-container {
         padding: 16px;
+        background-attachment: scroll;
+        // Garante que a imagem funcione bem no mobile
+        background-size: cover;
+        
+        // Imagem de background para mobile
+        background-image: url('/login-background.jpg');
       }
       
       .login-card {
         max-width: 100%;
+        
+        mat-card {
+          border-radius: 16px !important;
+        }
+      }
+      
+      .header-content {
+        padding: 24px 20px 20px;
+        
+        mat-card-title {
+          font-size: 24px !important;
+        }
+        
+        mat-card-subtitle {
+          font-size: 14px !important;
+        }
+      }
+      
+      .login-form {
+        padding: 0 20px;
+        gap: 16px;
+        
+        mat-form-field input {
+          font-size: 16px; // Evita zoom no iOS
+        }
+      }
+      
+      .card-actions {
+        padding: 0 20px 24px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .header-content .logo svg {
+        height: 45px;
+      }
+      
+      .header-content mat-card-title {
+        font-size: 22px !important;
+      }
+    }
+
+    // Melhorias de acessibilidade
+    @media (prefers-reduced-motion: reduce) {
+      .login-card mat-card {
+        animation: none;
+      }
+      
+      .login-container::before {
+        animation: none;
+      }
+      
+      .login-button {
+        transition: none !important;
+        
+        &::before {
+          transition: none;
+        }
+        
+        &:hover {
+          transform: none;
+        }
+      }
+    }
+
+    // Tema escuro
+    @media (prefers-color-scheme: dark) {
+      .login-card mat-card {
+        background: rgba(30, 30, 30, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .header-content mat-card-subtitle {
+        color: #94a3b8 !important;
+      }
+      
+      .card-actions .register-text {
+        color: #94a3b8;
       }
     }
   `]
