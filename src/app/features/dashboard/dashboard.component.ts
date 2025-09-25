@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AuthService } from '../../core/services/auth.service';
-import { ExpenseListComponent } from '../expenses/list/expense-list.component';
+import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +18,7 @@ import { ExpenseListComponent } from '../expenses/list/expense-list.component';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    ExpenseListComponent
+    ExpenseListV2Component
   ],
   template: `
     <div class="dashboard-layout">
@@ -230,22 +230,13 @@ import { ExpenseListComponent } from '../expenses/list/expense-list.component';
           </div>
 
           <!-- Debug Info -->
-          <div *ngIf="selectedModule !== 'dashboard'" style="background: #f0f0f0; padding: 10px; margin: 10px; border-radius: 4px; font-size: 12px;">
-            🔧 Debug: Módulo atual = "{{ selectedModule }}"
-          </div>
 
           <!-- Module Content -->
           <div *ngIf="selectedModule !== 'dashboard'" class="module-content">
             
             <!-- Despesas Module -->
             <div *ngIf="selectedModule === 'despesas'" class="expense-module">
-              <div style="background: #e8f5e8; padding: 20px; margin: 20px; border-radius: 8px;">
-                ✅ Componente de despesas carregado!
-                <p>Tentando carregar: &lt;app-expense-list&gt;</p>
-              </div>
-              <div style="border: 2px solid blue; margin: 20px; padding: 10px;">
-                <app-expense-list></app-expense-list>
-              </div>
+              <app-expense-list-v2></app-expense-list-v2>
             </div>
             
             <!-- Outros Módulos - Coming Soon -->

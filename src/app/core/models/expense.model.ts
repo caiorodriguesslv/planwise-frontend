@@ -20,6 +20,7 @@ export interface CategoryResponse {
   name: string;
   type: CategoryType;
   description?: string;
+  color?: string;
   active: boolean;
 }
 

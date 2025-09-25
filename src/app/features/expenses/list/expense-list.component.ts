@@ -24,7 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ExpenseService } from '../../../core/services/expense.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { LoadingService } from '../../../core/services/loading.service';
+// import { LoadingService } from '../../../core/services/loading.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ExpenseResponse, CategoryResponse, ExpenseFilters } from '../../../core/models/expense.model';
 import { PaginatedResponse } from '../../../core/models/api.model';
@@ -686,7 +686,7 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
   constructor(
     private expenseService: ExpenseService,
     private notificationService: NotificationService,
-    private loadingService: LoadingService,
+    // private loadingService: LoadingService,
     private authService: AuthService,
     private router: Router
   ) {
