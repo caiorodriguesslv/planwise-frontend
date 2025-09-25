@@ -368,18 +368,20 @@ import { LoadingService } from '../../../core/services/loading.service';
         }
         
         .mat-mdc-form-field-label {
-          color: #64748b !important;
+          color:rgb(59, 116, 196) !important;
           font-weight: 600 !important;
         }
         
+          
         input {
           font-size: 16px;
           padding: 18px 16px;
-          color: #2d3748 !important;
-          font-weight: 500;
+          color: #ffffff !important;
+          font-weight: 600 !important;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
           
           &::placeholder {
-            color: #a0aec0 !important;
+            color: rgba(255, 255, 255, 0.6) !important;
             font-weight: 400;
           }
           
@@ -660,6 +662,27 @@ import { LoadingService } from '../../../core/services/loading.service';
       .card-actions .login-text {
         color: #94a3b8;
       }
+    }
+    ::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline.mat-focused .mat-mdc-form-field-outline-thick {
+      border-color: #ff6b6b !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+      color: #ff6b6b !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-icon {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field input {
+      color: #ffffff !important;
+      caret-color: #ffffff !important;
+      font-weight: 500;
     }
   `]
 })

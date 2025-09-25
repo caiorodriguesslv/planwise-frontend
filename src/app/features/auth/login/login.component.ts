@@ -203,7 +203,7 @@ import { LoadingService } from '../../../core/services/loading.service';
       mat-card {
         border-radius: 24px !important;
         box-shadow: 
-          0 25px 50px rgba(0, 0, 0, 0.4),
+          0 25px 50px rgba(0, 0, 0, 0.3),
           0 15px 30px rgba(0, 0, 0, 0.3),
           inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
         backdrop-filter: blur(20px);
@@ -609,17 +609,45 @@ import { LoadingService } from '../../../core/services/loading.service';
       }
       
       .header-content mat-card-subtitle {
-        color: #94a3b8 !important;
+        color: #ffffff !important;
       }
       
       .card-actions .register-text {
-        color: #94a3b8;
+        color: #cbd5e1; /* um cinza claro, ainda suave */
       }
     }
+    ::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-form-field-outline {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline.mat-focused .mat-mdc-form-field-outline-thick {
+  border-color: #ff6b6b !important;
+}
+
+::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: #ff6b6b !important;
+}
+
+::ng-deep .mat-mdc-form-field .mat-icon {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-form-field input {
+  color: #ffffff !important;
+  caret-color: #ffffff !important;
+  font-weight: 500;
+}
+
+
+
   `]
 })
 export class LoginComponent implements OnInit {
-  
+
   loginForm: FormGroup;
   hidePassword = true;
   returnUrl = '/dashboard';
@@ -655,7 +683,7 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const credentials = this.loginForm.value;
-      
+
       this.authService.login(credentials).subscribe({
         next: () => {
           console.log('✅ Login component: Login realizado com sucesso');
