@@ -18,206 +18,737 @@ import { AuthService } from '../../core/services/auth.service';
     MatToolbarModule
   ],
   template: `
-    <div class="dashboard-container">
-      <!-- Header -->
-      <mat-toolbar color="primary" class="dashboard-header">
-        <span class="logo">PlanWise</span>
-        <span class="spacer"></span>
-        <span class="welcome-text">Olá, {{ authService.userName }}!</span>
-        <button mat-icon-button (click)="logout()">
-          <mat-icon>logout</mat-icon>
-        </button>
-      </mat-toolbar>
-
-      <!-- Content -->
-      <div class="dashboard-content">
-        <div class="welcome-section">
-          <h1>Bem-vindo ao PlanWise!</h1>
-          <p>Sua central de controle financeiro</p>
+    <div class="dashboard-layout">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <span>PlanWise</span>
+          </div>
         </div>
 
-        <div class="cards-grid">
-          <mat-card class="feature-card">
-            <mat-card-header>
-              <mat-icon mat-card-avatar>account_balance</mat-icon>
-              <mat-card-title>Receitas</mat-card-title>
-              <mat-card-subtitle>Gerencie suas entradas</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>Controle todas as suas fontes de receita de forma organizada.</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-raised-button color="primary" disabled>
-                Em breve
-              </button>
-            </mat-card-actions>
-          </mat-card>
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <h3>Principal</h3>
+            <a href="#" class="nav-item active" (click)="selectModule('dashboard')">
+              <mat-icon>dashboard</mat-icon>
+              <span>Dashboard</span>
+            </a>
+          </div>
 
-          <mat-card class="feature-card">
-            <mat-card-header>
-              <mat-icon mat-card-avatar>trending_down</mat-icon>
-              <mat-card-title>Despesas</mat-card-title>
-              <mat-card-subtitle>Monitore seus gastos</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>Acompanhe todas as suas despesas e categorize seus gastos.</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-raised-button color="primary" disabled>
-                Em breve
-              </button>
-            </mat-card-actions>
-          </mat-card>
+          <div class="nav-section">
+            <h3>Financeiro</h3>
+            <a href="#" class="nav-item" (click)="selectModule('receitas')">
+              <mat-icon>trending_up</mat-icon>
+              <span>Receitas</span>
+              <span class="badge">Em breve</span>
+            </a>
+            <a href="#" class="nav-item" (click)="selectModule('despesas')">
+              <mat-icon>trending_down</mat-icon>
+              <span>Despesas</span>
+              <span class="badge">Em breve</span>
+            </a>
+            <a href="#" class="nav-item" (click)="selectModule('categorias')">
+              <mat-icon>category</mat-icon>
+              <span>Categorias</span>
+              <span class="badge">Em breve</span>
+            </a>
+          </div>
 
-          <mat-card class="feature-card">
-            <mat-card-header>
-              <mat-icon mat-card-avatar>flag</mat-icon>
-              <mat-card-title>Metas</mat-card-title>
-              <mat-card-subtitle>Alcance seus objetivos</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>Defina e acompanhe suas metas financeiras com precisão.</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-raised-button color="primary" disabled>
-                Em breve
-              </button>
-            </mat-card-actions>
-          </mat-card>
+          <div class="nav-section">
+            <h3>Planejamento</h3>
+            <a href="#" class="nav-item" (click)="selectModule('metas')">
+              <mat-icon>flag</mat-icon>
+              <span>Metas</span>
+              <span class="badge">Em breve</span>
+            </a>
+            <a href="#" class="nav-item" (click)="selectModule('orcamento')">
+              <mat-icon>account_balance</mat-icon>
+              <span>Orçamento</span>
+              <span class="badge">Em breve</span>
+            </a>
+          </div>
 
-          <mat-card class="feature-card">
-            <mat-card-header>
-              <mat-icon mat-card-avatar>bar_chart</mat-icon>
-              <mat-card-title>Relatórios</mat-card-title>
-              <mat-card-subtitle>Análise detalhada</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>Visualize seus dados financeiros com gráficos e relatórios.</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-raised-button color="primary" disabled>
-                Em breve
-              </button>
-            </mat-card-actions>
-          </mat-card>
+          <div class="nav-section">
+            <h3>Relatórios</h3>
+            <a href="#" class="nav-item" (click)="selectModule('relatorios')">
+              <mat-icon>analytics</mat-icon>
+              <span>Relatórios</span>
+              <span class="badge">Em breve</span>
+            </a>
+            <a href="#" class="nav-item" (click)="selectModule('graficos')">
+              <mat-icon>bar_chart</mat-icon>
+              <span>Gráficos</span>
+              <span class="badge">Em breve</span>
+            </a>
+          </div>
+
+          <div class="nav-section">
+            <h3>Configurações</h3>
+            <a href="#" class="nav-item" (click)="selectModule('perfil')">
+              <mat-icon>person</mat-icon>
+              <span>Meu Perfil</span>
+            </a>
+            <a href="#" class="nav-item" (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Sair</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Top Header -->
+        <div class="top-header">
+          <div class="header-left">
+            <h1>{{ getModuleTitle() }}</h1>
+            <p>{{ getModuleSubtitle() }}</p>
+          </div>
+          <div class="header-right">
+            <div class="user-info">
+              <div class="avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="user-details">
+                <span class="name">{{ authService.userName }}</span>
+                <span class="role">{{ authService.isAdmin() ? 'Administrador' : 'Usuário' }}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="user-info">
-          <mat-card>
-            <mat-card-header>
-              <mat-icon mat-card-avatar>person</mat-icon>
-              <mat-card-title>Informações da Conta</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p><strong>Nome:</strong> {{ authService.userName }}</p>
-              <p><strong>Email:</strong> {{ authService.userEmail }}</p>
-              <p><strong>Role:</strong> {{ authService.isAdmin() ? 'Administrador' : 'Usuário' }}</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button color="primary" disabled>
-                Editar Perfil (Em breve)
+        <!-- Content Area -->
+        <div class="content-area">
+          <!-- Dashboard Content -->
+          <div *ngIf="selectedModule === 'dashboard'" class="dashboard-content">
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+              <div class="stat-card income">
+                <div class="stat-icon">
+                  <mat-icon>trending_up</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <h3>Receitas</h3>
+                  <p class="amount">R$ 0,00</p>
+                  <span class="subtitle">Este mês</span>
+                </div>
+              </div>
+
+              <div class="stat-card expense">
+                <div class="stat-icon">
+                  <mat-icon>trending_down</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <h3>Despesas</h3>
+                  <p class="amount">R$ 0,00</p>
+                  <span class="subtitle">Este mês</span>
+                </div>
+              </div>
+
+              <div class="stat-card balance">
+                <div class="stat-icon">
+                  <mat-icon>account_balance_wallet</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <h3>Saldo</h3>
+                  <p class="amount">R$ 0,00</p>
+                  <span class="subtitle">Disponível</span>
+                </div>
+              </div>
+
+              <div class="stat-card goals">
+                <div class="stat-icon">
+                  <mat-icon>flag</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <h3>Metas</h3>
+                  <p class="amount">0</p>
+                  <span class="subtitle">Ativas</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+              <h2>Ações Rápidas</h2>
+              <div class="actions-grid">
+                <div class="action-card" (click)="selectModule('receitas')">
+                  <mat-icon>add_circle</mat-icon>
+                  <span>Nova Receita</span>
+                </div>
+                <div class="action-card" (click)="selectModule('despesas')">
+                  <mat-icon>remove_circle</mat-icon>
+                  <span>Nova Despesa</span>
+                </div>
+                <div class="action-card" (click)="selectModule('metas')">
+                  <mat-icon>emoji_events</mat-icon>
+                  <span>Nova Meta</span>
+                </div>
+                <div class="action-card" (click)="selectModule('relatorios')">
+                  <mat-icon>assessment</mat-icon>
+                  <span>Ver Relatórios</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+              <h2>Atividade Recente</h2>
+              <div class="activity-list">
+                <div class="activity-item empty">
+                  <mat-icon>info</mat-icon>
+                  <div class="activity-content">
+                    <p>Nenhuma atividade recente</p>
+                    <span>Comece adicionando suas primeiras transações</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Module Content -->
+          <div *ngIf="selectedModule !== 'dashboard'" class="module-content">
+            <div class="coming-soon">
+              <mat-icon>build</mat-icon>
+              <h2>{{ getModuleTitle() }}</h2>
+              <p>Esta funcionalidade está em desenvolvimento</p>
+              <button mat-raised-button color="primary" (click)="selectModule('dashboard')">
+                Voltar ao Dashboard
               </button>
-            </mat-card-actions>
-          </mat-card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .dashboard-container {
+    .dashboard-layout {
+      display: flex;
       min-height: 100vh;
-      background-color: #f5f5f5;
+      background: #f8fafc;
     }
 
-    .dashboard-header {
-      position: sticky;
-      top: 0;
+    // Sidebar Styles
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
       z-index: 1000;
       
-      .logo {
-        font-size: 20px;
-        font-weight: 700;
+      &::-webkit-scrollbar {
+        width: 6px;
       }
       
-      .spacer {
-        flex: 1 1 auto;
+      &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
       }
       
-      .welcome-text {
-        margin-right: 16px;
-        font-weight: 500;
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
       }
     }
 
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+        
+        mat-icon {
+          font-size: 28px;
+          color: #ff6b6b;
+        }
+        
+        span {
+          font-size: 20px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #ff6b6b, #e84393);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+    }
+
+    .sidebar-nav {
+      padding: 20px 0;
+      
+      .nav-section {
+        margin-bottom: 32px;
+        
+        h3 {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 0 0 12px 20px;
+          padding: 0;
+        }
+        
+        .nav-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 20px;
+          color: rgba(255, 255, 255, 0.8);
+          text-decoration: none;
+          transition: all 0.3s ease;
+          position: relative;
+          
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+          }
+          
+          span:not(.badge) {
+            font-weight: 500;
+            flex: 1;
+          }
+          
+          .badge {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+          }
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            
+            mat-icon {
+              color: #ff6b6b;
+            }
+          }
+          
+          &.active {
+            background: linear-gradient(135deg, #ff6b6b, #e84393);
+            color: white;
+            
+            &::before {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              width: 4px;
+              background: white;
+            }
+            
+            mat-icon {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+    // Main Content Styles
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .top-header {
+      background: white;
+      padding: 24px 32px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      
+      .header-left {
+        h1 {
+          margin: 0 0 4px 0;
+          font-size: 28px;
+          font-weight: 700;
+          color: #1a202c;
+        }
+        
+        p {
+          margin: 0;
+          color: #64748b;
+          font-size: 16px;
+        }
+      }
+      
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        
+        .avatar {
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, #ff6b6b, #e84393);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          mat-icon {
+            color: white;
+            font-size: 20px;
+          }
+        }
+        
+        .user-details {
+          display: flex;
+          flex-direction: column;
+          
+          .name {
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 14px;
+          }
+          
+          .role {
+            font-size: 12px;
+            color: #64748b;
+          }
+        }
+      }
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 32px;
+      background: #f8fafc;
+    }
+
+    // Dashboard Content
     .dashboard-content {
-      padding: 24px;
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    .welcome-section {
-      text-align: center;
-      margin-bottom: 32px;
-      
-      h1 {
-        color: #333;
-        margin-bottom: 8px;
-      }
-      
-      p {
-        color: #666;
-        font-size: 18px;
-      }
-    }
-
-    .cards-grid {
+    .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 24px;
       margin-bottom: 32px;
+      
+      .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          mat-icon {
+            font-size: 24px;
+            color: white;
+          }
+        }
+        
+        .stat-info {
+          h3 {
+            margin: 0 0 4px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+          }
+          
+          .amount {
+            margin: 0 0 2px 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a202c;
+          }
+          
+          .subtitle {
+            font-size: 12px;
+            color: #94a3b8;
+          }
+        }
+        
+        &.income .stat-icon {
+          background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        
+        &.expense .stat-icon {
+          background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+        
+        &.balance .stat-icon {
+          background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+        
+        &.goals .stat-icon {
+          background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+      }
     }
 
-    .feature-card {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .quick-actions {
+      margin-bottom: 32px;
       
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      h2 {
+        margin: 0 0 20px 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a202c;
       }
       
-      mat-icon[mat-card-avatar] {
-        background-color: #3f51b5;
-        color: white;
+      .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        
+        .action-card {
+          background: white;
+          border-radius: 12px;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 1px solid #e2e8f0;
+          
+          mat-icon {
+            font-size: 32px;
+            color: #ff6b6b;
+          }
+          
+          span {
+            font-weight: 600;
+            color: #1a202c;
+          }
+          
+          &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.15);
+            border-color: #ff6b6b;
+            
+            mat-icon {
+              color: #e84393;
+            }
+          }
+        }
       }
     }
 
-    .user-info {
-      max-width: 400px;
-      margin: 0 auto;
+    .recent-activity {
+      h2 {
+        margin: 0 0 20px 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a202c;
+      }
       
-      mat-icon[mat-card-avatar] {
-        background-color: #4caf50;
-        color: white;
+      .activity-list {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        
+        .activity-item {
+          padding: 24px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          
+          &.empty {
+            text-align: center;
+            flex-direction: column;
+            color: #64748b;
+            
+            mat-icon {
+              font-size: 48px;
+              color: #cbd5e1;
+              margin-bottom: 8px;
+            }
+            
+            p {
+              margin: 0 0 4px 0;
+              font-weight: 600;
+            }
+            
+            span {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+
+    // Module Content
+    .module-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      
+      .coming-soon {
+        text-align: center;
+        background: white;
+        padding: 48px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        
+        mat-icon {
+          font-size: 64px;
+          color: #cbd5e1;
+          margin-bottom: 16px;
+        }
+        
+        h2 {
+          margin: 0 0 8px 0;
+          color: #1a202c;
+        }
+        
+        p {
+          margin: 0 0 24px 0;
+          color: #64748b;
+        }
+        
+        button {
+          background: linear-gradient(135deg, #ff6b6b, #e84393) !important;
+          color: white !important;
+          border-radius: 8px !important;
+        }
       }
     }
 
     // Responsive
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .content-area {
+        padding: 20px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+      }
+    }
+
     @media (max-width: 768px) {
-      .dashboard-content {
+      .top-header {
+        padding: 16px 20px;
+        
+        .header-left h1 {
+          font-size: 24px;
+        }
+        
+        .user-details {
+          display: none;
+        }
+      }
+      
+      .content-area {
         padding: 16px;
       }
       
-      .cards-grid {
+      .stats-grid {
         grid-template-columns: 1fr;
       }
       
-      .welcome-section h1 {
-        font-size: 24px;
+      .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .actions-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stat-card {
+        padding: 16px;
       }
     }
   `]
 })
 export class DashboardComponent implements OnInit {
+
+  selectedModule: string = 'dashboard';
+
+  private moduleData: { [key: string]: { title: string; subtitle: string } } = {
+    dashboard: {
+      title: 'Dashboard',
+      subtitle: 'Visão geral do seu planejamento financeiro'
+    },
+    receitas: {
+      title: 'Receitas',
+      subtitle: 'Gerencie suas fontes de entrada'
+    },
+    despesas: {
+      title: 'Despesas',
+      subtitle: 'Monitore e controle seus gastos'
+    },
+    categorias: {
+      title: 'Categorias',
+      subtitle: 'Organize suas transações'
+    },
+    metas: {
+      title: 'Metas',
+      subtitle: 'Defina e acompanhe seus objetivos'
+    },
+    orcamento: {
+      title: 'Orçamento',
+      subtitle: 'Planeje seus gastos mensais'
+    },
+    relatorios: {
+      title: 'Relatórios',
+      subtitle: 'Análise detalhada das suas finanças'
+    },
+    graficos: {
+      title: 'Gráficos',
+      subtitle: 'Visualização dos seus dados'
+    },
+    perfil: {
+      title: 'Meu Perfil',
+      subtitle: 'Gerencie suas informações pessoais'
+    }
+  };
 
   constructor(
     public authService: AuthService
@@ -225,6 +756,28 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // Implementação adicional se necessário
+  }
+
+  selectModule(module: string): void {
+    this.selectedModule = module;
+    
+    // Atualiza estado ativo no menu
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => item.classList.remove('active'));
+    
+    // Adiciona classe ativa ao item selecionado
+    const selectedItem = document.querySelector(`[onclick*="${module}"]`);
+    if (selectedItem) {
+      selectedItem.classList.add('active');
+    }
+  }
+
+  getModuleTitle(): string {
+    return this.moduleData[this.selectedModule]?.title || 'Dashboard';
+  }
+
+  getModuleSubtitle(): string {
+    return this.moduleData[this.selectedModule]?.subtitle || 'Visão geral do seu planejamento financeiro';
   }
 
   logout(): void {
