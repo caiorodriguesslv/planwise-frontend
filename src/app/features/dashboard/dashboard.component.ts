@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AuthService } from '../../core/services/auth.service';
+import { ExpenseListComponent } from '../expenses/list/expense-list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +17,8 @@ import { AuthService } from '../../core/services/auth.service';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ExpenseListComponent
   ],
   template: `
     <div class="dashboard-layout">
@@ -53,7 +56,6 @@ import { AuthService } from '../../core/services/auth.service';
                  (click)="selectModule('despesas', $event)">
               <mat-icon>trending_down</mat-icon>
               <span>Despesas</span>
-              <span class="badge">Em breve</span>
             </div>
             <div class="nav-item" 
                  [class.active]="selectedModule === 'categorias'"
@@ -227,9 +229,27 @@ import { AuthService } from '../../core/services/auth.service';
             </div>
           </div>
 
+          <!-- Debug Info -->
+          <div *ngIf="selectedModule !== 'dashboard'" style="background: #f0f0f0; padding: 10px; margin: 10px; border-radius: 4px; font-size: 12px;">
+            🔧 Debug: Módulo atual = "{{ selectedModule }}"
+          </div>
+
           <!-- Module Content -->
           <div *ngIf="selectedModule !== 'dashboard'" class="module-content">
-            <div class="coming-soon">
+            
+            <!-- Despesas Module -->
+            <div *ngIf="selectedModule === 'despesas'" class="expense-module">
+              <div style="background: #e8f5e8; padding: 20px; margin: 20px; border-radius: 8px;">
+                ✅ Componente de despesas carregado!
+                <p>Tentando carregar: &lt;app-expense-list&gt;</p>
+              </div>
+              <div style="border: 2px solid blue; margin: 20px; padding: 10px;">
+                <app-expense-list></app-expense-list>
+              </div>
+            </div>
+            
+            <!-- Outros Módulos - Coming Soon -->
+            <div *ngIf="selectedModule !== 'dashboard' && selectedModule !== 'despesas'" class="coming-soon">
               <mat-icon>build</mat-icon>
               <h2>{{ getModuleTitle() }}</h2>
               <p>Esta funcionalidade está em desenvolvimento</p>
@@ -644,18 +664,25 @@ import { AuthService } from '../../core/services/auth.service';
 
     // Module Content
     .module-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       min-height: 400px;
       
+      .expense-module {
+        // O componente de despesas gerencia seu próprio layout
+        width: 100%;
+      }
+      
       .coming-soon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
         text-align: center;
         background: white;
         padding: 48px;
         border-radius: 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         border: 1px solid #e2e8f0;
+        margin: 32px;
         
         mat-icon {
           font-size: 64px;
@@ -783,7 +810,8 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(
-    public authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -796,8 +824,9 @@ export class DashboardComponent implements OnInit {
       event.stopPropagation();
     }
     
+    console.log('📱 Selecionando módulo:', module, 'atual:', this.selectedModule);
     this.selectedModule = module;
-    console.log('📱 Módulo selecionado:', module);
+    console.log('📱 Módulo atualizado para:', this.selectedModule);
   }
 
   getModuleTitle(): string {

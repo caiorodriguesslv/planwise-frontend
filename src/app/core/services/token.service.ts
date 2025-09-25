@@ -85,11 +85,12 @@ export class TokenService {
     try {
       const payload = this.decodeToken(token);
       return {
-        userId: payload.userId,
-        email: payload.sub,
-        roles: payload.roles
+        userId: payload.userId || 0,
+        email: payload.sub || '',
+        roles: Array.isArray(payload.roles) ? payload.roles : []
       };
     } catch (error) {
+      console.warn('Erro ao decodificar token:', error);
       return null;
     }
   }
@@ -99,7 +100,9 @@ export class TokenService {
    */
   hasRole(role: string): boolean {
     const userInfo = this.getUserInfo();
-    return userInfo ? userInfo.roles.includes(role) : false;
+    return userInfo && userInfo.roles && Array.isArray(userInfo.roles) 
+      ? userInfo.roles.includes(role) 
+      : false;
   }
 
   /**
