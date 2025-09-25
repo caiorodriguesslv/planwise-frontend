@@ -31,69 +31,87 @@ import { AuthService } from '../../core/services/auth.service';
         <nav class="sidebar-nav">
           <div class="nav-section">
             <h3>Principal</h3>
-            <a href="#" class="nav-item active" (click)="selectModule('dashboard')">
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'dashboard'"
+                 (click)="selectModule('dashboard', $event)">
               <mat-icon>dashboard</mat-icon>
               <span>Dashboard</span>
-            </a>
+            </div>
           </div>
 
           <div class="nav-section">
             <h3>Financeiro</h3>
-            <a href="#" class="nav-item" (click)="selectModule('receitas')">
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'receitas'"
+                 (click)="selectModule('receitas', $event)">
               <mat-icon>trending_up</mat-icon>
               <span>Receitas</span>
               <span class="badge">Em breve</span>
-            </a>
-            <a href="#" class="nav-item" (click)="selectModule('despesas')">
+            </div>
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'despesas'"
+                 (click)="selectModule('despesas', $event)">
               <mat-icon>trending_down</mat-icon>
               <span>Despesas</span>
               <span class="badge">Em breve</span>
-            </a>
-            <a href="#" class="nav-item" (click)="selectModule('categorias')">
+            </div>
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'categorias'"
+                 (click)="selectModule('categorias', $event)">
               <mat-icon>category</mat-icon>
               <span>Categorias</span>
               <span class="badge">Em breve</span>
-            </a>
+            </div>
           </div>
 
           <div class="nav-section">
             <h3>Planejamento</h3>
-            <a href="#" class="nav-item" (click)="selectModule('metas')">
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'metas'"
+                 (click)="selectModule('metas', $event)">
               <mat-icon>flag</mat-icon>
               <span>Metas</span>
               <span class="badge">Em breve</span>
-            </a>
-            <a href="#" class="nav-item" (click)="selectModule('orcamento')">
+            </div>
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'orcamento'"
+                 (click)="selectModule('orcamento', $event)">
               <mat-icon>account_balance</mat-icon>
               <span>Orçamento</span>
               <span class="badge">Em breve</span>
-            </a>
+            </div>
           </div>
 
           <div class="nav-section">
             <h3>Relatórios</h3>
-            <a href="#" class="nav-item" (click)="selectModule('relatorios')">
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'relatorios'"
+                 (click)="selectModule('relatorios', $event)">
               <mat-icon>analytics</mat-icon>
               <span>Relatórios</span>
               <span class="badge">Em breve</span>
-            </a>
-            <a href="#" class="nav-item" (click)="selectModule('graficos')">
+            </div>
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'graficos'"
+                 (click)="selectModule('graficos', $event)">
               <mat-icon>bar_chart</mat-icon>
               <span>Gráficos</span>
               <span class="badge">Em breve</span>
-            </a>
+            </div>
           </div>
 
           <div class="nav-section">
             <h3>Configurações</h3>
-            <a href="#" class="nav-item" (click)="selectModule('perfil')">
+            <div class="nav-item" 
+                 [class.active]="selectedModule === 'perfil'"
+                 (click)="selectModule('perfil', $event)">
               <mat-icon>person</mat-icon>
               <span>Meu Perfil</span>
-            </a>
-            <a href="#" class="nav-item" (click)="logout()">
+            </div>
+            <div class="nav-item logout-item" (click)="logout()">
               <mat-icon>logout</mat-icon>
               <span>Sair</span>
-            </a>
+            </div>
           </div>
         </nav>
       </div>
@@ -175,19 +193,19 @@ import { AuthService } from '../../core/services/auth.service';
             <div class="quick-actions">
               <h2>Ações Rápidas</h2>
               <div class="actions-grid">
-                <div class="action-card" (click)="selectModule('receitas')">
+                <div class="action-card" (click)="selectModule('receitas', $event)">
                   <mat-icon>add_circle</mat-icon>
                   <span>Nova Receita</span>
                 </div>
-                <div class="action-card" (click)="selectModule('despesas')">
+                <div class="action-card" (click)="selectModule('despesas', $event)">
                   <mat-icon>remove_circle</mat-icon>
                   <span>Nova Despesa</span>
                 </div>
-                <div class="action-card" (click)="selectModule('metas')">
+                <div class="action-card" (click)="selectModule('metas', $event)">
                   <mat-icon>emoji_events</mat-icon>
                   <span>Nova Meta</span>
                 </div>
-                <div class="action-card" (click)="selectModule('relatorios')">
+                <div class="action-card" (click)="selectModule('relatorios', $event)">
                   <mat-icon>assessment</mat-icon>
                   <span>Ver Relatórios</span>
                 </div>
@@ -215,7 +233,7 @@ import { AuthService } from '../../core/services/auth.service';
               <mat-icon>build</mat-icon>
               <h2>{{ getModuleTitle() }}</h2>
               <p>Esta funcionalidade está em desenvolvimento</p>
-              <button mat-raised-button color="primary" (click)="selectModule('dashboard')">
+              <button mat-raised-button color="primary" (click)="selectModule('dashboard', $event)">
                 Voltar ao Dashboard
               </button>
             </div>
@@ -352,6 +370,20 @@ import { AuthService } from '../../core/services/auth.service';
             
             mat-icon {
               color: white;
+            }
+          }
+          
+          &.logout-item {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 8px;
+            padding-top: 16px;
+            
+            &:hover {
+              background: rgba(239, 68, 68, 0.1);
+              
+              mat-icon {
+                color: #ef4444;
+              }
             }
           }
         }
@@ -758,18 +790,14 @@ export class DashboardComponent implements OnInit {
     // Implementação adicional se necessário
   }
 
-  selectModule(module: string): void {
-    this.selectedModule = module;
-    
-    // Atualiza estado ativo no menu
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => item.classList.remove('active'));
-    
-    // Adiciona classe ativa ao item selecionado
-    const selectedItem = document.querySelector(`[onclick*="${module}"]`);
-    if (selectedItem) {
-      selectedItem.classList.add('active');
+  selectModule(module: string, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
     }
+    
+    this.selectedModule = module;
+    console.log('📱 Módulo selecionado:', module);
   }
 
   getModuleTitle(): string {
