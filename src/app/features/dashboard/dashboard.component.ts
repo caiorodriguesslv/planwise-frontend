@@ -9,6 +9,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../../core/services/auth.service';
 import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.component';
 import { ExpenseFormComponent } from '../expenses/form/expense-form.component';
+import { CategoryListComponent } from '../categories/list/category-list.component';
+import { CategoryFormComponent } from '../categories/form/category-form.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +22,9 @@ import { ExpenseFormComponent } from '../expenses/form/expense-form.component';
     MatIconModule,
     MatToolbarModule,
     ExpenseListV2Component,
-    ExpenseFormComponent
+    ExpenseFormComponent,
+    CategoryListComponent,
+    CategoryFormComponent
   ],
   template: `
     <div class="dashboard-layout">
@@ -64,7 +68,6 @@ import { ExpenseFormComponent } from '../expenses/form/expense-form.component';
                  (click)="selectModule('categorias', $event)">
               <mat-icon>category</mat-icon>
               <span>Categorias</span>
-              <span class="badge">Em breve</span>
             </div>
           </div>
 
@@ -265,9 +268,19 @@ import { ExpenseFormComponent } from '../expenses/form/expense-form.component';
             <div *ngIf="selectedModule === 'nova-despesa'" class="expense-form-module">
               <app-expense-form></app-expense-form>
             </div>
+
+            <!-- Categorias Module -->
+            <div *ngIf="selectedModule === 'categorias'" class="category-module">
+              <app-category-list></app-category-list>
+            </div>
+
+            <!-- Nova Categoria Module -->
+            <div *ngIf="selectedModule === 'nova-categoria'" class="category-form-module">
+              <app-category-form></app-category-form>
+            </div>
             
             <!-- Outros Módulos - Coming Soon -->
-            <div *ngIf="selectedModule !== 'dashboard' && selectedModule !== 'despesas' && selectedModule !== 'nova-despesa'" class="coming-soon">
+            <div *ngIf="selectedModule !== 'dashboard' && selectedModule !== 'despesas' && selectedModule !== 'nova-despesa' && selectedModule !== 'categorias' && selectedModule !== 'nova-categoria'" class="coming-soon">
               <mat-icon>build</mat-icon>
               <h2>{{ getModuleTitle() }}</h2>
               <p>Esta funcionalidade está em desenvolvimento</p>
@@ -864,9 +877,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       title: 'Nova Despesa',
       subtitle: 'Registre uma nova despesa'
     },
-    categorias: {
+    'categorias': {
       title: 'Categorias',
-      subtitle: 'Organize suas transações'
+      subtitle: 'Gerencie suas categorias'
+    },
+    'nova-categoria': {
+      title: 'Nova Categoria',
+      subtitle: 'Crie uma nova categoria'
     },
     metas: {
       title: 'Metas',

@@ -1,3 +1,9 @@
+import { CategoryResponse, CategoryType } from './category.model';
+
+// Re-export for backward compatibility
+export type { CategoryResponse };
+export { CategoryType };
+
 export interface ExpenseRequest {
   description: string;
   value: number;
@@ -13,20 +19,6 @@ export interface ExpenseResponse {
   createdAt: string;
   active: boolean;
   category: CategoryResponse;
-}
-
-export interface CategoryResponse {
-  id: number;
-  name: string;
-  type: CategoryType;
-  description?: string;
-  color?: string;
-  active: boolean;
-}
-
-export enum CategoryType {
-  RECEITA = 'RECEITA',
-  DESPESA = 'DESPESA'
 }
 
 export interface ExpenseFilters {

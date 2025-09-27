@@ -123,7 +123,6 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
                         <span class="category-option">
                           <span class="category-color" [style.background-color]="category.color || '#ccc'"></span>
                           {{ category.name }}
-                          <small *ngIf="category.description">{{ category.description }}</small>
                         </span>
                       </mat-option>
                     </mat-select>

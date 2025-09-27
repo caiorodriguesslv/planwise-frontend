@@ -123,10 +123,6 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
                     <span class="label">Tipo:</span>
                     <span class="value">{{ expense.category.type }}</span>
                   </div>
-                  <div class="info-item" *ngIf="expense.category.description">
-                    <span class="label">Descrição:</span>
-                    <span class="value">{{ expense.category.description }}</span>
-                  </div>
                 </div>
               </div>
 

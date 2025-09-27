@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, map, of } from 'rxjs';
 import { HttpService } from './http.service';
+import { CategoryService } from './category.service';
 import { 
   ExpenseRequest, 
   ExpenseResponse, 
   ExpenseFilters, 
-  ExpenseStats,
-  CategoryResponse 
+  ExpenseStats 
 } from '../models/expense.model';
+import { CategoryResponse } from '../models/category.model';
 import { PaginatedResponse, PageRequest } from '../models/api.model';
 
 @Injectable({
@@ -17,7 +18,10 @@ export class ExpenseService {
 
   private readonly baseEndpoint = 'expenses';
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private categoryService: CategoryService
+  ) {}
 
   /**
    * Criar nova despesa
@@ -135,7 +139,7 @@ export class ExpenseService {
    * Obter categorias do tipo DESPESA
    */
   getExpenseCategories(): Observable<CategoryResponse[]> {
-    return this.httpService.get<CategoryResponse[]>('categories/type/DESPESA');
+    return this.categoryService.getExpenseCategories();
   }
 
   /**
