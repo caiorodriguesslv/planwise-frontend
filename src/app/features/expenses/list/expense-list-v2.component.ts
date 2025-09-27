@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged, catchError, of } from 'rxjs';
@@ -73,7 +73,7 @@ import { PageRequest } from '../../../core/models/api.model';
               <mat-icon>account_balance_wallet</mat-icon>
             </div>
             <div class="stat-content">
-              <h2>{{ (stats?.total || 0) | currency:'BRL':'symbol':'1.2-2' }}</h2>
+              <h2>{{ stats.total | currency:'BRL':'symbol':'1.2-2' }}</h2>
               <p>Total de Despesas</p>
               <span class="stat-period">Este mês</span>
             </div>
@@ -99,7 +99,7 @@ import { PageRequest } from '../../../core/models/api.model';
               <mat-icon>trending_up</mat-icon>
             </div>
             <div class="stat-content">
-              <h2>{{ (stats?.average || 0) | currency:'BRL':'symbol':'1.2-2' }}</h2>
+              <h2>{{ stats.average | currency:'BRL':'symbol':'1.2-2' }}</h2>
               <p>Média por Despesa</p>
               <span class="stat-period">Valor médio</span>
             </div>
@@ -971,12 +971,19 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   // Estado do componente
   expenses: ExpenseResponse[] = [];
   categories: CategoryResponse[] = [];
-  stats: ExpenseStats | null = null;
+  stats: ExpenseStats = {
+    total: 0,
+    count: 0,
+    average: 0
+  };
   isLoading = false;
   showDebugInfo = false;
 
   // Paginação
-  pageRequest: PageRequest = { page: 0, size: 10 };
+  pageRequest: PageRequest = { 
+    page: 0, 
+    size: 10
+  };
   totalElements = 0;
   totalPages = 0;
 
@@ -991,7 +998,8 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     private expenseService: ExpenseService,
     private notificationService: NotificationService,
     private authService: AuthService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
   ) {
     // console.log('🎉 ExpenseListV2Component inicializado');
 
@@ -1070,14 +1078,34 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   private loadExpenses() {
     this.isLoading = true;
     
+    // Verificar se o usuário está autenticado
+    if (!this.authService.isLoggedIn) {
+      console.warn('⚠️ Usuário não autenticado, não carregando despesas');
+      this.isLoading = false;
+      this.cdr.detectChanges();
+      return;
+    }
+    
     const filters = this.buildFilters();
     
+    // Tentar primeiro o endpoint com paginação (original)
     this.expenseService.getAllExpenses(this.pageRequest)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
           console.error('Erro ao carregar despesas:', error);
-          this.notificationService.error('Erro ao carregar despesas');
+          
+          // Se for erro 401/403, pode ser problema de autenticação
+          if (error.status === 401 || error.status === 403) {
+            console.warn('🔐 Problema de autenticação detectado');
+            this.notificationService.warning('Sessão expirada. Faça login novamente.');
+          } else if (error.status === 500) {
+            console.error('🚨 Erro interno do servidor:', error);
+            this.notificationService.error('Erro interno do servidor. Tente novamente.');
+          } else {
+            this.notificationService.error('Erro ao carregar despesas');
+          }
+          
           this.isLoading = false;
           return of({ content: [], totalElements: 0, totalPages: 0 });
         })
@@ -1087,8 +1115,9 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
         this.totalElements = response.totalElements || 0;
         this.totalPages = response.totalPages || 0;
         this.isLoading = false;
+        this.cdr.detectChanges();
         
-        // console.log('✅ Despesas carregadas:', this.expenses.length, 'itens');
+        console.log('✅ Despesas carregadas:', this.expenses.length, 'itens');
       });
   }
 
@@ -1104,7 +1133,12 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
         })
       )
       .subscribe(stats => {
-        this.stats = stats;
+        this.stats = stats || {
+          total: 0,
+          count: 0,
+          average: 0
+        };
+        this.cdr.detectChanges();
         // console.log('✅ Estatísticas carregadas:', stats);
       });
   }
