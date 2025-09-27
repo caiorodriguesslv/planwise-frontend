@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged, catchError, of } from 'rxjs';
@@ -139,7 +139,6 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
                 <mat-select formControlName="type">
                   <mat-option value="">
                     <span class="select-all-option">
-                      <mat-icon>category</mat-icon>
                       Todos os tipos
                     </span>
                   </mat-option>
@@ -762,8 +761,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    private dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private dialog: MatDialog
   ) {
     this.filterForm = this.createFilterForm();
   }
@@ -830,7 +828,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         this.categories = response.content;
         this.totalElements = response.totalElements;
         this.isLoading = false;
-        this.cdr.detectChanges();
       });
   }
 
@@ -850,7 +847,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       )
       .subscribe(stats => {
         this.stats = stats;
-        this.cdr.detectChanges();
       });
   }
 
