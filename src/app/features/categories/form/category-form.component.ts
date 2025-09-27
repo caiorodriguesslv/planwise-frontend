@@ -12,11 +12,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 
 // Services e Models
 import { CategoryService } from '../../../core/services/category.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { CategoryRequest, CategoryResponse, CategoryType } from '../../../core/models/category.model';
+import { CategorySuccessModalComponent } from '../modal/category-success-modal.component';
 
 @Component({
   selector: 'app-category-form',
@@ -31,7 +33,8 @@ import { CategoryRequest, CategoryResponse, CategoryType } from '../../../core/m
     MatSelectModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule
   ],
   template: `
     <div class="category-form-container">
@@ -863,7 +866,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dialog: MatDialog
   ) {
     this.categoryForm = this.createForm();
   }
@@ -905,14 +909,17 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
           catchError(error => {
             console.error('Erro ao salvar categoria:', error);
             this.notificationService.error('Erro ao salvar categoria');
+            this.isSubmitting = false;
             return of(null);
           })
         )
         .subscribe(result => {
           this.isSubmitting = false;
           if (result) {
-            this.notificationService.success('Categoria criada com sucesso');
-            this.goBack();
+            // Mostrar modal de sucesso
+            this.showSuccessModal(result);
+          } else {
+            console.warn('Categoria não foi salva devido a erro');
           }
         });
     } else {
@@ -924,6 +931,24 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.categoryForm.reset();
     this.notificationService.info('Formulário limpo');
+  }
+
+  showSuccessModal(category: CategoryResponse): void {
+    const dialogRef = this.dialog.open(CategorySuccessModalComponent, {
+      width: '400px',
+      disableClose: true,
+      data: { category }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === 'continue') {
+        // Criar nova categoria
+        this.resetForm();
+      } else if (result === 'view') {
+        // Ver lista de categorias
+        this.goBack();
+      }
+    });
   }
 
   goBack(): void {

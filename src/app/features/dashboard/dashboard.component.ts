@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -909,7 +909,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -934,6 +935,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
     console.log('📱 Selecionando módulo:', module, 'atual:', this.selectedModule);
     this.selectedModule = module;
+    this.cdr.detectChanges(); // Força detecção de mudanças
     console.log('📱 Módulo atualizado para:', this.selectedModule);
   }
 

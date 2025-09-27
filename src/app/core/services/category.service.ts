@@ -23,9 +23,8 @@ export class CategoryService {
    * Criar nova categoria
    */
   createCategory(request: CategoryRequest): Observable<CategoryResponse> {
-    return this.httpService.post<ApiResponse<CategoryResponse>>(this.endpoint, request)
+    return this.httpService.post<CategoryResponse>(this.endpoint, request)
       .pipe(
-        map(response => response.data),
         catchError(error => {
           console.error('Erro ao criar categoria:', error);
           throw error;

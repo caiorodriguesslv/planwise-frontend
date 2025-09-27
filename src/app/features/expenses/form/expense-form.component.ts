@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -896,7 +896,8 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private loadingService: LoadingService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {
     this.expenseForm = this.createForm();
   }
@@ -952,6 +953,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(categories => {
         this.categories = categories;
+        this.cdr.detectChanges();
       });
   }
 
@@ -1008,6 +1010,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
           catchError(error => {
             console.error('Erro ao salvar despesa:', error);
             this.notificationService.error('Erro ao salvar despesa');
+            this.isSubmitting = false; // ← Garantir que pare o loading em caso de erro
             return of(null);
           })
         )
@@ -1020,6 +1023,9 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
             this.notificationService.success(message);
             // Voltar para a lista de despesas
             this.goBack();
+          } else {
+            // Se result for null, significa que houve erro e já foi tratado no catchError
+            console.warn('Despesa não foi salva devido a erro');
           }
         });
     } else {

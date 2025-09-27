@@ -182,7 +182,7 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
                   <th mat-header-cell *matHeaderCellDef class="name-header">Nome</th>
                   <td mat-cell *matCellDef="let category" class="name-cell">
                     <div class="name-content">
-                      <div class="category-color" [style.background-color]="category.color || getCategoryColor(category.type)"></div>
+                      <div class="category-color" [style.background-color]="category.color || getDeterministicColor(category.type, category.id)"></div>
                       <strong>{{ category.name }}</strong>
                     </div>
                   </td>
@@ -896,6 +896,24 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   getCategoryColor(type: CategoryType): string {
     return this.categoryService.generateCategoryColor(type);
+  }
+
+  getDeterministicColor(type: CategoryType, id: number): string {
+    const colors = {
+      [CategoryType.RECEITA]: [
+        '#10b981', '#059669', '#16a34a', '#22c55e', '#15803d',
+        '#84cc16', '#65a30d', '#a3e635', '#bef264', '#eab308'
+      ],
+      [CategoryType.DESPESA]: [
+        '#ef4444', '#dc2626', '#b91c1c', '#f87171', '#fca5a5',
+        '#fb923c', '#ea580c', '#c2410c', '#9a3412', '#f97316'
+      ]
+    };
+    
+    const typeColors = colors[type];
+    // Usar o ID para gerar um índice determinístico
+    const index = id % typeColors.length;
+    return typeColors[index];
   }
 
   formatDate(dateString: string): string {
