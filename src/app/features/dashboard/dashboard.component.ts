@@ -5,8 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Subject, takeUntil, catchError, of } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth.service';
+import { ExpenseService } from '../../core/services/expense.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { ExpenseListV2Component } from '../expenses/list/expense-list-v2.component';
 import { ExpenseFormComponent } from '../expenses/form/expense-form.component';
 import { CategoryListComponent } from '../categories/list/category-list.component';
@@ -21,6 +25,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     ExpenseListV2Component,
     ExpenseFormComponent,
     CategoryListComponent,
@@ -149,15 +154,21 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <!-- Dashboard Content -->
           <div *ngIf="selectedModule === 'dashboard'" class="dashboard-content">
             
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading" class="loading-container">
+              <mat-spinner diameter="50"></mat-spinner>
+              <p>Carregando estatísticas...</p>
+            </div>
+
             <!-- Stats Cards -->
-            <div class="stats-grid">
+            <div class="stats-grid" *ngIf="!isLoading">
               <div class="stat-card income">
                 <div class="stat-icon">
                   <mat-icon>trending_up</mat-icon>
                 </div>
                 <div class="stat-info">
                   <h3>Receitas</h3>
-                  <p class="amount">R$ 0,00</p>
+                  <p class="amount">{{ totalIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
                   <span class="subtitle">Este mês</span>
                 </div>
               </div>
@@ -168,7 +179,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
                 </div>
                 <div class="stat-info">
                   <h3>Despesas</h3>
-                  <p class="amount">R$ 0,00</p>
+                  <p class="amount">{{ totalExpenses | currency:'BRL':'symbol':'1.2-2' }}</p>
                   <span class="subtitle">Este mês</span>
                 </div>
               </div>
@@ -179,7 +190,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
                 </div>
                 <div class="stat-info">
                   <h3>Saldo</h3>
-                  <p class="amount">R$ 0,00</p>
+                  <p class="amount">{{ balance | currency:'BRL':'symbol':'1.2-2' }}</p>
                   <span class="subtitle">Disponível</span>
                 </div>
               </div>
@@ -190,7 +201,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
                 </div>
                 <div class="stat-info">
                   <h3>Metas</h3>
-                  <p class="amount">0</p>
+                  <p class="amount">{{ activeGoals }}</p>
                   <span class="subtitle">Ativas</span>
                 </div>
               </div>
@@ -522,6 +533,21 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
     .dashboard-content {
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      
+      p {
+        margin-top: 16px;
+        color: #6b7280;
+        font-size: 14px;
+      }
     }
 
     .stats-grid {
@@ -860,6 +886,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectedModule: string = 'dashboard';
   private navigationListener: ((event: any) => void) | null = null;
 
+  // Estatísticas do dashboard
+  totalIncome: number = 0;
+  totalExpenses: number = 0;
+  balance: number = 0;
+  activeGoals: number = 0;
+  isLoading: boolean = false;
+
+  private destroy$ = new Subject<void>();
+
   private moduleData: { [key: string]: { title: string; subtitle: string } } = {
     dashboard: {
       title: 'Dashboard',
@@ -910,12 +945,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private expenseService: ExpenseService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
+    console.log('🚀 DashboardComponent inicializado');
+    console.log('📱 selectedModule inicial:', this.selectedModule);
+    console.log('👤 authService.isLoggedIn:', this.authService.isLoggedIn);
+    console.log('👤 authService.userName:', this.authService.userName);
+    console.log('👤 authService.isAdmin():', this.authService.isAdmin());
+    
+    // Carregar estatísticas do dashboard
+    this.loadDashboardStats();
+    
     // Listener para navegação entre módulos
     this.navigationListener = (event: any) => {
+      console.log('📱 Evento navigate-to-module recebido:', event.detail);
       this.selectModule(event.detail.module, undefined);
     };
     window.addEventListener('navigate-to-module', this.navigationListener);
@@ -925,6 +972,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.navigationListener) {
       window.removeEventListener('navigate-to-module', this.navigationListener);
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   selectModule(module: string, event?: Event): void {
@@ -937,6 +986,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.selectedModule = module;
     this.cdr.detectChanges(); // Força detecção de mudanças
     console.log('📱 Módulo atualizado para:', this.selectedModule);
+    console.log('📱 Condições de renderização:');
+    console.log('  - selectedModule === "despesas":', this.selectedModule === 'despesas');
+    console.log('  - selectedModule !== "dashboard":', this.selectedModule !== 'dashboard');
+    console.log('  - Deve renderizar despesas:', this.selectedModule === 'despesas');
   }
 
   getModuleTitle(): string {
@@ -945,6 +998,46 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getModuleSubtitle(): string {
     return this.moduleData[this.selectedModule]?.subtitle || 'Visão geral do seu planejamento financeiro';
+  }
+
+  /**
+   * Carrega as estatísticas do dashboard
+   */
+  private loadDashboardStats(): void {
+    if (!this.authService.isLoggedIn) {
+      console.log('🔒 Usuário não autenticado, pulando carregamento de estatísticas');
+      return;
+    }
+
+    this.isLoading = true;
+    console.log('📊 Carregando estatísticas do dashboard...');
+
+    // Carregar despesas
+    this.expenseService.getAllExpensesList()
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => {
+          console.error('❌ Erro ao carregar despesas:', error);
+          this.notificationService.error('Erro ao carregar estatísticas de despesas');
+          return of([]);
+        })
+      )
+      .subscribe(expenses => {
+        console.log('💰 Despesas carregadas:', expenses.length);
+        
+        // Calcular total de despesas
+        this.totalExpenses = expenses.reduce((total, expense) => total + expense.value, 0);
+        
+        // Calcular saldo (por enquanto, apenas despesas - receitas serão implementadas depois)
+        this.balance = -this.totalExpenses; // Negativo porque são despesas
+        
+        this.isLoading = false;
+        this.cdr.detectChanges();
+        
+        console.log('📊 Estatísticas atualizadas:');
+        console.log('  - Total Despesas:', this.totalExpenses);
+        console.log('  - Saldo:', this.balance);
+      });
   }
 
   logout(): void {
