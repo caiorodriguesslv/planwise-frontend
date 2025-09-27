@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -19,6 +19,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
 @Component({
   selector: 'app-dashboard',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     MatCardModule,
@@ -46,7 +47,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <div class="nav-section">
             <h3>Principal</h3>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'dashboard'"
+                 [class.active]="isDashboardActive"
                  (click)="selectModule('dashboard', $event)">
               <mat-icon>dashboard</mat-icon>
               <span>Home</span>
@@ -56,20 +57,20 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <div class="nav-section">
             <h3>Financeiro</h3>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'receitas'"
+                 [class.active]="isReceitasActive"
                  (click)="selectModule('receitas', $event)">
               <mat-icon>trending_up</mat-icon>
               <span>Receitas</span>
               <span class="badge">Em breve</span>
             </div>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'despesas'"
+                 [class.active]="isDespesasActive"
                  (click)="selectModule('despesas', $event)">
               <mat-icon>trending_down</mat-icon>
               <span>Despesas</span>
             </div>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'categorias'"
+                 [class.active]="isCategoriasActive"
                  (click)="selectModule('categorias', $event)">
               <mat-icon>category</mat-icon>
               <span>Categorias</span>
@@ -79,14 +80,14 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <div class="nav-section">
             <h3>Planejamento</h3>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'metas'"
+                 [class.active]="isMetasActive"
                  (click)="selectModule('metas', $event)">
               <mat-icon>flag</mat-icon>
               <span>Metas</span>
               <span class="badge">Em breve</span>
             </div>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'orcamento'"
+                 [class.active]="isOrcamentoActive"
                  (click)="selectModule('orcamento', $event)">
               <mat-icon>account_balance</mat-icon>
               <span>Orçamento</span>
@@ -97,14 +98,14 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <div class="nav-section">
             <h3>Relatórios</h3>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'relatorios'"
+                 [class.active]="isRelatoriosActive"
                  (click)="selectModule('relatorios', $event)">
               <mat-icon>analytics</mat-icon>
               <span>Relatórios</span>
               <span class="badge">Em breve</span>
             </div>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'graficos'"
+                 [class.active]="isGraficosActive"
                  (click)="selectModule('graficos', $event)">
               <mat-icon>bar_chart</mat-icon>
               <span>Gráficos</span>
@@ -115,7 +116,7 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <div class="nav-section">
             <h3>Configurações</h3>
             <div class="nav-item" 
-                 [class.active]="selectedModule === 'perfil'"
+                 [class.active]="isPerfilActive"
                  (click)="selectModule('perfil', $event)">
               <mat-icon>person</mat-icon>
               <span>Meu Perfil</span>
@@ -133,8 +134,8 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
         <!-- Top Header -->
         <div class="top-header">
           <div class="header-left">
-            <h1>{{ getModuleTitle() }}</h1>
-            <p>{{ getModuleSubtitle() }}</p>
+            <h1>{{ currentModuleTitle }}</h1>
+            <p>{{ currentModuleSubtitle }}</p>
           </div>
           <div class="header-right">
             <div class="user-info">
@@ -142,8 +143,8 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
                 <mat-icon>person</mat-icon>
               </div>
               <div class="user-details">
-                <span class="name">{{ authService.userName }}</span>
-                <span class="role">{{ authService.isAdmin() ? 'Administrador' : 'Usuário' }}</span>
+                <span class="name">{{ userName }}</span>
+                <span class="role">{{ userRole }}</span>
               </div>
             </div>
           </div>
@@ -152,16 +153,16 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
         <!-- Content Area -->
         <div class="content-area">
           <!-- Dashboard Content -->
-          <div *ngIf="selectedModule === 'dashboard'" class="dashboard-content">
+          <div *ngIf="isDashboardModule" class="dashboard-content">
             
             <!-- Loading Spinner -->
-            <div *ngIf="isLoading" class="loading-container">
+            <div *ngIf="isLoadingStats" class="loading-container">
               <mat-spinner diameter="50"></mat-spinner>
               <p>Carregando estatísticas...</p>
             </div>
 
             <!-- Stats Cards -->
-            <div class="stats-grid" *ngIf="!isLoading">
+            <div class="stats-grid" *ngIf="isNotLoadingStats">
               <div class="stat-card income">
                 <div class="stat-icon">
                   <mat-icon>trending_up</mat-icon>
@@ -268,32 +269,32 @@ import { CategoryFormComponent } from '../categories/form/category-form.componen
           <!-- Debug Info -->
 
           <!-- Module Content -->
-          <div *ngIf="selectedModule !== 'dashboard'" class="module-content">
+          <div *ngIf="isNotDashboardModule" class="module-content">
             
             <!-- Despesas Module -->
-            <div *ngIf="selectedModule === 'despesas'" class="expense-module">
+            <div *ngIf="isDespesasModule" class="expense-module">
               <app-expense-list-v2></app-expense-list-v2>
             </div>
 
             <!-- Nova Despesa Module -->
-            <div *ngIf="selectedModule === 'nova-despesa'" class="expense-form-module">
+            <div *ngIf="isNovaDespesaModule" class="expense-form-module">
               <app-expense-form></app-expense-form>
             </div>
 
             <!-- Categorias Module -->
-            <div *ngIf="selectedModule === 'categorias'" class="category-module">
+            <div *ngIf="isCategoriasModule" class="category-module">
               <app-category-list></app-category-list>
             </div>
 
             <!-- Nova Categoria Module -->
-            <div *ngIf="selectedModule === 'nova-categoria'" class="category-form-module">
+            <div *ngIf="isNovaCategoriaModule" class="category-form-module">
               <app-category-form></app-category-form>
             </div>
             
             <!-- Outros Módulos - Coming Soon -->
-            <div *ngIf="selectedModule !== 'dashboard' && selectedModule !== 'despesas' && selectedModule !== 'nova-despesa' && selectedModule !== 'categorias' && selectedModule !== 'nova-categoria'" class="coming-soon">
+            <div *ngIf="isComingSoonModule" class="coming-soon">
               <mat-icon>build</mat-icon>
-              <h2>{{ getModuleTitle() }}</h2>
+              <h2>{{ currentModuleTitle }}</h2>
               <p>Esta funcionalidade está em desenvolvimento</p>
               <button mat-raised-button color="primary" (click)="selectModule('dashboard', $event)">
                 Voltar ao Dashboard
@@ -893,6 +894,40 @@ export class DashboardComponent implements OnInit, OnDestroy {
   activeGoals: number = 0;
   isLoading: boolean = false;
 
+  // Dados do usuário (cacheados para evitar mudanças durante detecção)
+  userName: string = '';
+  userRole: string = '';
+  
+  // Dados do módulo atual (cacheados para evitar mudanças durante detecção)
+  currentModuleTitle: string = 'Dashboard';
+  currentModuleSubtitle: string = 'Visão geral do seu planejamento financeiro';
+
+  // Propriedades computadas para evitar mudanças durante detecção
+  isDashboardModule: boolean = true;
+  isNotDashboardModule: boolean = false;
+  isLoadingStats: boolean = false;
+  isNotLoadingStats: boolean = true;
+  
+  // Propriedades para navegação ativa
+  isDashboardActive: boolean = true;
+  isReceitasActive: boolean = false;
+  isDespesasActive: boolean = false;
+  isCategoriasActive: boolean = false;
+  isMetasActive: boolean = false;
+  isOrcamentoActive: boolean = false;
+  isRelatoriosActive: boolean = false;
+  isGraficosActive: boolean = false;
+  isPerfilActive: boolean = false;
+  
+  // Propriedades para módulos específicos
+  isDespesasModule: boolean = false;
+  isNovaDespesaModule: boolean = false;
+  isCategoriasModule: boolean = false;
+  isNovaCategoriaModule: boolean = false;
+  
+  // Propriedade para módulos "coming soon"
+  isComingSoonModule: boolean = false;
+
   private destroy$ = new Subject<void>();
 
   private moduleData: { [key: string]: { title: string; subtitle: string } } = {
@@ -945,18 +980,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
     private expenseService: ExpenseService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    // Inicializar dados do usuário
+    this.initializeUserData();
+    
+    // Inicializar propriedades computadas
+    this.updateComputedProperties();
+    
     // Carregar estatísticas do dashboard
     this.loadDashboardStats();
     
     // Listener para navegação entre módulos
     this.navigationListener = (event: any) => {
-      this.selectModule(event.detail.module, undefined);
+      // Agendar mudança para o próximo ciclo para evitar conflitos
+      setTimeout(() => {
+        this.selectModule(event.detail.module, undefined);
+      });
     };
     window.addEventListener('navigate-to-module', this.navigationListener);
   }
@@ -975,16 +1019,66 @@ export class DashboardComponent implements OnInit, OnDestroy {
       event.stopPropagation();
     }
     
-    this.selectedModule = module;
-    this.cdr.detectChanges(); // Força detecção de mudanças
+    // Usar setTimeout para agendar mudanças para o próximo ciclo
+    setTimeout(() => {
+      this.selectedModule = module;
+      this.updateComputedProperties();
+    });
   }
 
-  getModuleTitle(): string {
-    return this.moduleData[this.selectedModule]?.title || 'Dashboard';
+
+  /**
+   * Inicializa os dados do usuário de forma segura
+   */
+  private initializeUserData(): void {
+    // Usar setTimeout para garantir que os dados sejam definidos no próximo ciclo
+    setTimeout(() => {
+      this.userName = this.authService.userName || 'Usuário';
+      this.userRole = this.authService.isAdmin() ? 'Administrador' : 'Usuário';
+      this.cdr.markForCheck();
+    });
   }
 
-  getModuleSubtitle(): string {
-    return this.moduleData[this.selectedModule]?.subtitle || 'Visão geral do seu planejamento financeiro';
+  /**
+   * Atualiza as propriedades computadas de forma segura
+   */
+  private updateComputedProperties(): void {
+    // Dados do módulo atual
+    this.currentModuleTitle = this.moduleData[this.selectedModule]?.title || 'Dashboard';
+    this.currentModuleSubtitle = this.moduleData[this.selectedModule]?.subtitle || 'Visão geral do seu planejamento financeiro';
+    
+    // Propriedades principais
+    this.isDashboardModule = this.selectedModule === 'dashboard';
+    this.isNotDashboardModule = this.selectedModule !== 'dashboard';
+    this.isLoadingStats = this.isLoading;
+    this.isNotLoadingStats = !this.isLoading;
+    
+    // Propriedades para navegação ativa
+    this.isDashboardActive = this.selectedModule === 'dashboard';
+    this.isReceitasActive = this.selectedModule === 'receitas';
+    this.isDespesasActive = this.selectedModule === 'despesas';
+    this.isCategoriasActive = this.selectedModule === 'categorias';
+    this.isMetasActive = this.selectedModule === 'metas';
+    this.isOrcamentoActive = this.selectedModule === 'orcamento';
+    this.isRelatoriosActive = this.selectedModule === 'relatorios';
+    this.isGraficosActive = this.selectedModule === 'graficos';
+    this.isPerfilActive = this.selectedModule === 'perfil';
+    
+    // Propriedades para módulos específicos
+    this.isDespesasModule = this.selectedModule === 'despesas';
+    this.isNovaDespesaModule = this.selectedModule === 'nova-despesa';
+    this.isCategoriasModule = this.selectedModule === 'categorias';
+    this.isNovaCategoriaModule = this.selectedModule === 'nova-categoria';
+    
+    // Propriedade para módulos "coming soon"
+    this.isComingSoonModule = this.selectedModule !== 'dashboard' && 
+                              this.selectedModule !== 'despesas' && 
+                              this.selectedModule !== 'nova-despesa' && 
+                              this.selectedModule !== 'categorias' && 
+                              this.selectedModule !== 'nova-categoria';
+    
+    // Marcar para verificação com OnPush
+    this.cdr.markForCheck();
   }
 
   /**
@@ -995,7 +1089,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    // Agenda a mudança de estado para o próximo ciclo
+    setTimeout(() => {
+      this.isLoading = true;
+      this.updateComputedProperties();
+    });
 
     // Carregar despesas
     this.expenseService.getAllExpensesList()
@@ -1013,8 +1111,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // Calcular saldo (por enquanto, apenas despesas - receitas serão implementadas depois)
         this.balance = -this.totalExpenses; // Negativo porque são despesas
         
-        this.isLoading = false;
-        this.cdr.detectChanges();
+        // Agenda a mudança de estado para o próximo ciclo
+        setTimeout(() => {
+          this.isLoading = false;
+          this.updateComputedProperties();
+        });
       });
   }
 
