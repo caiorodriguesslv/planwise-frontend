@@ -64,34 +64,19 @@ export class AuthService {
     const hasToken = this.tokenService.hasValidToken();
     const currentToken = this.tokenService.getToken();
     
-    console.log('🚀 Inicializando estado de autenticação:', {
-      hasToken,
-      tokenExists: !!currentToken,
-      tokenLength: currentToken?.length || 0,
-      tokenStart: currentToken ? currentToken.substring(0, 20) + '...' : 'N/A'
-    });
     
     if (hasToken) {
       // Se tem token válido, busca dados do usuário
-      console.log('🔍 Token válido encontrado, buscando dados do usuário...');
       this.getCurrentUser().subscribe({
         next: (user) => {
           this.setAuthenticatedState(user);
-          console.log('✅ Estado de autenticação inicializado com sucesso', user);
         },
         error: (error) => {
-          console.warn('⚠️ Token inválido encontrado, fazendo logout', {
-            error,
-            status: error.status,
-            message: error.message,
-            url: error.url
-          });
           // Token inválido, remove e redireciona
           this.logout(false);
         }
       });
     } else {
-      console.log('ℹ️ Nenhum token válido encontrado na inicialização');
     }
   }
 
@@ -99,48 +84,25 @@ export class AuthService {
    * Realiza login do usuário
    */
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    console.log('🔐 Iniciando processo de login para:', credentials.email);
-    console.log('📤 Dados sendo enviados:', {
-      email: credentials.email,
-      password: credentials.password ? '***' : 'undefined',
-      url: `${environment.apiUrl}/auth/login`,
-      credentialsType: typeof credentials,
-      credentialsKeys: Object.keys(credentials),
-      isEmailValid: !!credentials.email,
-      isPasswordValid: !!credentials.password,
-      emailLength: credentials.email?.length || 0,
-      passwordLength: credentials.password?.length || 0
-    });
     
     // Validação adicional dos dados antes de enviar
     if (!credentials.email || !credentials.password) {
       const error = new Error('Email e senha são obrigatórios');
-      console.error('❌ Validação falhou:', error);
       return throwError(() => error);
     }
     
     if (credentials.email.length < 3 || credentials.password.length < 1) {
       const error = new Error('Email ou senha muito curtos');
-      console.error('❌ Validação falhou:', error);
       return throwError(() => error);
     }
     
     // Teste de conectividade antes do login
-    console.log('🌐 Testando conectividade com o servidor...');
     
     return this.loadingService.withLoadingObservable(
       this.httpService.post<AuthResponse>('/auth/login', credentials),
       'Realizando login...'
     ).pipe(
       tap((response) => {
-        console.log('✅ Resposta de login recebida:', response);
-        console.log('📊 Análise da resposta:', {
-          hasResponse: !!response,
-          hasToken: !!(response?.token),
-          hasUser: !!(response?.user),
-          userStructure: response?.user ? Object.keys(response.user) : 'N/A'
-        });
-        
         // Verificações de segurança
         if (!response) {
           throw new Error('Resposta vazia do servidor');
@@ -152,44 +114,36 @@ export class AuthService {
         
         // Armazena o token primeiro
         this.tokenService.setToken(response.token);
-        console.log('💾 Token armazenado no localStorage');
         
         // Verifica se temos dados do usuário na resposta
         if (response.user) {
           // Atualiza estado do usuário com dados da resposta
           this.setAuthenticatedState(response.user);
-          console.log('🔄 Estado de autenticação atualizado com dados da resposta');
           
           // Redireciona após configurar o estado (com pequeno delay para garantir sincronização)
           setTimeout(() => {
-            console.log('🔄 Redirecionando para dashboard após autenticação...');
             this.router.navigate(['/dashboard']);
             this.showWelcomeMessage(response.user);
           }, 150);
           
         } else {
           // Se não tem dados do usuário, tenta buscar do servidor
-          console.log('⚠️ Dados do usuário não encontrados na resposta, buscando do servidor...');
           this.getCurrentUser().subscribe({
             next: (user) => {
               this.setAuthenticatedState(user);
-              console.log('🔄 Estado de autenticação atualizado com dados do servidor');
               
               // Redireciona após obter e configurar dados do usuário
               setTimeout(() => {
-                console.log('🔄 Redirecionando para dashboard após buscar dados do usuário...');
                 this.router.navigate(['/dashboard']);
                 this.showWelcomeMessage(user);
               }, 150);
             },
             error: (userError) => {
-              console.error('❌ Erro ao buscar dados do usuário:', userError);
               // Mesmo assim marca como autenticado e redireciona, pois o token é válido
               this._isAuthenticated.set(true);
               this.isAuthenticatedSubject.next(true);
               
               setTimeout(() => {
-                console.log('🔄 Redirecionando para dashboard mesmo com erro nos dados do usuário...');
                 this.router.navigate(['/dashboard']);
                 this.notificationService.success('Login realizado com sucesso!');
               }, 150);
@@ -198,16 +152,6 @@ export class AuthService {
         }
       }),
       catchError((error) => {
-        console.error('❌ Erro no login:', error);
-        console.error('📊 Detalhes do erro:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.message,
-          url: error.url,
-          errorBody: error.error,
-          headers: error.headers
-        });
-        
         let errorMessage = 'Email ou senha incorretos.';
         
         if (error.status === 400) {
@@ -381,23 +325,15 @@ export class AuthService {
    * Útil para resolver problemas de cache/estado inconsistente
    */
   forceSyncAuthState(): void {
-    console.log('🔄 Forçando sincronização do estado de autenticação...');
-    
     const hasToken = this.tokenService.hasValidToken();
     const currentAuthState = this._isAuthenticated();
     
-    console.log('📊 Estado atual:', { hasToken, currentAuthState });
-    
     if (hasToken && !currentAuthState) {
-      console.log('⚠️ Inconsistência detectada: tem token mas não está autenticado');
       // Força inicialização
       this.initializeAuthState();
     } else if (!hasToken && currentAuthState) {
-      console.log('⚠️ Inconsistência detectada: não tem token mas está autenticado');
       // Força logout
       this.clearAuthenticatedState();
-    } else {
-      console.log('✅ Estado consistente');
     }
   }
 
@@ -424,7 +360,6 @@ export class AuthService {
       
       this.notificationService.success(`Bem-vindo, ${userName}!`);
     } catch (error) {
-      console.error('❌ Erro ao mostrar mensagem de boas-vindas:', error);
       this.notificationService.success('Login realizado com sucesso!');
     }
   }
@@ -434,11 +369,8 @@ export class AuthService {
    */
   private setAuthenticatedState(user: User): void {
     if (!user) {
-      console.error('❌ Tentativa de definir estado autenticado com usuário inválido');
       return;
     }
-    
-    console.log('🔄 Definindo estado autenticado para usuário:', user);
     
     // Atualiza todos os estados de forma síncrona
     this._isAuthenticated.set(true);
@@ -446,16 +378,8 @@ export class AuthService {
     this.isAuthenticatedSubject.next(true);
     this.currentUserSubject.next(user);
     
-    // Log de confirmação
-    console.log('✅ Estado de autenticação configurado:', {
-      isAuthenticated: this._isAuthenticated(),
-      hasUser: !!this._currentUser(),
-      userName: this._currentUser()?.name
-    });
-    
     // Força sincronização do AuthSyncService se disponível
     setTimeout(() => {
-      console.log('🔄 Forçando verificação de consistência pós-login...');
       this.forceSyncAuthState();
     }, 50);
   }
@@ -504,10 +428,8 @@ export class AuthService {
       const currentState = this._isAuthenticated();
       
       if (!currentState) {
-        console.log('⏳ Aguardando inicialização do estado de autenticação...');
         // Se tem token mas não está autenticado, aguarda a inicialização
         return this.isAuthenticated$.pipe(
-          tap(state => console.log('🔍 Estado atual durante inicialização:', state)),
           take(1)
         );
       }

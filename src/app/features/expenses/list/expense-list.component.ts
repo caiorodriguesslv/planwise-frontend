@@ -721,7 +721,6 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar categorias:', error);
           this.notificationService.error('Erro ao carregar categorias');
           return of([]);
         })
@@ -741,7 +740,6 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar despesas:', error);
           this.notificationService.error('Erro ao carregar despesas');
           return of({} as PaginatedResponse<ExpenseResponse>);
         })
@@ -759,7 +757,6 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar total de despesas:', error);
           return of(0);
         })
       )
@@ -803,7 +800,6 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao aplicar filtros:', error);
           this.notificationService.error('Erro ao aplicar filtros');
           return of([]);
         })
@@ -872,7 +868,6 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this.destroy$),
           catchError(error => {
-            console.error('Erro ao excluir despesa:', error);
             this.notificationService.error('Erro ao excluir despesa');
             return of('');
           })
@@ -944,30 +939,16 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
   }
 
   checkAuthStatus(): void {
-    console.log('🔍 Verificando status de autenticação...');
-    console.log('Token:', localStorage.getItem('planwise_token'));
-    console.log('AuthService:', this.authService?.userName);
-    
     this.notificationService.info(`User: ${this.getUserInfo()}`);
   }
 
   testApiConnection(): void {
-    console.log('🔍 Testando conexão API...');
-    console.log('API URL:', this.getApiUrl());
-    console.log('Token:', this.hasAuthToken() ? 'Presente' : 'Ausente');
-    console.log('Headers que serão enviados:', this.getHeaders());
-    
     // Teste simples
     this.expenseService.getAllExpensesList().subscribe({
       next: (result) => {
-        console.log('✅ API funcionando, despesas:', result);
         this.notificationService.success(`API OK! ${result.length} despesas encontradas`);
       },
       error: (error) => {
-        console.error('❌ Erro API:', error);
-        console.error('Status:', error.status);
-        console.error('Message:', error.message);
-        console.error('Error completo:', error);
         this.notificationService.error(`Erro API: ${error.status} - ${error.message || 'Erro desconhecido'}`);
       }
     });

@@ -946,7 +946,6 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar categorias:', error);
           this.notificationService.error('Erro ao carregar categorias');
           return of([]);
         })
@@ -966,7 +965,6 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar despesa:', error);
           this.notificationService.error('Erro ao carregar despesa');
           this.router.navigate(['/dashboard/expenses']);
           return of(null);
@@ -1008,7 +1006,6 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this.destroy$),
           catchError(error => {
-            console.error('Erro ao salvar despesa:', error);
             this.notificationService.error('Erro ao salvar despesa');
             this.isSubmitting = false; // ← Garantir que pare o loading em caso de erro
             return of(null);
@@ -1025,7 +1022,6 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
             this.goBack();
           } else {
             // Se result for null, significa que houve erro e já foi tratado no catchError
-            console.warn('Despesa não foi salva devido a erro');
           }
         });
     } else {

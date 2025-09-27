@@ -198,9 +198,6 @@ export class HttpService {
    * Trata erros HTTP
    */
   private handleError = (error: any): Observable<never> => {
-    if (environment.enableLogs) {
-      console.error('HTTP Service Error:', error);
-    }
     return throwError(() => error);
   };
 

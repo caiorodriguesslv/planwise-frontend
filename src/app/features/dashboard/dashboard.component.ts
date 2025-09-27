@@ -951,18 +951,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('🚀 DashboardComponent inicializado');
-    console.log('📱 selectedModule inicial:', this.selectedModule);
-    console.log('👤 authService.isLoggedIn:', this.authService.isLoggedIn);
-    console.log('👤 authService.userName:', this.authService.userName);
-    console.log('👤 authService.isAdmin():', this.authService.isAdmin());
-    
     // Carregar estatísticas do dashboard
     this.loadDashboardStats();
     
     // Listener para navegação entre módulos
     this.navigationListener = (event: any) => {
-      console.log('📱 Evento navigate-to-module recebido:', event.detail);
       this.selectModule(event.detail.module, undefined);
     };
     window.addEventListener('navigate-to-module', this.navigationListener);
@@ -982,14 +975,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       event.stopPropagation();
     }
     
-    console.log('📱 Selecionando módulo:', module, 'atual:', this.selectedModule);
     this.selectedModule = module;
     this.cdr.detectChanges(); // Força detecção de mudanças
-    console.log('📱 Módulo atualizado para:', this.selectedModule);
-    console.log('📱 Condições de renderização:');
-    console.log('  - selectedModule === "despesas":', this.selectedModule === 'despesas');
-    console.log('  - selectedModule !== "dashboard":', this.selectedModule !== 'dashboard');
-    console.log('  - Deve renderizar despesas:', this.selectedModule === 'despesas');
   }
 
   getModuleTitle(): string {
@@ -1005,26 +992,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   private loadDashboardStats(): void {
     if (!this.authService.isLoggedIn) {
-      console.log('🔒 Usuário não autenticado, pulando carregamento de estatísticas');
       return;
     }
 
     this.isLoading = true;
-    console.log('📊 Carregando estatísticas do dashboard...');
 
     // Carregar despesas
     this.expenseService.getAllExpensesList()
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('❌ Erro ao carregar despesas:', error);
           this.notificationService.error('Erro ao carregar estatísticas de despesas');
           return of([]);
         })
       )
       .subscribe(expenses => {
-        console.log('💰 Despesas carregadas:', expenses.length);
-        
         // Calcular total de despesas
         this.totalExpenses = expenses.reduce((total, expense) => total + expense.value, 0);
         
@@ -1033,10 +1015,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         
         this.isLoading = false;
         this.cdr.detectChanges();
-        
-        console.log('📊 Estatísticas atualizadas:');
-        console.log('  - Total Despesas:', this.totalExpenses);
-        console.log('  - Saldo:', this.balance);
       });
   }
 

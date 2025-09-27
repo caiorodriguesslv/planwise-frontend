@@ -13,27 +13,15 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const notificationService = inject(NotificationService);
 
-  console.log('🔐 AuthGuard: Verificando autenticação...', {
-    isLoggedIn: authService.isLoggedIn,
-    hasToken: authService.userId !== null,
-    url: state.url
-  });
-
   // Aguarda a inicialização completa do AuthService
   return authService.waitForInitialization().pipe(
-    tap(isAuthenticated => {
-      console.log('🔐 AuthGuard: Estado verificado após inicialização:', isAuthenticated);
-    }),
     map(isAuthenticated => {
       // Dupla verificação: tanto o Observable quanto a propriedade direta
       const finalCheck = isAuthenticated || authService.isLoggedIn;
       
       if (finalCheck) {
-        console.log('✅ AuthGuard: Usuário autenticado, permitindo acesso');
         return true;
       }
-
-      console.log('❌ AuthGuard: Usuário não autenticado, redirecionando para login');
       
       // Armazena a URL de destino para redirecionamento após login
       const returnUrl = state.url;
@@ -66,22 +54,14 @@ export const guestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  console.log('👤 GuestGuard: Verificando se usuário é guest...', {
-    isLoggedIn: authService.isLoggedIn,
-    url: state.url
-  });
-
   // Aguarda a inicialização completa do AuthService
   return authService.waitForInitialization().pipe(
     map(isAuthenticated => {
       const isLoggedIn = isAuthenticated || authService.isLoggedIn;
       
       if (!isLoggedIn) {
-        console.log('✅ GuestGuard: Usuário não autenticado, permitindo acesso à página guest');
         return true;
       }
-
-      console.log('🔄 GuestGuard: Usuário já está logado, redirecionando para dashboard');
       // Se já está logado, redireciona para dashboard
       router.navigate(['/dashboard']);
       return false;

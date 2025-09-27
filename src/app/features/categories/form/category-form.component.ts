@@ -907,7 +907,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this.destroy$),
           catchError(error => {
-            console.error('Erro ao salvar categoria:', error);
             this.notificationService.error('Erro ao salvar categoria');
             this.isSubmitting = false;
             return of(null);
@@ -919,7 +918,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
             // Mostrar modal de sucesso
             this.showSuccessModal(result);
           } else {
-            console.warn('Categoria não foi salva devido a erro');
           }
         });
     } else {

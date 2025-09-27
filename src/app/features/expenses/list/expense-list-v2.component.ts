@@ -1001,7 +1001,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private cdr: ChangeDetectorRef
   ) {
-    // console.log('🎉 ExpenseListV2Component inicializado');
 
     // Inicializar form de filtros
     this.filterForm = this.fb.group({
@@ -1055,7 +1054,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar categorias:', error);
           this.notificationService.error('Erro ao carregar categorias');
           return of([]);
         })
@@ -1071,7 +1069,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
           categoryControl?.enable();
         }
         
-        // console.log('✅ Categorias carregadas:', categories.length);
       });
   }
 
@@ -1080,7 +1077,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     
     // Verificar se o usuário está autenticado
     if (!this.authService.isLoggedIn) {
-      console.warn('⚠️ Usuário não autenticado, não carregando despesas');
       this.isLoading = false;
       this.cdr.detectChanges();
       return;
@@ -1093,14 +1089,11 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar despesas:', error);
           
           // Se for erro 401/403, pode ser problema de autenticação
           if (error.status === 401 || error.status === 403) {
-            console.warn('🔐 Problema de autenticação detectado');
             this.notificationService.warning('Sessão expirada. Faça login novamente.');
           } else if (error.status === 500) {
-            console.error('🚨 Erro interno do servidor:', error);
             this.notificationService.error('Erro interno do servidor. Tente novamente.');
           } else {
             this.notificationService.error('Erro ao carregar despesas');
@@ -1117,7 +1110,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
         this.isLoading = false;
         this.cdr.detectChanges();
         
-        console.log('✅ Despesas carregadas:', this.expenses.length, 'itens');
       });
   }
 
@@ -1128,7 +1120,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar estatísticas:', error);
           return of(null);
         })
       )
@@ -1139,7 +1130,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
           average: 0
         };
         this.cdr.detectChanges();
-        // console.log('✅ Estatísticas carregadas:', stats);
       });
   }
 

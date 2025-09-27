@@ -11,10 +11,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Log do erro (apenas em desenvolvimento)
-      if (environment.enableLogs) {
-        console.error('HTTP Error:', error);
-      }
 
       // Tratamento específico por status code
       switch (error.status) {
@@ -28,42 +24,30 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
         case 403:
           // Acesso negado
-          console.warn('Acesso negado:', error.error?.message || 'Sem permissão');
           break;
 
         case 404:
           // Recurso não encontrado
-          console.warn('Recurso não encontrado:', req.url);
           break;
 
         case 400:
           // Erro de bad request
-          console.warn('Erro 400 (Bad Request):', {
-            url: req.url,
-            method: req.method,
-            body: req.body,
-            error: error.error,
-            message: error.message
-          });
           break;
 
         case 422:
           // Erro de validação
-          console.warn('Erro de validação:', error.error);
           break;
 
         case 500:
           // Erro interno do servidor
-          console.error('Erro interno do servidor:', error.error?.message);
           break;
 
         case 0:
           // Erro de rede ou CORS
-          console.error('Erro de rede ou servidor inacessível');
           break;
 
         default:
-          console.error('Erro HTTP não tratado:', error);
+          // Erro HTTP não tratado
       }
 
       // Formatar mensagem de erro amigável

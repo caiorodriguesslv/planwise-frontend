@@ -36,7 +36,6 @@ export class AuthSyncService implements OnDestroy {
           filter(event => event.key === environment.tokenKey || event.key === null)
         )
         .subscribe((event) => {
-          console.log('🔄 Mudança detectada no localStorage:', event);
           this.handleStorageChange(event);
         });
 
@@ -55,11 +54,6 @@ export class AuthSyncService implements OnDestroy {
       const currentTokenState = this.tokenService.hasValidToken();
       
       if (currentTokenState !== this.lastTokenState) {
-        console.log('🔄 Estado do token mudou, sincronizando...', {
-          anterior: this.lastTokenState,
-          atual: currentTokenState
-        });
-        
         this.authService.forceSyncAuthState();
         this.lastTokenState = currentTokenState;
       }
@@ -74,14 +68,12 @@ export class AuthSyncService implements OnDestroy {
     const currentAuthState = this.authService.isLoggedIn;
     
     if (currentTokenState !== this.lastTokenState) {
-      console.log('🔍 Inconsistência de token detectada na verificação periódica');
       this.authService.forceSyncAuthState();
       this.lastTokenState = currentTokenState;
     }
     
     // Detecta inconsistências entre token e estado de auth
     if (currentTokenState !== currentAuthState) {
-      console.warn('⚠️ Inconsistência entre token e estado de autenticação detectada');
       this.authService.forceSyncAuthState();
     }
   }
@@ -90,7 +82,6 @@ export class AuthSyncService implements OnDestroy {
    * Força uma verificação manual da consistência
    */
   forceCheck(): void {
-    console.log('🔍 Verificação manual de consistência solicitada');
     this.checkTokenConsistency();
   }
 }

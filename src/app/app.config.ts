@@ -22,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       useFactory: (authSyncService: AuthSyncService) => () => {
-        console.log('🚀 Inicializando AuthSyncService...');
         return Promise.resolve();
       },
       deps: [AuthSyncService],

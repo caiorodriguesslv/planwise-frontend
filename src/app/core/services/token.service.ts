@@ -90,7 +90,6 @@ export class TokenService {
         roles: Array.isArray(payload.roles) ? payload.roles : []
       };
     } catch (error) {
-      console.warn('Erro ao decodificar token:', error);
       return null;
     }
   }

@@ -26,7 +26,6 @@ export class CategoryService {
     return this.httpService.post<CategoryResponse>(this.endpoint, request)
       .pipe(
         catchError(error => {
-          console.error('Erro ao criar categoria:', error);
           throw error;
         })
       );
@@ -39,7 +38,6 @@ export class CategoryService {
     return this.httpService.get<CategoryResponse[]>(`${this.endpoint}/all`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar categorias:', error);
           return of([]);
         })
       );
@@ -67,7 +65,6 @@ export class CategoryService {
     return this.httpService.getPageable<CategoryResponse>(this.endpoint, params)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar categorias paginadas:', error);
           return of({
             content: [],
             totalElements: 0,
@@ -117,7 +114,6 @@ export class CategoryService {
           numberOfElements: categories.length
         })),
         catchError(error => {
-          console.error('Erro ao buscar categorias por tipo:', error);
           return of({
             content: [],
             totalElements: 0,
@@ -148,7 +144,6 @@ export class CategoryService {
     return this.httpService.get<CategoryResponse>(`${this.endpoint}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar categoria por ID:', error);
           throw error;
         })
       );
@@ -162,7 +157,6 @@ export class CategoryService {
       .pipe(
         map(response => response.data),
         catchError(error => {
-          console.error('Erro ao atualizar categoria:', error);
           throw error;
         })
       );
@@ -176,7 +170,6 @@ export class CategoryService {
       .pipe(
         map(() => {}),
         catchError(error => {
-          console.error('Erro ao deletar categoria:', error);
           throw error;
         })
       );
@@ -208,7 +201,6 @@ export class CategoryService {
           numberOfElements: categories.length
         })),
         catchError(error => {
-          console.error('Erro ao buscar categorias:', error);
           return of({
             content: [],
             totalElements: 0,
@@ -239,7 +231,6 @@ export class CategoryService {
     return this.httpService.get<CategoryResponse[]>(`${this.endpoint}/type/DESPESA`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar categorias de despesa:', error);
           return of([]);
         })
       );
@@ -252,7 +243,6 @@ export class CategoryService {
     return this.httpService.get<CategoryResponse[]>(`${this.endpoint}/type/RECEITA`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar categorias de receita:', error);
           return of([]);
         })
       );
@@ -277,7 +267,6 @@ export class CategoryService {
           };
         }),
         catchError(error => {
-          console.error('Erro ao calcular estatísticas:', error);
           return of({
             total: 0,
             byType: {

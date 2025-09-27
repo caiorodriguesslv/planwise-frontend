@@ -634,7 +634,6 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar despesa:', error);
           this.notificationService.error('Erro ao carregar despesa');
           return of(null);
         })
@@ -661,7 +660,6 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this.destroy$),
           catchError(error => {
-            console.error('Erro ao excluir despesa:', error);
             this.notificationService.error('Erro ao excluir despesa');
             return of('');
           })

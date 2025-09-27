@@ -807,7 +807,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar categorias:', error);
           this.notificationService.error('Erro ao carregar categorias');
           return of({
             content: [],
@@ -840,7 +839,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('Erro ao carregar estatísticas:', error);
           return of({
             total: 0,
             byType: {
@@ -944,7 +942,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this.destroy$),
           catchError(error => {
-            console.error('Erro ao deletar categoria:', error);
             this.notificationService.error('Erro ao deletar categoria');
             return of(null);
           })
