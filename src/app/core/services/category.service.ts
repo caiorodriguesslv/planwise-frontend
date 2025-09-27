@@ -47,24 +47,95 @@ export class CategoryService {
    * Buscar categorias com paginação
    */
   getCategories(pageRequest: PageRequest, filters?: CategoryFilters): Observable<PaginatedResponse<CategoryResponse>> {
+    // Se há filtros, usar lógica de fallback
+    if (filters?.search || filters?.type) {
+      return this.getCategoriesWithFilters(pageRequest, filters);
+    }
+
+    // Sem filtros, usar paginação normal
     let params: any = {
       page: pageRequest.page,
       size: pageRequest.size,
       sort: pageRequest.sort || 'name,asc'
     };
 
-    if (filters?.search) {
-      // Se há busca, usar endpoint de search
-      return this.searchCategories(filters.search);
-    }
-
-    if (filters?.type) {
-      return this.getCategoriesByType(filters.type);
-    }
-
     return this.httpService.getPageable<CategoryResponse>(this.endpoint, params)
       .pipe(
         catchError(error => {
+          console.error('Error in getCategories:', error);
+          return of({
+            content: [],
+            totalElements: 0,
+            totalPages: 0,
+            size: pageRequest.size,
+            number: pageRequest.page,
+            first: true,
+            last: true,
+            empty: true,
+            pageable: {
+              pageNumber: pageRequest.page || 0,
+              pageSize: pageRequest.size || 10,
+              sort: {
+                sorted: false,
+                unsorted: true
+              }
+            },
+            numberOfElements: 0
+          });
+        })
+      );
+  }
+
+  /**
+   * Buscar categorias com filtros (fallback para quando backend não suporta filtros paginados)
+   */
+  private getCategoriesWithFilters(pageRequest: PageRequest, filters: CategoryFilters): Observable<PaginatedResponse<CategoryResponse>> {
+    // Primeiro, tenta buscar todas as categorias
+    return this.getAllCategories()
+      .pipe(
+        map(allCategories => {
+          // Aplicar filtros localmente
+          let filteredCategories = [...allCategories];
+
+          if (filters.search) {
+            filteredCategories = filteredCategories.filter(cat => 
+              cat.name.toLowerCase().includes(filters.search!.toLowerCase())
+            );
+          }
+
+          if (filters.type) {
+            filteredCategories = filteredCategories.filter(cat => 
+              cat.type === filters.type
+            );
+          }
+
+          // Aplicar paginação local
+          const startIndex = (pageRequest.page || 0) * (pageRequest.size || 10);
+          const endIndex = startIndex + (pageRequest.size || 10);
+          const paginatedContent = filteredCategories.slice(startIndex, endIndex);
+
+          return {
+            content: paginatedContent,
+            totalElements: filteredCategories.length,
+            totalPages: Math.ceil(filteredCategories.length / (pageRequest.size || 10)),
+            size: pageRequest.size || 10,
+            number: pageRequest.page || 0,
+            first: (pageRequest.page || 0) === 0,
+            last: endIndex >= filteredCategories.length,
+            empty: filteredCategories.length === 0,
+            pageable: {
+              pageNumber: pageRequest.page || 0,
+              pageSize: pageRequest.size || 10,
+              sort: {
+                sorted: false,
+                unsorted: true
+              }
+            },
+            numberOfElements: paginatedContent.length
+          };
+        }),
+        catchError(error => {
+          console.error('Error in getCategoriesWithFilters:', error);
           return of({
             content: [],
             totalElements: 0,

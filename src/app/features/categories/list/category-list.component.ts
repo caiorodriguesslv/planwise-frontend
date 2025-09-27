@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged, catchError, of } from 'rxjs';
@@ -761,7 +761,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
     this.filterForm = this.createFilterForm();
   }
@@ -801,11 +802,16 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const filters = this.buildFilters();
     
+    // Debug: Log para verificar o que está sendo enviado
+    console.log('Loading categories with:', { pageRequest: this.pageRequest, filters });
+    
     this.categoryService.getCategories(this.pageRequest, filters)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
+          console.error('Error loading categories:', error);
           this.notificationService.error('Erro ao carregar categorias');
+          this.isLoading = false;
           return of({
             content: [],
             totalElements: 0,
@@ -825,9 +831,15 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((response: PaginatedResponse<CategoryResponse>) => {
-        this.categories = response.content;
-        this.totalElements = response.totalElements;
+        console.log('Categories loaded:', response);
+        this.categories = response.content || [];
+        this.totalElements = response.totalElements || 0;
         this.isLoading = false;
+        
+        // Forçar detecção de mudanças
+        this.cdr.detectChanges();
+        console.log('Categories after update:', this.categories);
+        console.log('Is loading:', this.isLoading);
       });
   }
 
@@ -847,6 +859,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       )
       .subscribe(stats => {
         this.stats = stats;
+        this.cdr.detectChanges();
+        console.log('Stats loaded:', this.stats);
       });
   }
 
