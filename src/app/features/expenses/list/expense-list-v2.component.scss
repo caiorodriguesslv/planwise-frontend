@@ -7,6 +7,7 @@
   margin: 0 auto;
   min-height: 100vh;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  padding-top: 0;
 }
 
 // Header específico
@@ -14,12 +15,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
-  padding: 24px;
+  margin-bottom: 40px;
+  padding: 32px;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  position: static;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .page-title {
@@ -66,9 +71,13 @@
 // Cards de estatísticas
 .stats-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 40px;
+  margin-top: 32px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .stat-card {
@@ -145,11 +154,14 @@
 
 // Filtros
 .filters-card {
-  margin-bottom: 24px;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  margin-bottom: 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .filters-header {
@@ -225,10 +237,13 @@
 
 // Tabela
 .table-card {
-  border-radius: 16px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .table-container {
@@ -285,10 +300,22 @@
   margin-bottom: 24px;
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   color: white;
+  position: relative;
 }
 
 .empty-icon mat-icon {
-  font-size: 40px;
+  font-size: 36px !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translate(0, 0) !important;
+  text-align: center !important;
+  vertical-align: middle !important;
 }
 
 .empty-state h3 {

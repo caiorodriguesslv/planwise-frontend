@@ -33,7 +33,6 @@ import { AuthService } from '../../../core/services/auth.service';
 
       <!-- Sidebar -->
       <div class="sidebar" 
-           [class.collapsed]="isCollapsed()" 
            [class.mobile-open]="isMobileMenuOpen()">
         
         <!-- Sidebar Header -->
@@ -42,155 +41,129 @@ import { AuthService } from '../../../core/services/auth.service';
             <div class="logo-icon">
               <mat-icon>account_balance_wallet</mat-icon>
             </div>
-            <span class="logo-text" [class.hidden]="isCollapsed()">PlanWise</span>
+            <span class="logo-text">PlanWise</span>
           </div>
-          <button class="collapse-btn" 
-                  (click)="toggleSidebar()" 
-                  mat-icon-button
-                  [matTooltip]="isCollapsed() ? 'Expandir sidebar' : 'Colapsar sidebar'">
-            <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
-          </button>
         </div>
 
         <!-- Navigation -->
         <nav class="sidebar-nav">
           <!-- Principal Section -->
           <div class="nav-section">
-            <h3 class="section-title" [class.hidden]="isCollapsed()">Principal</h3>
+            <h3 class="section-title">Principal</h3>
             <div class="nav-item" 
                  [class.active]="isRouteActive('/dashboard')"
-                 (click)="navigateTo('/dashboard', $event)"
-                 [matTooltip]="isCollapsed() ? 'Dashboard' : ''"
-                 matTooltipPosition="right">
+                 (click)="navigateTo('/dashboard', $event)">
               <div class="nav-icon">
                 <mat-icon>dashboard</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Dashboard</span>
+              <span class="nav-text">Dashboard</span>
             </div>
           </div>
 
           <!-- Financeiro Section -->
           <div class="nav-section">
-            <h3 class="section-title" [class.hidden]="isCollapsed()">Financeiro</h3>
+            <h3 class="section-title">Financeiro</h3>
             
             <div class="nav-item" 
                  [class.active]="isRouteActive('/dashboard/expenses')"
-                 (click)="navigateTo('/dashboard/expenses', $event)"
-                 [matTooltip]="isCollapsed() ? 'Despesas' : ''"
-                 matTooltipPosition="right">
+                 (click)="navigateTo('/dashboard/expenses', $event)">
               <div class="nav-icon">
                 <mat-icon>trending_down</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Despesas</span>
+              <span class="nav-text">Despesas</span>
             </div>
 
             <div class="nav-item" 
-                 [class.disabled]="true"
-                 [matTooltip]="isCollapsed() ? 'Receitas (Em breve)' : 'Em breve'"
-                 matTooltipPosition="right">
+                 [class.disabled]="true">
               <div class="nav-icon">
                 <mat-icon>trending_up</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Receitas</span>
-              <span class="badge" [class.hidden]="isCollapsed()">Em breve</span>
+              <span class="nav-text">Receitas</span>
+              <span class="badge">Em breve</span>
             </div>
 
             <div class="nav-item" 
                  [class.active]="isRouteActive('/dashboard/categories')"
-                 (click)="navigateTo('/dashboard/categories', $event)"
-                 [matTooltip]="isCollapsed() ? 'Categorias' : ''"
-                 matTooltipPosition="right">
+                 (click)="navigateTo('/dashboard/categories', $event)">
               <div class="nav-icon">
                 <mat-icon>category</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Categorias</span>
+              <span class="nav-text">Categorias</span>
             </div>
           </div>
 
           <!-- Planejamento Section -->
           <div class="nav-section">
-            <h3 class="section-title" [class.hidden]="isCollapsed()">Planejamento</h3>
+            <h3 class="section-title">Planejamento</h3>
             
             <div class="nav-item" 
-                 [class.disabled]="true"
-                 [matTooltip]="isCollapsed() ? 'Metas (Em breve)' : 'Em breve'"
-                 matTooltipPosition="right">
+                 [class.disabled]="true">
               <div class="nav-icon">
                 <mat-icon>flag</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Metas</span>
-              <span class="badge" [class.hidden]="isCollapsed()">Em breve</span>
+              <span class="nav-text">Metas</span>
+              <span class="badge">Em breve</span>
             </div>
 
             <div class="nav-item" 
-                 [class.disabled]="true"
-                 [matTooltip]="isCollapsed() ? 'Orçamento (Em breve)' : 'Em breve'"
-                 matTooltipPosition="right">
+                 [class.disabled]="true">
               <div class="nav-icon">
                 <mat-icon>account_balance</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Orçamento</span>
-              <span class="badge" [class.hidden]="isCollapsed()">Em breve</span>
+              <span class="nav-text">Orçamento</span>
+              <span class="badge">Em breve</span>
             </div>
           </div>
 
           <!-- Relatórios Section -->
           <div class="nav-section">
-            <h3 class="section-title" [class.hidden]="isCollapsed()">Relatórios</h3>
+            <h3 class="section-title">Relatórios</h3>
             
             <div class="nav-item" 
-                 [class.disabled]="true"
-                 [matTooltip]="isCollapsed() ? 'Relatórios (Em breve)' : 'Em breve'"
-                 matTooltipPosition="right">
+                 [class.disabled]="true">
               <div class="nav-icon">
                 <mat-icon>analytics</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Relatórios</span>
-              <span class="badge" [class.hidden]="isCollapsed()">Em breve</span>
+              <span class="nav-text">Relatórios</span>
+              <span class="badge">Em breve</span>
             </div>
 
             <div class="nav-item" 
-                 [class.disabled]="true"
-                 [matTooltip]="isCollapsed() ? 'Gráficos (Em breve)' : 'Em breve'"
-                 matTooltipPosition="right">
+                 [class.disabled]="true">
               <div class="nav-icon">
                 <mat-icon>bar_chart</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Gráficos</span>
-              <span class="badge" [class.hidden]="isCollapsed()">Em breve</span>
+              <span class="nav-text">Gráficos</span>
+              <span class="badge">Em breve</span>
             </div>
           </div>
 
           <!-- Configurações Section -->
           <div class="nav-section">
-            <h3 class="section-title" [class.hidden]="isCollapsed()">Configurações</h3>
+            <h3 class="section-title">Configurações</h3>
             
             <div class="nav-item" 
                  [class.active]="isRouteActive('/dashboard/perfil')"
-                 (click)="navigateTo('/dashboard/perfil', $event)"
-                 [matTooltip]="isCollapsed() ? 'Meu Perfil' : ''"
-                 matTooltipPosition="right">
+                 (click)="navigateTo('/dashboard/perfil', $event)">
               <div class="nav-icon">
                 <mat-icon>person</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Meu Perfil</span>
+              <span class="nav-text">Meu Perfil</span>
             </div>
 
             <div class="nav-item logout-item" 
-                 (click)="logout()"
-                 [matTooltip]="isCollapsed() ? 'Sair' : ''"
-                 matTooltipPosition="right">
+                 (click)="logout()">
               <div class="nav-icon">
                 <mat-icon>logout</mat-icon>
               </div>
-              <span class="nav-text" [class.hidden]="isCollapsed()">Sair</span>
+              <span class="nav-text">Sair</span>
             </div>
           </div>
         </nav>
       </div>
 
       <!-- Main Content -->
-      <div class="main-content" [class.sidebar-collapsed]="isCollapsed()">
+      <div class="main-content">
         <!-- Top Header -->
         <div class="top-header">
           <div class="header-left">
@@ -200,13 +173,6 @@ import { AuthService } from '../../../core/services/auth.service';
                     *ngIf="isMobile()">
               <mat-icon>menu</mat-icon>
             </button>
-            <button class="expand-sidebar-btn" 
-                    (click)="toggleSidebar()" 
-                    mat-icon-button
-                    *ngIf="isCollapsed() && !isMobile()"
-                    matTooltip="Expandir sidebar">
-              <mat-icon>menu</mat-icon>
-            </button>
             <div class="page-info">
               <h1>{{ getPageTitle() }}</h1>
               <p>{{ getPageSubtitle() }}</p>
@@ -214,12 +180,12 @@ import { AuthService } from '../../../core/services/auth.service';
           </div>
           <div class="header-right">
             <div class="user-info">
+              <div class="user-details">
+                <span class="name">{{ authService.userName || 'Administrador' }}</span>
+                <span class="role">{{ authService.isAdmin() ? 'Administrador' : 'Usuário' }}</span>
+              </div>
               <div class="avatar">
                 <mat-icon>person</mat-icon>
-              </div>
-              <div class="user-details">
-                <span class="name">{{ authService.userName }}</span>
-                <span class="role">{{ authService.isAdmin() ? 'Administrador' : 'Usuário' }}</span>
               </div>
             </div>
           </div>
@@ -499,25 +465,28 @@ import { AuthService } from '../../../core/services/auth.service';
       background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       
-      &.sidebar-collapsed {
-        margin-left: 70px;
-      }
     }
 
     .top-header {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-      padding: 24px;
+      background: #211A3D !important;
+      padding: 20px 24px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      margin: 24px auto;
-      max-width: 1400px;
+      border-radius: 0;
+      margin: 0;
+      max-width: none;
+      width: calc(100% - 280px);
+      margin-left: 280px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-      position: sticky;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+      position: fixed;
       top: 0;
-      z-index: 100;
+      left: 0;
+      transform: none;
+      z-index: 999;
+      height: 80px;
+      min-height: 80px;
       
       .header-left {
         display: flex;
@@ -600,7 +569,8 @@ import { AuthService } from '../../../core/services/auth.service';
     .content-area {
       flex: 1;
       background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-      padding: 24px;
+      padding: 32px;
+      padding-top: 100px;
       min-height: calc(100vh - 80px);
     }
 
@@ -626,9 +596,6 @@ import { AuthService } from '../../../core/services/auth.service';
       .main-content {
         margin-left: 0;
         
-        &.sidebar-collapsed {
-          margin-left: 0;
-        }
       }
     }
 
@@ -712,7 +679,6 @@ export class MainLayoutComponent implements OnInit {
   currentRoute: string = '';
   
   // Signals para estado reativo
-  private _isCollapsed = signal(false);
   private _isMobileMenuOpen = signal(false);
   private _isMobile = signal(false);
 
@@ -872,21 +838,12 @@ export class MainLayoutComponent implements OnInit {
   }
 
   // Getters para signals
-  isCollapsed(): boolean {
-    return this._isCollapsed();
-  }
-
   isMobileMenuOpen(): boolean {
     return this._isMobileMenuOpen();
   }
 
   isMobile(): boolean {
     return this._isMobile();
-  }
-
-  // Métodos para controle do sidebar
-  toggleSidebar(): void {
-    this._isCollapsed.set(!this._isCollapsed());
   }
 
   toggleMobileMenu(): void {
