@@ -1,6 +1,281 @@
 // Angular Material themes - Configuração simplificada
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+// ========================================
+// PLANWISE GLOBAL THEME SYSTEM
+// ========================================
+
+// Color Palette - Baseado na imagem exemplo
+:root {
+  // Primary Colors
+  --planwise-cyan: #00d4ff;
+  --planwise-cyan-dark: #0099cc;
+  --planwise-purple: #8b5cf6;
+  --planwise-purple-dark: #7c3aed;
+  --planwise-orange: #ffa726;
+  --planwise-orange-dark: #ff9800;
+  --planwise-red: #ff6b6b;
+  --planwise-red-dark: #ee5a52;
+  
+  // Background Colors
+  --planwise-bg-primary: #0f0f23;
+  --planwise-bg-secondary: #1a1a2e;
+  --planwise-bg-tertiary: #16213e;
+  
+  // Text Colors
+  --planwise-text-primary: #ffffff;
+  --planwise-text-secondary: rgba(255, 255, 255, 0.8);
+  --planwise-text-muted: rgba(255, 255, 255, 0.6);
+  
+  // Border Colors
+  --planwise-border: rgba(255, 255, 255, 0.1);
+  --planwise-border-light: rgba(255, 255, 255, 0.05);
+}
+
+// ========================================
+// GLOBAL UTILITY CLASSES
+// ========================================
+
+// Background Classes
+.planwise-bg-primary {
+  background: linear-gradient(135deg, var(--planwise-bg-primary) 0%, var(--planwise-bg-secondary) 50%, var(--planwise-bg-tertiary) 100%) !important;
+}
+
+.planwise-bg-card {
+  background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
+  border: 1px solid var(--planwise-border) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  border-radius: 20px !important;
+}
+
+.planwise-bg-card-hover {
+  transition: all 0.3s ease !important;
+  
+  &:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+  }
+}
+
+// Text Classes
+.planwise-text-primary {
+  color: var(--planwise-text-primary) !important;
+}
+
+.planwise-text-secondary {
+  color: var(--planwise-text-secondary) !important;
+}
+
+.planwise-text-muted {
+  color: var(--planwise-text-muted) !important;
+}
+
+// Icon Classes
+.planwise-icon-cyan {
+  background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark)) !important;
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4) !important;
+}
+
+.planwise-icon-purple {
+  background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark)) !important;
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+}
+
+.planwise-icon-orange {
+  background: linear-gradient(135deg, var(--planwise-orange), var(--planwise-orange-dark)) !important;
+  box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4) !important;
+}
+
+.planwise-icon-red {
+  background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark)) !important;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4) !important;
+}
+
+// Card Classes
+.planwise-card {
+  @extend .planwise-bg-card;
+  @extend .planwise-bg-card-hover;
+  padding: 28px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    pointer-events: none;
+  }
+}
+
+.planwise-card-icon {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    border-radius: 18px;
+    z-index: -1;
+  }
+  
+  mat-icon {
+    font-size: 32px !important;
+    color: white !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+  }
+}
+
+// ========================================
+// ANGULAR MATERIAL OVERRIDES
+// ========================================
+
+// Force dark theme for all components
+.mat-mdc-card {
+  background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
+  color: var(--planwise-text-primary) !important;
+  border: 1px solid var(--planwise-border) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  border-radius: 20px !important;
+}
+
+.mat-mdc-card-header {
+  background: transparent !important;
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-card-content {
+  background: transparent !important;
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-card-title {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-card-subtitle {
+  color: var(--planwise-text-muted) !important;
+}
+
+// Force dark theme for form fields
+.mat-mdc-form-field {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-input-control {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-label {
+  color: var(--planwise-text-muted) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-outline {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-outline-thick {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+// Force dark theme for tables
+.mat-mdc-table {
+  background: transparent !important;
+}
+
+.mat-mdc-header-row {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-mdc-header-cell {
+  color: var(--planwise-text-primary) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-mdc-row {
+  background: transparent !important;
+}
+
+.mat-mdc-cell {
+  color: var(--planwise-text-primary) !important;
+  background: transparent !important;
+}
+
+.mat-mdc-row:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+// Force dark theme for chips
+.mat-mdc-chip {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-chip:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+// Force dark theme for paginator
+.mat-mdc-paginator {
+  background: transparent !important;
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-range-label {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-paginator .mat-mdc-icon-button {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-paginator .mat-mdc-icon-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+// Force dark theme for icons
+.mat-mdc-icon {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-icon-button {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-icon-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+// Force dark theme for progress spinner
+.mat-mdc-progress-spinner {
+  color: var(--planwise-text-primary) !important;
+}
+
+.mat-mdc-progress-spinner circle {
+  stroke: var(--planwise-text-primary) !important;
+}
+
 // Material Icons - Garantir que funcionem corretamente
 .material-icons {
   font-family: 'Material Icons';
@@ -48,7 +323,8 @@ html, body {
 
 body {
   margin: 0;
-  background-color: #fafafa;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  min-height: 100vh;
 }
 
 // Utility classes
@@ -81,9 +357,9 @@ body {
 }
 
 .card-header {
-  background-color: #e8eaf6;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   padding: 16px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 // Loading spinner
@@ -128,4 +404,14 @@ body {
 .loading-snackbar {
   --mdc-snackbar-container-color: #607d8b !important;
   --mdc-snackbar-supporting-text-color: white !important;
+}
+
+// Header override para garantir consistência
+::ng-deep .top-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  max-width: 1400px !important;
+  margin: 24px auto !important;
 }

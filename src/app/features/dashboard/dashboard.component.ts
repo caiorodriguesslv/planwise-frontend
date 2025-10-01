@@ -141,6 +141,26 @@ import { NotificationService } from '../../core/services/notification.service';
     .dashboard-content {
       max-width: 1200px;
       margin: 0 auto;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: calc(100vh - 80px);
+      position: relative;
+      border-radius: 20px;
+      padding: 24px;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 60%, rgba(255, 167, 38, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        border-radius: 20px;
+      }
     }
 
     .loading-container {
@@ -165,32 +185,59 @@ import { NotificationService } from '../../core/services/notification.service';
       margin-bottom: 32px;
       
       .stat-card {
-        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 20px;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+          pointer-events: none;
+        }
         
         &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
         }
         
         .stat-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
+          width: 64px;
+          height: 64px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
+          position: relative;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-radius: 18px;
+            z-index: -1;
+          }
           
           mat-icon {
-            font-size: 24px;
+            font-size: 32px;
             color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
           }
         }
         
@@ -216,19 +263,23 @@ import { NotificationService } from '../../core/services/notification.service';
         }
         
         &.income .stat-icon {
-          background: linear-gradient(135deg, #10b981, #34d399);
+          background: linear-gradient(135deg, #00d4ff, #0099cc);
+          box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
         }
         
         &.expense .stat-icon {
-          background: linear-gradient(135deg, #ef4444, #f87171);
+          background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+          box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
         
         &.balance .stat-icon {
-          background: linear-gradient(135deg, #3b82f6, #60a5fa);
+          background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+          box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
         
         &.goals .stat-icon {
-          background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+          background: linear-gradient(135deg, #ffa726, #ff9800);
+          box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4);
         }
       }
     }
@@ -249,16 +300,29 @@ import { NotificationService } from '../../core/services/notification.service';
         gap: 20px;
         
         .action-card {
-          background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-          border-radius: 16px;
-          padding: 24px;
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+          border-radius: 20px;
+          padding: 28px;
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 20px;
           cursor: pointer;
           transition: all 0.3s ease;
           border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+          position: relative;
+          overflow: hidden;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            pointer-events: none;
+          }
           
           .action-icon {
             width: 56px;
@@ -268,6 +332,8 @@ import { NotificationService } from '../../core/services/notification.service';
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
             
             mat-icon {
               font-size: 28px;
@@ -295,43 +361,47 @@ import { NotificationService } from '../../core/services/notification.service';
           }
           
           &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
           }
           
           &.income-action {
             .action-icon {
-              background: linear-gradient(135deg, #10b981, #059669);
+              background: linear-gradient(135deg, #00d4ff, #0099cc);
+              box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
             }
             
             &:hover {
-              border-color: #10b981;
+              border-color: #00d4ff;
             }
           }
           
           &.expense-action {
             .action-icon {
-              background: linear-gradient(135deg, #ef4444, #dc2626);
+              background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+              box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
             }
             
             &:hover {
-              border-color: #ef4444;
+              border-color: #ff6b6b;
             }
           }
           
           &.goal-action {
             .action-icon {
-              background: linear-gradient(135deg, #f59e0b, #d97706);
+              background: linear-gradient(135deg, #ffa726, #ff9800);
+              box-shadow: 0 4px 12px rgba(255, 167, 38, 0.3);
             }
             
             &:hover {
-              border-color: #f59e0b;
+              border-color: #ffa726;
             }
           }
           
           &.report-action {
             .action-icon {
               background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+              box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
             }
             
             &:hover {

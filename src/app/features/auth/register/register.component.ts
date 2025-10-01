@@ -31,9 +31,9 @@ import { LoadingService } from '../../../core/services/loading.service';
     MatDividerModule
   ],
   template: `
-    <div class="register-container">
+    <div class="register-container planwise-bg-primary">
       <div class="register-card">
-        <mat-card>
+        <mat-card class="planwise-card">
           <mat-card-header>
             <div class="header-content">
               <div class="logo">
@@ -49,8 +49,8 @@ import { LoadingService } from '../../../core/services/loading.service';
                   </text>
                 </svg>
               </div>
-              <mat-card-title>Criar sua conta</mat-card-title>
-              <mat-card-subtitle>Comece a gerenciar suas finanças hoje mesmo</mat-card-subtitle>
+              <mat-card-title class="planwise-text-primary">Criar sua conta</mat-card-title>
+              <mat-card-subtitle class="planwise-text-muted">Comece a gerenciar suas finanças hoje mesmo</mat-card-subtitle>
             </div>
           </mat-card-header>
 

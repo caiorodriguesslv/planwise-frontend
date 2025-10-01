@@ -236,7 +236,7 @@ import { AuthService } from '../../../core/services/auth.service';
     .layout-container {
       display: flex;
       min-height: 100vh;
-      background: #f8fafc;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       position: relative;
     }
 
@@ -262,8 +262,8 @@ import { AuthService } from '../../../core/services/auth.service';
     // Sidebar Styles
     .sidebar {
       width: 280px;
-      background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
-      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(180deg, #0f0f23 0%, #1a1a2e 100%);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
       position: fixed;
       height: 100vh;
       overflow: hidden;
@@ -496,6 +496,7 @@ import { AuthService } from '../../../core/services/auth.service';
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       
       &.sidebar-collapsed {
@@ -504,13 +505,16 @@ import { AuthService } from '../../../core/services/auth.service';
     }
 
     .top-header {
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      padding: 24px 32px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+      padding: 24px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      margin: 24px auto;
+      max-width: 1400px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -595,7 +599,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
     .content-area {
       flex: 1;
-      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       padding: 24px;
       min-height: calc(100vh - 80px);
     }
@@ -669,12 +673,12 @@ import { AuthService } from '../../../core/services/auth.service';
     // Dark mode support
     @media (prefers-color-scheme: dark) {
       .main-content {
-        background: #1a202c;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       }
       
       .top-header {
-        background: #2d3748;
-        border-bottom-color: #4a5568;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+        border-bottom-color: rgba(255, 255, 255, 0.1);
         
         .header-left .page-info {
           h1 {
@@ -682,7 +686,7 @@ import { AuthService } from '../../../core/services/auth.service';
           }
           
           p {
-            color: #a0aec0;
+            color: rgba(255, 255, 255, 0.7);
           }
         }
         
@@ -692,13 +696,13 @@ import { AuthService } from '../../../core/services/auth.service';
           }
           
           .role {
-            color: #a0aec0;
+            color: rgba(255, 255, 255, 0.7);
           }
         }
       }
       
       .content-area {
-        background: #1a202c;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       }
     }
   `]

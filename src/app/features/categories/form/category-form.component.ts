@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject, takeUntil, catchError, of } from 'rxjs';
 
 // Angular Material
@@ -37,21 +38,21 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
     MatDialogModule
   ],
   template: `
-    <div class="category-form-container">
+    <div class="category-form-container planwise-bg-primary">
       <!-- Header aprimorado -->
-      <div class="page-header">
+      <div class="page-header planwise-card">
         <div class="header-left">
           <button mat-icon-button (click)="goBack()" class="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <div class="header-content">
             <div class="title-section">
-              <div class="title-icon">
+              <div class="title-icon planwise-icon-purple">
                 <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
               </div>
               <div class="title-text">
-                <h1>{{ isEditMode ? 'Editar Categoria' : 'Nova Categoria' }}</h1>
-                <p>{{ isEditMode ? 'Modifique os dados da categoria' : 'Crie uma nova categoria para organizar suas transações' }}</p>
+                <h1 class="planwise-text-primary">{{ isEditMode ? 'Editar Categoria' : 'Nova Categoria' }}</h1>
+                <p class="planwise-text-muted">{{ isEditMode ? 'Modifique os dados da categoria' : 'Crie uma nova categoria para organizar suas transações' }}</p>
               </div>
             </div>
           </div>
@@ -66,18 +67,18 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
 
       <!-- Form moderno -->
       <div class="form-wrapper">
-        <mat-card class="form-card">
+        <mat-card class="planwise-card">
           <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="category-form">
           
             <!-- Seção: Informações Básicas -->
-            <div class="form-section basic-info">
+            <div class="form-section basic-info planwise-card">
               <div class="section-header">
-                <div class="section-icon">
+                <div class="section-icon planwise-icon-cyan">
                   <mat-icon>info</mat-icon>
                 </div>
                 <div class="section-content">
-                  <h3>Informações Básicas</h3>
-                  <p>Dados principais da categoria</p>
+                  <h3 class="planwise-text-primary">Informações Básicas</h3>
+                  <p class="planwise-text-muted">Dados principais da categoria</p>
                 </div>
               </div>
               
@@ -112,14 +113,14 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
             <mat-divider></mat-divider>
 
             <!-- Seção: Configurações -->
-            <div class="form-section config-info">
+            <div class="form-section config-info planwise-card">
               <div class="section-header">
-                <div class="section-icon">
+                <div class="section-icon planwise-icon-orange">
                   <mat-icon>settings</mat-icon>
                 </div>
                 <div class="section-content">
-                  <h3>Configurações</h3>
-                  <p>Tipo e personalização da categoria</p>
+                  <h3 class="planwise-text-primary">Configurações</h3>
+                  <p class="planwise-text-muted">Tipo e personalização da categoria</p>
                 </div>
               </div>
               
@@ -177,14 +178,14 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
             <mat-divider></mat-divider>
 
             <!-- Resumo Final -->
-            <div class="form-section summary-section" *ngIf="isFormValid()">
+            <div class="form-section summary-section planwise-card" *ngIf="isFormValid()">
               <div class="section-header">
-                <div class="section-icon">
+                <div class="section-icon planwise-icon-cyan">
                   <mat-icon>summarize</mat-icon>
                 </div>
                 <div class="section-content">
-                  <h3>Resumo da Categoria</h3>
-                  <p>Revise os dados antes de salvar</p>
+                  <h3 class="planwise-text-primary">Resumo da Categoria</h3>
+                  <p class="planwise-text-muted">Revise os dados antes de salvar</p>
                 </div>
               </div>
               
@@ -228,11 +229,11 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
             <!-- Actions aprimoradas -->
             <div class="form-actions">
               <div class="action-buttons">
-                <button type="button" 
-                        mat-button 
+                <button type="button"
+                        mat-button
                         (click)="goBack()"
                         [disabled]="isSubmitting"
-                        class="cancel-btn">
+                        class="cancel-btn planwise-text-muted">
                   <mat-icon>close</mat-icon>
                   Cancelar
                 </button>
@@ -275,7 +276,6 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
       position: relative;
     }
 
@@ -286,10 +286,6 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
       align-items: center;
       margin-bottom: 24px;
       padding: 24px 32px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
       
       .header-left {
         display: flex;
@@ -344,13 +340,13 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
                 margin: 0 0 4px 0;
                 font-size: 28px;
                 font-weight: 700;
-                color: #1a202c;
+                color: white;
                 line-height: 1.2;
               }
               
               p {
                 margin: 0;
-                color: #64748b;
+                color: rgba(255, 255, 255, 0.7);
                 font-size: 15px;
                 line-height: 1.4;
               }
@@ -393,10 +389,10 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
 
     /* Form wrapper */
     .form-wrapper {
-      background: white;
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
       border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
     }
 
@@ -413,10 +409,10 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
 
     .form-section {
       margin-bottom: 32px;
-      background: white;
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
       border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-      border: 1px solid #f1f5f9;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
       
       &:last-child {
@@ -465,13 +461,13 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
             margin: 0 0 4px 0;
             font-size: 18px;
             font-weight: 600;
-            color: #1a202c;
+            color: white;
           }
           
           p {
             margin: 0;
             font-size: 13px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.7);
           }
         }
       }
@@ -644,8 +640,8 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
     /* Actions */
     .form-actions {
       padding: 32px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
       
       .action-buttons {
         display: flex;
@@ -654,15 +650,15 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
         align-items: center;
         
         .cancel-btn {
-          color: #64748b;
+          color: rgba(255, 255, 255, 0.7);
           
           mat-icon {
             margin-right: 8px;
           }
           
           &:hover {
-            color: #1a202c;
-            background: rgba(0, 0, 0, 0.04);
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
           }
         }
         
@@ -675,7 +671,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
           }
           
           &:hover {
-            background: rgba(14, 165, 233, 0.04);
+            background: rgba(14, 165, 233, 0.1);
           }
         }
         
@@ -724,7 +720,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -737,7 +733,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
       }
       
       p {
-        color: #64748b;
+        color: white;
         font-weight: 500;
         margin: 0;
       }
@@ -748,6 +744,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
       &.modern-field {
         .mat-mdc-form-field-outline {
           border-radius: 12px !important;
+          color: rgba(255, 255, 255, 0.3) !important;
         }
         
         &.mat-focused {
@@ -762,12 +759,43 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
         
         .mat-mdc-form-field-label {
           font-weight: 500;
+          color: rgba(255, 255, 255, 0.7) !important;
         }
         
         .mat-mdc-input-element {
           font-size: 14px;
+          color: white !important;
+        }
+        
+        .mat-mdc-form-field-outline-thick {
+          color: rgba(255, 255, 255, 0.5) !important;
         }
       }
+    }
+
+    /* Force dark theme for form fields */
+    ::ng-deep .mat-mdc-form-field {
+      color: white !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-input-control {
+      color: white !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-outline {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-outline-thick {
+      color: rgba(255, 255, 255, 0.5) !important;
     }
 
     /* Responsividade */
@@ -867,7 +895,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.categoryForm = this.createForm();
   }
@@ -950,10 +979,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    // Emitir evento para voltar à lista
-    window.dispatchEvent(new CustomEvent('navigate-to-module', { 
-      detail: { module: 'categorias' } 
-    }));
+    this.notificationService.info('Voltando para a lista de categorias...');
+    this.router.navigate(['/dashboard/categories']);
   }
 
   isFormValid(): boolean {

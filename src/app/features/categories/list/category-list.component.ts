@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged, catchError, of } from 'rxjs';
 
 // Angular Material
@@ -47,14 +48,14 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
     MatDividerModule
   ],
   template: `
-    <div class="category-list-container">
+    <div class="category-list-container planwise-bg-primary">
       <!-- Header principal -->
-      <div class="page-header">
+      <div class="page-header planwise-card">
         <div class="page-title">
-          <mat-icon class="page-icon">category</mat-icon>
+          <mat-icon class="page-icon planwise-icon-purple">category</mat-icon>
           <div class="title-content">
-            <h1>Minhas Categorias</h1>
-            <p>Organize suas receitas e despesas por categoria</p>
+            <h1 class="planwise-text-primary">Minhas Categorias</h1>
+            <p class="planwise-text-muted">Organize suas receitas e despesas por categoria</p>
           </div>
         </div>
         <button mat-raised-button color="primary" class="new-category-btn" (click)="createNew()">
@@ -65,58 +66,58 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
 
       <!-- Cards de estatísticas -->
       <div class="stats-cards">
-        <mat-card class="stat-card total">
+        <mat-card class="planwise-card">
           <mat-card-content>
-            <div class="stat-icon">
+            <div class="planwise-card-icon planwise-icon-purple">
               <mat-icon>category</mat-icon>
             </div>
             <div class="stat-content">
-              <h2>{{ stats.total }}</h2>
-              <p>Total de Categorias</p>
-              <span class="stat-period">Ativas</span>
+              <h2 class="planwise-text-primary">{{ stats.total }}</h2>
+              <p class="planwise-text-secondary">Total de Categorias</p>
+              <span class="planwise-text-muted">Ativas</span>
             </div>
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="stat-card green">
+        <mat-card class="planwise-card">
           <mat-card-content>
-            <div class="stat-icon">
+            <div class="planwise-card-icon planwise-icon-cyan">
               <mat-icon>trending_up</mat-icon>
             </div>
             <div class="stat-content">
-              <h2>{{ stats.byType.receitas }}</h2>
-              <p>Receitas</p>
-              <span class="stat-period">Categorias de entrada</span>
+              <h2 class="planwise-text-primary">{{ stats.byType.receitas }}</h2>
+              <p class="planwise-text-secondary">Receitas</p>
+              <span class="planwise-text-muted">Categorias de entrada</span>
             </div>
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="stat-card red">
+        <mat-card class="planwise-card">
           <mat-card-content>
-            <div class="stat-icon">
+            <div class="planwise-card-icon planwise-icon-red">
               <mat-icon>trending_down</mat-icon>
             </div>
             <div class="stat-content">
-              <h2>{{ stats.byType.despesas }}</h2>
-              <p>Despesas</p>
-              <span class="stat-period">Categorias de saída</span>
+              <h2 class="planwise-text-primary">{{ stats.byType.despesas }}</h2>
+              <p class="planwise-text-secondary">Despesas</p>
+              <span class="planwise-text-muted">Categorias de saída</span>
             </div>
           </mat-card-content>
         </mat-card>
       </div>
 
       <!-- Filtros -->
-      <mat-card class="filters-card">
+      <mat-card class="planwise-card">
         <mat-card-header class="filters-header">
-          <mat-card-title>
+          <mat-card-title class="planwise-text-primary">
             <mat-icon>filter_list</mat-icon>
             Filtros de Busca
           </mat-card-title>
           <div class="filters-actions">
-            <span class="active-filters" *ngIf="getActiveFiltersCount() > 0">
+            <span class="active-filters planwise-text-secondary" *ngIf="getActiveFiltersCount() > 0">
               {{ getActiveFiltersCount() }} filtro(s) ativo(s)
             </span>
-            <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0">
+            <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0" class="planwise-text-muted">
               <mat-icon>clear</mat-icon>
               Limpar
             </button>
@@ -162,13 +163,13 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       </mat-card>
 
       <!-- Tabela de categorias -->
-      <mat-card class="table-card">
+      <mat-card class="planwise-card">
         <mat-card-content>
           <!-- Loading spinner -->
           <div *ngIf="isLoading" class="loading-container">
             <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
-            <h3>Carregando categorias...</h3>
-            <p>Por favor, aguarde enquanto buscamos seus dados.</p>
+            <h3 class="planwise-text-primary">Carregando categorias...</h3>
+            <p class="planwise-text-muted">Por favor, aguarde enquanto buscamos seus dados.</p>
           </div>
 
           <!-- Tabela ou Estado Vazio -->
@@ -256,8 +257,8 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
                 <div class="empty-icon">
                   <mat-icon>category</mat-icon>
                 </div>
-                <h3>{{ getActiveFiltersCount() > 0 ? 'Nenhuma categoria encontrada' : 'Nenhuma categoria cadastrada' }}</h3>
-                <p>{{ getActiveFiltersCount() > 0 ? 'Tente ajustar os filtros de busca ou limpar todos os filtros.' : 'Comece criando sua primeira categoria para organizar suas receitas e despesas.' }}</p>
+                <h3 class="planwise-text-primary">{{ getActiveFiltersCount() > 0 ? 'Nenhuma categoria encontrada' : 'Nenhuma categoria cadastrada' }}</h3>
+                <p class="planwise-text-muted">{{ getActiveFiltersCount() > 0 ? 'Tente ajustar os filtros de busca ou limpar todos os filtros.' : 'Comece criando sua primeira categoria para organizar suas receitas e despesas.' }}</p>
                 <div class="empty-actions">
                   <button *ngIf="getActiveFiltersCount() > 0" mat-stroked-button (click)="clearFilters()" class="clear-btn">
                     <mat-icon>clear</mat-icon>
@@ -289,7 +290,6 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       max-width: 1200px;
       margin: 0 auto;
       padding: 24px;
-      background: transparent;
       min-height: 100vh;
     }
 
@@ -300,10 +300,6 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       align-items: center;
       margin-bottom: 32px;
       padding: 32px;
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
       
       .page-title {
         display: flex;
@@ -314,8 +310,6 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           width: 60px;
           height: 60px;
           font-size: 32px;
-          background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-          color: white;
           border-radius: 16px;
           display: flex;
           align-items: center;
@@ -327,12 +321,10 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             margin: 0 0 4px 0;
             font-size: 28px;
             font-weight: 700;
-            color: white;
           }
           
           p {
             margin: 0;
-            color: rgba(255, 255, 255, 0.7);
             font-size: 15px;
           }
         }
@@ -769,7 +761,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
     this.filterForm = this.createFilterForm();
   }
@@ -937,10 +930,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
   createNew(): void {
     this.notificationService.info('Redirecionando para criar nova categoria...');
-    // Emitir evento para navegar para o formulário
-    window.dispatchEvent(new CustomEvent('navigate-to-module', { 
-      detail: { module: 'nova-categoria' } 
-    }));
+    // Navegar diretamente para o formulário de nova categoria
+    this.router.navigate(['/dashboard/categories/new']);
   }
 
   editCategory(category: CategoryResponse): void {

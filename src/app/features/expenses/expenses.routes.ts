@@ -8,7 +8,7 @@ export const expenseRoutes: Routes = [
   },
   {
     path: 'list',
-    loadComponent: () => import('./list/expense-list.component').then(c => c.ExpenseListComponent),
+    loadComponent: () => import('./list/expense-list-v2.component').then(c => c.ExpenseListV2Component),
     title: 'Lista de Despesas - PlanWise'
   },
   {

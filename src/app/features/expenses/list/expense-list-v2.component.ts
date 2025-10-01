@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged, catchError, of } from 'rxjs';
 
 // Angular Material
@@ -49,7 +50,7 @@ import { PageRequest } from '../../../core/models/api.model';
     MatSnackBarModule
   ],
   template: `
-    <div class="expense-list-container">
+    <div class="expense-list-container planwise-bg-primary">
       <!-- Header principal -->
       <div class="page-header">
         <div class="page-title">
@@ -67,9 +68,9 @@ import { PageRequest } from '../../../core/models/api.model';
 
       <!-- Cards de estatísticas -->
       <div class="stats-cards">
-        <mat-card class="stat-card red">
+        <mat-card class="stat-card">
           <mat-card-content>
-            <div class="stat-icon">
+            <div class="stat-icon red">
               <mat-icon>account_balance_wallet</mat-icon>
             </div>
             <div class="stat-content">
@@ -80,9 +81,9 @@ import { PageRequest } from '../../../core/models/api.model';
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="stat-card blue">
+        <mat-card class="stat-card">
           <mat-card-content>
-            <div class="stat-icon">
+            <div class="stat-icon blue">
               <mat-icon>receipt_long</mat-icon>
             </div>
             <div class="stat-content">
@@ -93,9 +94,9 @@ import { PageRequest } from '../../../core/models/api.model';
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="stat-card purple">
+        <mat-card class="stat-card">
           <mat-card-content>
-            <div class="stat-icon">
+            <div class="stat-icon purple">
               <mat-icon>trending_up</mat-icon>
             </div>
             <div class="stat-content">
@@ -135,7 +136,6 @@ import { PageRequest } from '../../../core/models/api.model';
                        placeholder="Digite a descrição da despesa...">
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
-
 
               <mat-form-field appearance="outline" class="filter-date">
                 <mat-label>Data inicial</mat-label>
@@ -290,767 +290,89 @@ import { PageRequest } from '../../../core/models/api.model';
       </mat-card>
     </div>
   `,
-  styles: [`
-    .expense-list-container {
-      padding: 24px;
-      max-width: 1400px;
-      margin: 0 auto;
-      background: transparent;
-      min-height: 100vh;
-    }
-
-    /* Header principal */
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-      padding: 0 8px;
-    }
-
-    .page-title {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .page-icon {
-      font-size: 40px;
-      width: 40px;
-      height: 40px;
-      color: #ef4444;
-    }
-
-    .title-content h1 {
-      margin: 0;
-      font-size: 32px;
-      font-weight: 700;
-      color: white;
-      line-height: 1.2;
-    }
-
-    .title-content p {
-      margin: 4px 0 0 0;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 16px;
-      font-weight: 400;
-    }
-
-    .new-expense-btn {
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-    }
-
-    .new-expense-btn mat-icon {
-      margin-right: 8px;
-    }
-
-    /* Cards de estatísticas */
-    .stats-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-
-    .stat-card {
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-      transition: all 0.3s ease;
-      position: relative;
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-    }
-
-    .stat-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    }
-
-    .stat-card.red {
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      color: white;
-    }
-
-    .stat-card.blue {
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      color: white;
-    }
-
-    .stat-card.purple {
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      color: white;
-    }
-
-    .stat-card mat-card-content {
-      display: flex;
-      align-items: center;
-      padding: 24px;
-      gap: 20px;
-    }
-
-    .stat-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-    }
-
-    .stat-icon mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-      color: white;
-    }
-
-    .stat-content {
-      flex: 1;
-    }
-
-    .stat-content h2 {
-      margin: 0 0 8px 0;
-      font-size: 28px;
-      font-weight: 700;
-      color: white;
-      line-height: 1.1;
-    }
-
-    .stat-content p {
-      margin: 0 0 4px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .stat-period {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 400;
-    }
-
-    /* Cards gerais */
-    .filters-card, .table-card, .debug-card {
-      margin-bottom: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-    }
-
-    /* Filtros */
-    .filters-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px 0 24px;
-    }
-
-    .filters-header mat-card-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 20px;
-      font-weight: 600;
-      color: white;
-    }
-
-    .filters-header mat-icon {
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .filters-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .filters-actions button.disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .active-filters {
-      background: rgba(255, 107, 107, 0.2);
-      color: #ff6b6b;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .filters-form {
-      margin: 0;
-    }
-
-    .filter-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .filter-search {
-      grid-column: 1;
-    }
-
-    .filter-date {
-      grid-column: span 1;
-    }
-
-    /* Opções do select */
-    .select-all-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .category-option {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-
-
-    .loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 60px 40px;
-      text-align: center;
-    }
-
-    .loading-container h3 {
-      margin: 20px 0 10px 0;
-      color: #1976d2;
-    }
-
-    .loading-container p {
-      margin: 0;
-      color: #666;
-      font-size: 0.9em;
-    }
-
-    .table-container {
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .data-table {
-      flex: 1;
-      overflow-x: auto;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      background: white;
-    }
-
-    .expenses-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-    }
-
-    /* Headers da tabela */
-    .table-header {
-      background: rgba(255, 255, 255, 0.1);
-      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .description-header {
-      width: 35%;
-      padding: 16px 24px;
-      font-weight: 600;
-      color: white;
-    }
-
-    .value-header {
-      width: 15%;
-      padding: 16px 24px;
-      font-weight: 600;
-      color: white;
-      text-align: right;
-    }
-
-    .date-header {
-      width: 15%;
-      padding: 16px 24px;
-      font-weight: 600;
-      color: white;
-    }
-
-    .category-header {
-      width: 20%;
-      padding: 16px 24px;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .actions-header {
-      width: 15%;
-      padding: 16px 24px;
-      font-weight: 600;
-      color: #374151;
-      text-align: center;
-    }
-
-    /* Células da tabela */
-    .table-row {
-      border-bottom: 1px solid #f3f4f6;
-      transition: background-color 0.2s ease;
-    }
-
-    .table-row:hover {
-      background-color: #f9fafb;
-    }
-
-    .table-row:last-child {
-      border-bottom: none;
-    }
-
-    .description-cell {
-      padding: 16px 24px;
-    }
-
-    .description-content {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .description-content strong {
-      color: white;
-      font-weight: 600;
-    }
-
-    .description-content small {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.85em;
-    }
-
-    .value-cell {
-      padding: 16px 24px;
-      text-align: right;
-    }
-
-    .expense-value {
-      font-weight: 600;
-      color: #ff6b6b;
-      font-size: 1.05em;
-    }
-
-    .date-cell {
-      padding: 16px 24px;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 500;
-    }
-
-    .category-cell {
-      padding: 16px 24px;
-    }
-
-    .category-chip {
-      color: white;
-      font-weight: 500;
-      font-size: 0.8em;
-    }
-
-    .no-category {
-      color: rgba(255, 255, 255, 0.5);
-      font-style: italic;
-      font-size: 0.9em;
-    }
-
-    .actions-cell {
-      padding: 16px 24px;
-    }
-
-    .action-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .action-btn {
-      width: 36px;
-      height: 36px;
-      transition: all 0.2s ease;
-    }
-
-    .action-btn.view {
-      color: #3b82f6;
-    }
-
-    .action-btn.view:hover {
-      background-color: #dbeafe;
-    }
-
-    .action-btn.edit {
-      color: #f59e0b;
-    }
-
-    .action-btn.edit:hover {
-      background-color: #fef3c7;
-    }
-
-    .action-btn.delete {
-      color: #ef4444;
-    }
-
-    .action-btn.delete:hover {
-      background-color: #fee2e2;
-    }
-
-    /* Estado vazio melhorado */
-    .empty-state {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 400px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      border: 1px dashed rgba(255, 255, 255, 0.2);
-    }
-
-    .empty-state-content {
-      text-align: center;
-      max-width: 480px;
-      padding: 40px;
-    }
-
-    .empty-icon {
-      width: 120px;
-      height: 120px;
-      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 32px auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .empty-icon mat-icon {
-      font-size: 48px;
-      width: 48px;
-      height: 48px;
-      color: #9ca3af;
-    }
-
-    .empty-state h3 {
-      margin: 0 0 16px 0;
-      font-size: 24px;
-      font-weight: 600;
-      color: white;
-    }
-
-    .empty-state p {
-      margin: 0 0 32px 0;
-      color: rgba(255, 255, 255, 0.7);
-      line-height: 1.6;
-      font-size: 16px;
-    }
-
-    .empty-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .clear-btn {
-      border-color: #d1d5db;
-      color: #6b7280;
-    }
-
-    .clear-btn:hover {
-      background-color: #f9fafb;
-      border-color: #9ca3af;
-    }
-
-    .create-btn {
-      padding: 12px 24px;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-
-    .debug-card {
-      background: #fff3e0;
-      border: 1px solid #ffb74d;
-    }
-
-    .debug-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 10px;
-    }
-
-    /* Responsividade */
-    @media (max-width: 1024px) {
-      .stats-cards {
-        grid-template-columns: 1fr 1fr;
-      }
-      
-      .filter-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-      
-      .filter-search {
-        grid-column: 1 / -1;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .expense-list-container {
-        padding: 16px;
-      }
-      
-      .page-header {
-        flex-direction: column;
-        gap: 16px;
-        align-items: stretch;
-        text-align: center;
-      }
-      
-      .page-title {
-        justify-content: center;
-      }
-      
-      .title-content h1 {
-        font-size: 28px;
-      }
-      
-      .stats-cards {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .filter-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .filters-header {
-        flex-direction: column;
-        gap: 12px;
-        align-items: stretch;
-      }
-      
-      .stat-card mat-card-content {
-        padding: 20px;
-      }
-      
-      .stat-content h2 {
-        font-size: 24px;
-      }
-
-      /* Tabela responsiva */
-      .data-table {
-        overflow-x: auto;
-      }
-
-      .description-header, .description-cell {
-        width: auto;
-        min-width: 200px;
-      }
-
-      .value-header, .value-cell {
-        width: auto;
-        min-width: 120px;
-      }
-
-      .date-header, .date-cell {
-        width: auto;
-        min-width: 100px;
-      }
-
-      .category-header, .category-cell {
-        width: auto;
-        min-width: 140px;
-      }
-
-      .actions-header, .actions-cell {
-        width: auto;
-        min-width: 120px;
-      }
-
-      .empty-state-content {
-        padding: 32px 20px;
-      }
-
-      .empty-icon {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 24px;
-      }
-
-      .empty-icon mat-icon {
-        font-size: 40px;
-        width: 40px;
-        height: 40px;
-      }
-
-      .empty-state h3 {
-        font-size: 20px;
-      }
-
-      .empty-actions {
-        flex-direction: column;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .expense-list-container {
-        padding: 12px;
-      }
-      
-      .page-icon {
-        font-size: 32px;
-        width: 32px;
-        height: 32px;
-      }
-      
-      .title-content h1 {
-        font-size: 24px;
-      }
-      
-      .title-content p {
-        font-size: 14px;
-      }
-      
-      .stat-icon {
-        width: 48px;
-        height: 48px;
-      }
-      
-      .stat-icon mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-      }
-    }
-  `]
+  styleUrls: ['./expense-list-v2.component.scss']
 })
 export class ExpenseListV2Component implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-
-  // Estado do componente
+  // Dados
   expenses: ExpenseResponse[] = [];
-  stats: ExpenseStats = {
-    total: 0,
-    count: 0,
-    average: 0
-  };
-  isLoading = false;
-  showDebugInfo = false;
+  stats: ExpenseStats = { total: 0, average: 0, count: 0 };
 
   // Paginação
-  pageRequest: PageRequest = { 
-    page: 0, 
-    size: 10
-  };
   totalElements = 0;
   totalPages = 0;
+  pageRequest: PageRequest = { page: 0, size: 10 };
+  
+  // Filtros
+  filterForm: FormGroup;
+  
+  // Estados
+  isLoading = false;
+  showDebugInfo = false;
 
   // Colunas da tabela
   displayedColumns: string[] = ['description', 'value', 'date', 'category', 'actions'];
 
-  // Form de filtros
-  filterForm: FormGroup;
+  // Controle de ciclo de vida
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
     private expenseService: ExpenseService,
     private notificationService: NotificationService,
     private authService: AuthService,
     private loadingService: LoadingService,
-    private cdr: ChangeDetectorRef
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder
   ) {
-
-    // Inicializar form de filtros
     this.filterForm = this.fb.group({
       search: [''],
-      startDate: [''],
-      endDate: ['']
+      startDate: [null],
+      endDate: [null]
     });
   }
 
-  ngOnInit() {
-    // Setup de filtros reativos
+  ngOnInit(): void {
+    this.loadExpenses();
+    this.loadStats();
     this.setupFilterSubscriptions();
-    
-    // Carregar dados iniciais
-    this.loadInitialData();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private setupFilterSubscriptions() {
-    // Reagir a mudanças nos filtros
+  private setupFilterSubscriptions(): void {
+    // Observar mudanças nos filtros
     this.filterForm.valueChanges
       .pipe(
-        takeUntil(this.destroy$),
         debounceTime(300),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
       )
       .subscribe(() => {
-        this.pageRequest.page = 0; // Reset página ao filtrar
+        this.pageRequest.page = 0; // Reset para primeira página
         this.loadExpenses();
       });
   }
 
-  private loadInitialData() {
-    // Carregar despesas
-    this.loadExpenses();
-    
-    // Carregar estatísticas
-    this.loadStats();
-  }
-
-
-  private loadExpenses() {
+  private loadExpenses(): void {
     this.isLoading = true;
     
-    // Verificar se o usuário está autenticado
-    if (!this.authService.isLoggedIn) {
-      this.isLoading = false;
-      this.cdr.detectChanges();
-      return;
-    }
-    
-    const filters = this.buildFilters();
-    
-    // Tentar primeiro o endpoint com paginação (original)
+    const filters: ExpenseFilters = {
+      search: this.filterForm.get('search')?.value || undefined,
+      startDate: this.filterForm.get('startDate')?.value || undefined,
+      endDate: this.filterForm.get('endDate')?.value || undefined
+    };
+
     this.expenseService.getAllExpenses(this.pageRequest, filters)
       .pipe(
-        takeUntil(this.destroy$),
-        catchError(error => {
-          
-          // Se for erro 401/403, pode ser problema de autenticação
-          if (error.status === 401 || error.status === 403) {
-            this.notificationService.warning('Sessão expirada. Faça login novamente.');
-          } else if (error.status === 500) {
-            this.notificationService.error('Erro interno do servidor. Tente novamente.');
-          } else {
+        catchError((error: any) => {
+          console.error('Erro ao carregar despesas:', error);
             this.notificationService.error('Erro ao carregar despesas');
-          }
-          
-          this.isLoading = false;
           return of({ content: [], totalElements: 0, totalPages: 0 });
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe((response: any) => {
         this.expenses = response.content || [];
@@ -1058,70 +380,36 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
         this.totalPages = response.totalPages || 0;
         this.isLoading = false;
         this.cdr.detectChanges();
-        
       });
   }
 
-  private loadStats() {
-    const filters = this.buildFilters();
-    
-    this.expenseService.getExpenseStats(filters)
+  private loadStats(): void {
+    this.expenseService.getExpenseStats()
       .pipe(
-        takeUntil(this.destroy$),
-        catchError(error => {
-          return of(null);
-        })
+        catchError((error: any) => {
+          console.error('Erro ao carregar estatísticas:', error);
+          return of({ total: 0, average: 0, count: 0 });
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe(stats => {
-        this.stats = stats || {
-          total: 0,
-          count: 0,
-          average: 0
-        };
+        this.stats = stats;
         this.cdr.detectChanges();
       });
   }
 
-  private buildFilters(): ExpenseFilters {
-    // Usar getRawValue() para incluir campos disabled
-    const formValue = this.filterForm.getRawValue();
-    const filters: ExpenseFilters = {};
-
-    if (formValue.search?.trim()) {
-      filters.search = formValue.search.trim();
-    }
-
-    if (formValue.startDate) {
-      filters.startDate = formValue.startDate;
-    }
-
-    if (formValue.endDate) {
-      filters.endDate = formValue.endDate;
-    }
-
-    return filters;
-  }
-
-  // Event handlers
-  onPageChange(event: PageEvent) {
+  onPageChange(event: PageEvent): void {
     this.pageRequest.page = event.pageIndex;
     this.pageRequest.size = event.pageSize;
     this.loadExpenses();
   }
 
-  clearFilters() {
-    this.filterForm.reset();
-    this.pageRequest.page = 0;
-    this.loadExpenses();
-    this.loadStats();
+  createNew(): void {
+    this.router.navigate(['/dashboard/expenses/new']);
   }
 
-  createNew() {
-    // Emitir evento para o dashboard mudar para o módulo de nova despesa
-    window.dispatchEvent(new CustomEvent('navigate-to-module', { 
-      detail: { module: 'nova-despesa' } 
-    }));
-    this.notificationService.info('Carregando formulário de nova despesa...');
+  clearFilters(): void {
+    this.filterForm.reset();
   }
 
   viewExpense(expense: ExpenseResponse) {

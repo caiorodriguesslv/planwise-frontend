@@ -39,21 +39,21 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
     MatDividerModule
   ],
   template: `
-    <div class="expense-form-container">
+    <div class="expense-form-container planwise-bg-primary">
       <!-- Header aprimorado -->
-      <div class="page-header">
+      <div class="page-header planwise-card">
         <div class="header-left">
           <button mat-icon-button (click)="goBack()" class="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <div class="header-content">
             <div class="title-section">
-              <div class="title-icon">
+              <div class="title-icon planwise-icon-red">
                 <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
               </div>
               <div class="title-text">
-                <h1>{{ isEditMode ? 'Editar Despesa' : 'Nova Despesa' }}</h1>
-                <p>{{ isEditMode ? 'Modifique os dados da despesa' : 'Adicione uma nova despesa ao seu controle' }}</p>
+                <h1 class="planwise-text-primary">{{ isEditMode ? 'Editar Despesa' : 'Nova Despesa' }}</h1>
+                <p class="planwise-text-muted">{{ isEditMode ? 'Modifique os dados da despesa' : 'Adicione uma nova despesa ao seu controle' }}</p>
               </div>
             </div>
           </div>
@@ -68,18 +68,18 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
 
       <!-- Form moderno -->
       <div class="form-wrapper">
-        <mat-card class="form-card">
+        <mat-card class="planwise-card">
           <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="expense-form">
           
           <!-- Seção: Informações Básicas -->
-          <div class="form-section basic-info">
+          <div class="form-section basic-info planwise-card">
             <div class="section-header">
-              <div class="section-icon">
+              <div class="section-icon planwise-icon-cyan">
                 <mat-icon>description</mat-icon>
               </div>
               <div class="section-content">
-                <h3>Informações Básicas</h3>
-                <p>Dados principais da despesa</p>
+                <h3 class="planwise-text-primary">Informações Básicas</h3>
+                <p class="planwise-text-muted">Dados principais da despesa</p>
               </div>
             </div>
             
@@ -138,14 +138,14 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
           <mat-divider></mat-divider>
 
           <!-- Seção: Informações Financeiras -->
-          <div class="form-section financial-info">
+          <div class="form-section financial-info planwise-card">
             <div class="section-header">
-              <div class="section-icon">
+              <div class="section-icon planwise-icon-orange">
                 <mat-icon>attach_money</mat-icon>
               </div>
               <div class="section-content">
-                <h3>Informações Financeiras</h3>
-                <p>Valor e data da despesa</p>
+                <h3 class="planwise-text-primary">Informações Financeiras</h3>
+                <p class="planwise-text-muted">Valor e data da despesa</p>
               </div>
             </div>
             
@@ -213,14 +213,14 @@ import { ExpenseRequest, ExpenseResponse, CategoryResponse } from '../../../core
           <mat-divider></mat-divider>
 
           <!-- Resumo Final -->
-          <div class="form-section summary-section" *ngIf="isFormValid()">
+          <div class="form-section summary-section planwise-card" *ngIf="isFormValid()">
             <div class="section-header">
-              <div class="section-icon">
+              <div class="section-icon planwise-icon-purple">
                 <mat-icon>summarize</mat-icon>
               </div>
               <div class="section-content">
-                <h3>Resumo da Despesa</h3>
-                <p>Revise os dados antes de salvar</p>
+                <h3 class="planwise-text-primary">Resumo da Despesa</h3>
+                <p class="planwise-text-muted">Revise os dados antes de salvar</p>
               </div>
             </div>
             

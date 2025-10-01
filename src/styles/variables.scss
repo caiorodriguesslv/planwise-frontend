@@ -1,0 +1,48 @@
+// Variáveis do tema PlanWise
+// Cores principais
+$planwise-cyan: #00d4ff;
+$planwise-cyan-dark: #0099cc;
+$planwise-purple: #8b5cf6;
+$planwise-purple-dark: #7c3aed;
+$planwise-orange: #ffa726;
+$planwise-orange-dark: #ff9800;
+$planwise-red: #ff6b6b;
+$planwise-red-dark: #ee5a52;
+
+// Cores de fundo
+$planwise-bg-primary: #0f0f23;
+$planwise-bg-secondary: #1a1a2e;
+$planwise-bg-tertiary: #16213e;
+
+// Cores de texto
+$planwise-text-primary: #ffffff;
+$planwise-text-secondary: rgba(255, 255, 255, 0.8);
+$planwise-text-muted: rgba(255, 255, 255, 0.6);
+
+// Cores de borda
+$planwise-border: rgba(255, 255, 255, 0.1);
+$planwise-border-light: rgba(255, 255, 255, 0.05);
+
+// Sombras
+$planwise-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+$planwise-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+$planwise-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+// Bordas
+$planwise-radius-sm: 8px;
+$planwise-radius-md: 12px;
+$planwise-radius-lg: 16px;
+$planwise-radius-xl: 20px;
+
+// Espaçamentos
+$planwise-spacing-xs: 4px;
+$planwise-spacing-sm: 8px;
+$planwise-spacing-md: 16px;
+$planwise-spacing-lg: 24px;
+$planwise-spacing-xl: 32px;
+
+// Breakpoints
+$planwise-breakpoint-sm: 576px;
+$planwise-breakpoint-md: 768px;
+$planwise-breakpoint-lg: 992px;
+$planwise-breakpoint-xl: 1200px;
