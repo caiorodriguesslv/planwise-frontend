@@ -179,17 +179,11 @@ export class AuthService {
       'Criando conta...'
     ).pipe(
       tap((response) => {
-        // Armazena o token
-        this.tokenService.setToken(response.token);
+        // Não faz login automático - apenas mostra sucesso
+        this.notificationService.success('Conta criada com sucesso! Faça login para continuar.');
         
-        // Atualiza estado do usuário
-        this.setAuthenticatedState(response.user);
-        
-        // Notifica sucesso
-        this.showWelcomeMessage(response.user);
-        
-        // Redireciona para dashboard
-        this.router.navigate(['/dashboard']);
+        // Redireciona para página de login
+        this.router.navigate(['/auth/login']);
       }),
       catchError((error) => {
         this.notificationService.error(
@@ -338,7 +332,7 @@ export class AuthService {
   }
 
   /**
-   * Mostra mensagem de boas-vindas com verificações de segurança
+   * Mostra mensagem de boas-vindas para login
    */
   private showWelcomeMessage(user?: User): void {
     try {
@@ -361,6 +355,33 @@ export class AuthService {
       this.notificationService.success(`Bem-vindo, ${userName}!`);
     } catch (error) {
       this.notificationService.success('Login realizado com sucesso!');
+    }
+  }
+
+  /**
+   * Mostra mensagem de sucesso para registro
+   */
+  private showRegisterSuccessMessage(user?: User): void {
+    try {
+      let userName = 'Usuário';
+      
+      if (user?.name) {
+        userName = user.name;
+      } else if (user?.email) {
+        userName = user.email;
+      } else {
+        // Tenta pegar do usuário atual
+        const currentUser = this._currentUser();
+        if (currentUser?.name) {
+          userName = currentUser.name;
+        } else if (currentUser?.email) {
+          userName = currentUser.email;
+        }
+      }
+      
+      this.notificationService.success(`Conta criada com sucesso! Bem-vindo, ${userName}!`);
+    } catch (error) {
+      this.notificationService.success('Conta criada com sucesso!');
     }
   }
 

@@ -24,7 +24,7 @@ import { ExpenseService } from '../../../core/services/expense.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoadingService } from '../../../core/services/loading.service';
-import { ExpenseResponse, CategoryResponse, ExpenseFilters, ExpenseStats } from '../../../core/models/expense.model';
+import { ExpenseResponse, ExpenseFilters, ExpenseStats } from '../../../core/models/expense.model';
 import { PageRequest } from '../../../core/models/api.model';
 
 @Component({
@@ -136,23 +136,6 @@ import { PageRequest } from '../../../core/models/api.model';
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="filter-category">
-                <mat-label>Categoria</mat-label>
-                <mat-select formControlName="categoryId">
-                  <mat-option value="">
-                    <span class="select-all-option">
-                      <mat-icon>category</mat-icon>
-                      {{ categories.length === 0 ? 'Nenhuma categoria disponível' : 'Todas as categorias' }}
-                    </span>
-                  </mat-option>
-                  <mat-option *ngFor="let category of categories" [value]="category.id">
-                    <span class="category-option">
-                      <span class="category-color" [style.background-color]="category.color || '#ccc'"></span>
-                      {{ category.name }}
-                    </span>
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
 
               <mat-form-field appearance="outline" class="filter-date">
                 <mat-label>Data inicial</mat-label>
@@ -508,17 +491,13 @@ import { PageRequest } from '../../../core/models/api.model';
 
     .filter-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr;
       gap: 20px;
       align-items: start;
     }
 
     .filter-search {
       grid-column: 1;
-    }
-
-    .filter-category {
-      grid-column: 2;
     }
 
     .filter-date {
@@ -538,12 +517,7 @@ import { PageRequest } from '../../../core/models/api.model';
       gap: 12px;
     }
 
-    .category-color {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-    }
+
 
     .loading-container {
       display: flex;
@@ -970,7 +944,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
 
   // Estado do componente
   expenses: ExpenseResponse[] = [];
-  categories: CategoryResponse[] = [];
   stats: ExpenseStats = {
     total: 0,
     count: 0,
@@ -1005,7 +978,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     // Inicializar form de filtros
     this.filterForm = this.fb.group({
       search: [''],
-      categoryId: [{ value: '', disabled: true }], // Inicialmente disabled até carregar categorias
       startDate: [''],
       endDate: ['']
     });
@@ -1039,9 +1011,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   }
 
   private loadInitialData() {
-    // Carregar categorias
-    this.loadCategories();
-    
     // Carregar despesas
     this.loadExpenses();
     
@@ -1049,28 +1018,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     this.loadStats();
   }
 
-  private loadCategories() {
-    this.expenseService.getExpenseCategories()
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError(error => {
-          this.notificationService.error('Erro ao carregar categorias');
-          return of([]);
-        })
-      )
-      .subscribe((categories: CategoryResponse[]) => {
-        this.categories = categories;
-        
-        // Controlar estado disabled do campo categoria
-        const categoryControl = this.filterForm.get('categoryId');
-        if (categories.length === 0) {
-          categoryControl?.disable();
-        } else {
-          categoryControl?.enable();
-        }
-        
-      });
-  }
 
   private loadExpenses() {
     this.isLoading = true;
@@ -1085,7 +1032,7 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     const filters = this.buildFilters();
     
     // Tentar primeiro o endpoint com paginação (original)
-    this.expenseService.getAllExpenses(this.pageRequest)
+    this.expenseService.getAllExpenses(this.pageRequest, filters)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
@@ -1142,10 +1089,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
       filters.search = formValue.search.trim();
     }
 
-    if (formValue.categoryId) {
-      filters.categoryId = formValue.categoryId;
-    }
-
     if (formValue.startDate) {
       filters.startDate = formValue.startDate;
     }
@@ -1196,7 +1139,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     let count = 0;
     
     if (formValue.search?.trim()) count++;
-    if (formValue.categoryId) count++;
     if (formValue.startDate) count++;
     if (formValue.endDate) count++;
     

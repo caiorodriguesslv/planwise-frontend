@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, catchError } from 'rxjs';
 import { HttpService } from './http.service';
 import { CategoryService } from './category.service';
 import { 
@@ -33,7 +33,13 @@ export class ExpenseService {
   /**
    * Obter todas as despesas com paginação
    */
-  getAllExpenses(pageRequest?: PageRequest): Observable<PaginatedResponse<ExpenseResponse>> {
+  getAllExpenses(pageRequest?: PageRequest, filters?: ExpenseFilters): Observable<PaginatedResponse<ExpenseResponse>> {
+    // Se há filtros, usar lógica de fallback
+    if (filters?.search || filters?.categoryId || filters?.startDate || filters?.endDate) {
+      return this.getExpensesWithFilters(pageRequest, filters);
+    }
+
+    // Sem filtros, usar paginação normal
     return this.httpService.getPageable<ExpenseResponse>(this.baseEndpoint, pageRequest);
   }
 
@@ -42,6 +48,95 @@ export class ExpenseService {
    */
   getAllExpensesList(): Observable<ExpenseResponse[]> {
     return this.httpService.get<ExpenseResponse[]>(`${this.baseEndpoint}/all`);
+  }
+
+  /**
+   * Buscar despesas com filtros (fallback para quando backend não suporta filtros paginados)
+   */
+  private getExpensesWithFilters(pageRequest?: PageRequest, filters?: ExpenseFilters): Observable<PaginatedResponse<ExpenseResponse>> {
+    // Primeiro, tenta buscar todas as despesas
+    return this.getAllExpensesList()
+      .pipe(
+        map(allExpenses => {
+          // Aplicar filtros localmente
+          let filteredExpenses = [...allExpenses];
+
+          if (filters?.search) {
+            filteredExpenses = filteredExpenses.filter(expense => 
+              expense.description.toLowerCase().includes(filters.search!.toLowerCase())
+            );
+          }
+
+          if (filters?.categoryId) {
+            filteredExpenses = filteredExpenses.filter(expense => 
+              expense.category?.id === filters.categoryId
+            );
+          }
+
+          if (filters?.startDate) {
+            const startDate = new Date(filters.startDate);
+            filteredExpenses = filteredExpenses.filter(expense => 
+              new Date(expense.date) >= startDate
+            );
+          }
+
+          if (filters?.endDate) {
+            const endDate = new Date(filters.endDate);
+            filteredExpenses = filteredExpenses.filter(expense => 
+              new Date(expense.date) <= endDate
+            );
+          }
+
+          // Aplicar paginação local
+          const page = pageRequest?.page || 0;
+          const size = pageRequest?.size || 10;
+          const startIndex = page * size;
+          const endIndex = startIndex + size;
+          const paginatedContent = filteredExpenses.slice(startIndex, endIndex);
+
+          return {
+            content: paginatedContent,
+            totalElements: filteredExpenses.length,
+            totalPages: Math.ceil(filteredExpenses.length / size),
+            size: size,
+            number: page,
+            first: page === 0,
+            last: endIndex >= filteredExpenses.length,
+            empty: filteredExpenses.length === 0,
+            pageable: {
+              pageNumber: page,
+              pageSize: size,
+              sort: {
+                sorted: false,
+                unsorted: true
+              }
+            },
+            numberOfElements: paginatedContent.length
+          };
+        }),
+        catchError((error: any) => {
+          console.error('Error in getExpensesWithFilters:', error);
+          return of({
+            content: [],
+            totalElements: 0,
+            totalPages: 0,
+            size: pageRequest?.size || 10,
+            number: pageRequest?.page || 0,
+            first: true,
+            last: true,
+            empty: true,
+            pageable: {
+              pageNumber: pageRequest?.page || 0,
+              pageSize: pageRequest?.size || 10,
+              sort: {
+                sorted: false,
+                unsorted: true
+              }
+            },
+            numberOfElements: 0
+          });
+        })
+      );
   }
 
   /**
