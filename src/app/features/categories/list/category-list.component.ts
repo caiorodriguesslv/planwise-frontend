@@ -289,7 +289,7 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       max-width: 1200px;
       margin: 0 auto;
       padding: 24px;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      background: transparent;
       min-height: 100vh;
     }
 
@@ -300,10 +300,10 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       align-items: center;
       margin-bottom: 32px;
       padding: 32px;
-      background: white;
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
       border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       
       .page-title {
         display: flex;
@@ -327,12 +327,12 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             margin: 0 0 4px 0;
             font-size: 28px;
             font-weight: 700;
-            color: #1a202c;
+            color: white;
           }
           
           p {
             margin: 0;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 15px;
           }
         }
@@ -368,11 +368,13 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         border-radius: 16px;
         overflow: hidden;
         transition: all 0.3s ease;
-        border: 1px solid #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
         
         mat-card-content {
@@ -406,19 +408,19 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             margin: 0 0 4px 0;
             font-size: 32px;
             font-weight: 700;
-            color: #1a202c;
+            color: white;
           }
           
           p {
             margin: 0 0 4px 0;
             font-size: 16px;
             font-weight: 600;
-            color: #1a202c;
+            color: white;
           }
           
           .stat-period {
             font-size: 12px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.7);
           }
         }
         
@@ -440,7 +442,9 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
     .filters-card {
       margin-bottom: 24px;
       border-radius: 16px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       
       .filters-header {
         padding: 24px 24px 0;
@@ -452,10 +456,10 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           margin: 0;
           font-size: 18px;
           font-weight: 600;
-          color: #1a202c;
+          color: white;
           
           mat-icon {
-            color: #8b5cf6;
+            color: #ff6b6b;
           }
         }
         
@@ -503,7 +507,9 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
     /* Table */
     .table-card {
       border-radius: 16px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       
       .loading-container {
         display: flex;
@@ -515,13 +521,13 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         
         h3 {
           margin: 16px 0 8px 0;
-          color: #1a202c;
+          color: white;
           font-weight: 600;
         }
         
         p {
           margin: 0;
-          color: #64748b;
+          color: rgba(255, 255, 255, 0.7);
         }
       }
       
@@ -529,12 +535,12 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         width: 100%;
         
         .table-header {
-          background: #f8fafc;
+          background: rgba(255, 255, 255, 0.1);
           
           th {
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
             font-weight: 600;
-            color: #374151;
+            color: white;
             padding: 16px 12px;
           }
         }
@@ -543,12 +549,13 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           transition: background-color 0.2s ease;
           
           &:hover {
-            background: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
           }
           
           td {
             padding: 16px 12px;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
           }
         }
         
@@ -668,12 +675,12 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           margin: 0 0 12px 0;
           font-size: 20px;
           font-weight: 600;
-          color: #1a202c;
+          color: white;
         }
         
         p {
           margin: 0 0 24px 0;
-          color: #64748b;
+          color: rgba(255, 255, 255, 0.7);
           line-height: 1.6;
         }
         

@@ -295,7 +295,7 @@ import { PageRequest } from '../../../core/models/api.model';
       padding: 24px;
       max-width: 1400px;
       margin: 0 auto;
-      background: #f8fafc;
+      background: transparent;
       min-height: 100vh;
     }
 
@@ -325,13 +325,13 @@ import { PageRequest } from '../../../core/models/api.model';
       margin: 0;
       font-size: 32px;
       font-weight: 700;
-      color: #1e293b;
+      color: white;
       line-height: 1.2;
     }
 
     .title-content p {
       margin: 4px 0 0 0;
-      color: #64748b;
+      color: rgba(255, 255, 255, 0.7);
       font-size: 16px;
       font-weight: 400;
     }
@@ -359,30 +359,31 @@ import { PageRequest } from '../../../core/models/api.model';
 
     .stat-card {
       border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      border: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
       transition: all 0.3s ease;
       position: relative;
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
     }
 
     .stat-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
     .stat-card.red {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
       color: white;
     }
 
     .stat-card.blue {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
       color: white;
     }
 
     .stat-card.purple {
-      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
       color: white;
     }
 
@@ -440,8 +441,9 @@ import { PageRequest } from '../../../core/models/api.model';
     .filters-card, .table-card, .debug-card {
       margin-bottom: 24px;
       border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      border: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
     }
 
     /* Filtros */
@@ -458,11 +460,11 @@ import { PageRequest } from '../../../core/models/api.model';
       gap: 12px;
       font-size: 20px;
       font-weight: 600;
-      color: #1e293b;
+      color: white;
     }
 
     .filters-header mat-icon {
-      color: #64748b;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     .filters-actions {
@@ -477,8 +479,8 @@ import { PageRequest } from '../../../core/models/api.model';
     }
 
     .active-filters {
-      background: #dbeafe;
-      color: #2563eb;
+      background: rgba(255, 107, 107, 0.2);
+      color: #ff6b6b;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
@@ -560,22 +562,22 @@ import { PageRequest } from '../../../core/models/api.model';
 
     /* Headers da tabela */
     .table-header {
-      background: #f8fafc;
-      border-bottom: 2px solid #e5e7eb;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     }
 
     .description-header {
       width: 35%;
       padding: 16px 24px;
       font-weight: 600;
-      color: #374151;
+      color: white;
     }
 
     .value-header {
       width: 15%;
       padding: 16px 24px;
       font-weight: 600;
-      color: #374151;
+      color: white;
       text-align: right;
     }
 
@@ -583,7 +585,7 @@ import { PageRequest } from '../../../core/models/api.model';
       width: 15%;
       padding: 16px 24px;
       font-weight: 600;
-      color: #374151;
+      color: white;
     }
 
     .category-header {
@@ -626,12 +628,12 @@ import { PageRequest } from '../../../core/models/api.model';
     }
 
     .description-content strong {
-      color: #111827;
+      color: white;
       font-weight: 600;
     }
 
     .description-content small {
-      color: #6b7280;
+      color: rgba(255, 255, 255, 0.7);
       font-size: 0.85em;
     }
 
@@ -642,13 +644,13 @@ import { PageRequest } from '../../../core/models/api.model';
 
     .expense-value {
       font-weight: 600;
-      color: #dc2626;
+      color: #ff6b6b;
       font-size: 1.05em;
     }
 
     .date-cell {
       padding: 16px 24px;
-      color: #4b5563;
+      color: rgba(255, 255, 255, 0.8);
       font-weight: 500;
     }
 
@@ -663,7 +665,7 @@ import { PageRequest } from '../../../core/models/api.model';
     }
 
     .no-category {
-      color: #9ca3af;
+      color: rgba(255, 255, 255, 0.5);
       font-style: italic;
       font-size: 0.9em;
     }
@@ -715,9 +717,9 @@ import { PageRequest } from '../../../core/models/api.model';
       align-items: center;
       justify-content: center;
       min-height: 400px;
-      background: white;
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
-      border: 1px dashed #d1d5db;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
     }
 
     .empty-state-content {
@@ -749,12 +751,12 @@ import { PageRequest } from '../../../core/models/api.model';
       margin: 0 0 16px 0;
       font-size: 24px;
       font-weight: 600;
-      color: #374151;
+      color: white;
     }
 
     .empty-state p {
       margin: 0 0 32px 0;
-      color: #6b7280;
+      color: rgba(255, 255, 255, 0.7);
       line-height: 1.6;
       font-size: 16px;
     }
