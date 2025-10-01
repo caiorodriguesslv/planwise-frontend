@@ -28,8 +28,13 @@
   --planwise-text-muted: rgba(255, 255, 255, 0.6);
   
   // Border Colors
-  --planwise-border: rgba(255, 255, 255, 0.1);
-  --planwise-border-light: rgba(255, 255, 255, 0.05);
+  --planwise-border: rgba(0, 0, 0, 0.2);
+  --planwise-border-light: rgba(0, 0, 0, 0.1);
+  --planwise-border-dark: rgba(0, 0, 0, 0.3);
+  
+  // Form Colors
+  --planwise-form-bg: rgba(0, 0, 0, 0.1);
+  --planwise-form-border: rgba(0, 0, 0, 0.2);
 }
 
 // ========================================
@@ -43,7 +48,7 @@
 
 .planwise-bg-card {
   background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-  border: 1px solid var(--planwise-border) !important;
+  border: 1px solid var(--planwise-border-dark) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
   border-radius: 20px !important;
 }
@@ -429,4 +434,176 @@ body {
 ::ng-deep .content-area {
   padding-top: 100px !important;
   padding: 32px !important;
+}
+
+// Override para form-actions usar tema escuro
+::ng-deep .form-actions {
+  background: transparent !important;
+  border-top: none !important;
+  padding: 24px 0 !important;
+}
+
+// Override para mat-card remover bordas e usar tema escuro
+::ng-deep .mat-mdc-card {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+// Override mais específico para formulários
+::ng-deep .expense-form-container .mat-mdc-card {
+  background: transparent !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+// Override para seções do formulário
+::ng-deep .form-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+// Override agressivo para remover todas as bordas
+::ng-deep * {
+  border-color: transparent !important;
+}
+
+::ng-deep .expense-form-container * {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+}
+
+// Override específico para mat-card no formulário
+::ng-deep .expense-form-container .mat-mdc-card,
+::ng-deep .expense-form-container .mat-card,
+::ng-deep .expense-form-container [class*="mat-card"] {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+// Override agressivo para todos os elementos do formulário
+::ng-deep .expense-form-container {
+  background: transparent !important;
+  
+  * {
+    background: transparent !important;
+    border-color: transparent !important;
+  }
+  
+  // Forçar background transparente em todos os elementos
+  div, section, form, mat-card, mat-form-field, mat-select, mat-button {
+    background: transparent !important;
+  }
+  
+  // Override para mat-form-field
+  .mat-mdc-form-field {
+    background: transparent !important;
+    
+    .mat-mdc-text-field-wrapper {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    .mat-mdc-input-element {
+      color: white !important;
+      background: transparent !important;
+    }
+    
+    .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+    
+    .mat-mdc-form-field-hint {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+  
+  // Override para mat-select
+  .mat-mdc-select {
+    background: transparent !important;
+    color: white !important;
+    
+    .mat-mdc-select-value {
+      color: white !important;
+    }
+    
+    .mat-mdc-select-placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+    
+    .mat-mdc-select-arrow {
+      color: white !important;
+    }
+  }
+  
+  // Override para mat-datepicker
+  .mat-datepicker-toggle {
+    color: white !important;
+    background: transparent !important;
+  }
+  
+  // Override para mat-button
+  .mat-mdc-button {
+    background: transparent !important;
+    color: white !important;
+  }
+  
+  // Override para preview chips
+  .preview-chip {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  // Override específico para formulário
+  form {
+    background: transparent !important;
+  }
+  
+  .expense-form {
+    background: transparent !important;
+  }
+  
+  // Override para todas as divs
+  div {
+    background: transparent !important;
+  }
+  
+  // Override para seções
+  .form-section {
+    background: transparent !important;
+  }
+  
+  .section-header {
+    background: transparent !important;
+  }
+  
+  .section-body {
+    background: transparent !important;
+  }
+  
+  .field-group {
+    background: transparent !important;
+  }
+  
+  .field-wrapper {
+    background: transparent !important;
+  }
 }
