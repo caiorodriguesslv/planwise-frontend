@@ -1,0 +1,34 @@
+<div class="layout-container">
+  <!-- Mobile Overlay -->
+  <app-mobile-overlay 
+    [isActive]="isMobileMenuOpen()" 
+    (onOverlayClick)="toggleMobileMenu()">
+  </app-mobile-overlay>
+
+  <!-- Sidebar -->
+  <app-sidebar
+    [navigationSections]="navigationSections"
+    [currentRoute]="currentRoute"
+    [isMobileOpen]="isMobileMenuOpen()"
+    (itemClick)="onNavigationItemClick($event)"
+    (toggleCollapseClick)="toggleSidebarCollapse()">
+  </app-sidebar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Header -->
+    <app-header
+      [pageTitle]="getPageTitle()"
+      [pageSubtitle]="getPageSubtitle()"
+      [userInfo]="userInfo"
+      [showMobileMenu]="isMobile()"
+      (onMobileMenuClick)="toggleMobileMenu()"
+      (onUserClick)="onUserClick()">
+    </app-header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

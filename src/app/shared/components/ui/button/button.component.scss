@@ -1,0 +1,140 @@
+.app-button {
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  // Size variants
+  &--small {
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+  
+  &--medium {
+    height: 40px;
+    padding: 0 20px;
+    font-size: 16px;
+  }
+  
+  &--large {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 18px;
+  }
+  
+  // Full width
+  &--full-width {
+    width: 100%;
+  }
+  
+  // Loading state
+  &--loading {
+    pointer-events: none;
+  }
+  
+  // Primary variant
+  &--primary {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 25%, #fd79a8 75%, #e84393 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 16px rgba(238, 90, 36, 0.3);
+    
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(238, 90, 36, 0.4);
+      background: linear-gradient(135deg, #ff7675 0%, #fd79a8 25%, #e84393 75%, #a29bfe 100%);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+  
+  // Secondary variant
+  &--secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+  
+  // Danger variant
+  &--danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1b 50%, #991b1b 100%);
+    }
+  }
+  
+  // Ghost variant
+  &--ghost {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+  
+  // Disabled state
+  &:disabled {
+    background: linear-gradient(135deg, #b2bec3, #ddd) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  // Icon and text spacing
+  .button-icon--small {
+    margin-right: 6px;
+    font-size: 16px;
+  }
+  
+  .button-icon--medium {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  
+  .button-text--small {
+    font-size: 14px;
+  }
+  
+  .button-text--medium {
+    font-size: 16px;
+  }
+  
+  // Spinner
+  .button-spinner {
+    margin-right: 8px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .app-button {
+    &--large {
+      height: 44px;
+      padding: 0 20px;
+      font-size: 16px;
+    }
+  }
+}
