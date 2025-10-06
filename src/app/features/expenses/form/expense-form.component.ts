@@ -172,7 +172,7 @@ import { CategoryResponse } from '../../../core/models/category.model';
 
               <!-- Date -->
               <div class="field-wrapper date-field">
-                <mat-form-field appearance="outline" class="modern-field">
+                <mat-form-field appearance="outline" class="modern-field date-field-with-icon">
                   <input matInput 
                          [matDatepicker]="picker"
                          formControlName="date"

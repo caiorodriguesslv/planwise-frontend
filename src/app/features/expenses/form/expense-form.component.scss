@@ -366,8 +366,8 @@
       }
       
       &::placeholder {
-        color: rgba(255, 255, 255, 0.6) !important;
-        font-weight: 400 !important;
+        color: white !important;
+        font-weight: 500 !important;
       }
     }
     
@@ -421,8 +421,8 @@
     }
     
     .mat-mdc-select-placeholder {
-      color: rgba(255, 255, 255, 0.8) !important;
-      font-weight: 500 !important;
+      color: white !important;
+      font-weight: 600 !important;
       font-size: 16px !important;
     }
     
@@ -475,6 +475,32 @@
       font-size: 16px !important;
       margin-right: 8px !important;
       padding-right: 4px !important;
+    }
+    
+    // Estilos para campo de data com ícone
+    .date-field-with-icon {
+      position: relative;
+      
+      .mat-mdc-form-field-infix {
+        position: relative;
+        
+        &::before {
+          content: '📅';
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 3;
+          font-size: 16px;
+          pointer-events: none;
+          color: var(--planwise-orange);
+        }
+      }
+      
+      .mat-mdc-input-element {
+        padding-left: 40px !important;
+        text-indent: 0 !important;
+      }
     }
     
     // Override para mat-option (dropdown options)
@@ -836,6 +862,17 @@
 
 ::ng-deep .mat-mdc-select-value .mat-mdc-select-value-text {
   color: white !important;
+}
+
+// Override global para placeholders
+::ng-deep input::placeholder {
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+::ng-deep .mat-mdc-select-placeholder {
+  color: white !important;
+  font-weight: 600 !important;
 }
 
 ::ng-deep .mat-mdc-option {

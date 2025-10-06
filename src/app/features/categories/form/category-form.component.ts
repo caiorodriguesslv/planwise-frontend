@@ -87,7 +87,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
               <!-- Nome -->
               <div class="field-wrapper full-width">
                 <mat-form-field appearance="outline" class="modern-field">
-                  <mat-label>Nome da Categoria</mat-label>
+                  <!--<mat-label>Nome da Categoria</mat-label>-->
                   <input matInput 
                          formControlName="name"
                          placeholder="Ex: Alimentação, Transporte, Salário..."
@@ -129,8 +129,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
               <!-- Tipo -->
               <div class="field-wrapper type-field">
                 <mat-form-field appearance="outline" class="modern-field">
-                  <mat-label>Tipo</mat-label>
-                  <mat-select formControlName="type" placeholder="Selecione o tipo">
+                  <mat-select formControlName="type" placeholder="Escolha um tipo">
                   <mat-option disabled value="">
                     🔧 Escolha um tipo
                   </mat-option>

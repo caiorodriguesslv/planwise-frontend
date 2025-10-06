@@ -916,54 +916,64 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         }
         
         .type-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 6px !important;
+          padding: 6px 12px !important;
+          border-radius: 20px !important;
+          font-size: 12px !important;
+          font-weight: 600 !important;
           
           &.receita {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            color: #065f46;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+            border: none !important;
           }
           
           &.despesa {
-            background: linear-gradient(135deg, #fee2e2, #fecaca);
-            color: #7f1d1d;
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+            border: none !important;
           }
           
           mat-icon {
-            font-size: 16px;
-            width: 16px;
-            height: 16px;
+            font-size: 16px !important;
+            width: 16px !important;
+            height: 16px !important;
+            color: white !important;
           }
         }
         
         .status-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 6px !important;
+          padding: 6px 12px !important;
+          border-radius: 20px !important;
+          font-size: 12px !important;
+          font-weight: 600 !important;
           
           &.active {
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            color: #065f46;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+            border: none !important;
           }
           
           &.inactive {
-            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-            color: #374151;
+            background: linear-gradient(135deg, #6b7280, #4b5563) !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3) !important;
+            border: none !important;
           }
           
           mat-icon {
-            font-size: 16px;
-            width: 16px;
-            height: 16px;
+            font-size: 16px !important;
+            width: 16px !important;
+            height: 16px !important;
+            color: white !important;
           }
         }
         
@@ -1150,6 +1160,40 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           padding: 12px 8px;
         }
       }
+    }
+    
+    // Override global para chips de tipo e status
+    ::ng-deep .type-chip.receita {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      color: white !important;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+      border: none !important;
+    }
+    
+    ::ng-deep .type-chip.despesa {
+      background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+      color: white !important;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+      border: none !important;
+    }
+    
+    ::ng-deep .status-chip.active {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      color: white !important;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+      border: none !important;
+    }
+    
+    ::ng-deep .status-chip.inactive {
+      background: linear-gradient(135deg, #6b7280, #4b5563) !important;
+      color: white !important;
+      box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3) !important;
+      border: none !important;
+    }
+    
+    ::ng-deep .type-chip mat-icon,
+    ::ng-deep .status-chip mat-icon {
+      color: white !important;
     }
   `]
 })

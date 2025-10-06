@@ -68,13 +68,13 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     ::ng-deep .mat-mdc-dialog-container {
       background: var(--planwise-bg-primary) !important;
       color: white !important;
-      z-index: 1000 !important;
+      z-index: 1004 !important;
     }
     
     ::ng-deep .mat-mdc-dialog-surface {
       background: var(--planwise-bg-primary) !important;
       color: white !important;
-      z-index: 1001 !important;
+      z-index: 1005 !important;
     }
     
     // Override mais específico para o modal
@@ -86,7 +86,7 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     // Override para o backdrop
     ::ng-deep .mat-mdc-dialog-backdrop {
       background: rgba(0, 0, 0, 0.8) !important;
-      z-index: 999 !important;
+      z-index: 1003 !important;
     }
     
     .success-modal {

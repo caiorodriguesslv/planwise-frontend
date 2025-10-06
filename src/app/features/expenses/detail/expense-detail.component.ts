@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil, catchError, of } from 'rxjs';
@@ -20,6 +20,7 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
 @Component({
   selector: 'app-expense-detail',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     MatCardModule,
@@ -32,21 +33,25 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     MatTooltipModule
   ],
   template: `
-    <div class="expense-detail-container">
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      
       <!-- Header -->
-      <div class="header">
+      <div class="page-header">
         <button mat-icon-button (click)="goBack()" class="back-button">
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <div class="header-content">
-          <h1>
+        <div class="page-title">
+          <div class="page-icon">
             <mat-icon>visibility</mat-icon>
-            Detalhes da Despesa
-          </h1>
-          <p>Informações completas sobre a despesa selecionada</p>
+          </div>
+          <div class="title-content">
+            <h1>Detalhes da Despesa</h1>
+            <p>Informações completas sobre a despesa selecionada</p>
+          </div>
         </div>
         <div class="header-actions" *ngIf="expense">
-          <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Mais opções">
+          <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Mais opções" class="menu-btn">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
@@ -68,14 +73,14 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
       </div>
 
       <!-- Content -->
-      <div class="content" *ngIf="!isLoading && expense; else loadingTemplate">
+      <div class="content" *ngIf="!isLoading && expense && !hasError; else loadingTemplate">
         
         <!-- Main Information Card -->
         <mat-card class="main-info-card">
           <div class="card-header">
             <div class="title-section">
               <h2>{{ expense.description }}</h2>
-              <mat-chip class="category-chip">
+              <mat-chip [class]="'category-chip ' + (expense.category.type === 'RECEITA' ? 'receita' : 'despesa')">
                 <mat-icon>category</mat-icon>
                 {{ expense.category.name }}
               </mat-chip>
@@ -210,7 +215,7 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
       </ng-template>
 
       <!-- Error State -->
-      <div class="error-state" *ngIf="!isLoading && !expense">
+      <div class="error-state" *ngIf="hasError">
         <mat-icon>error_outline</mat-icon>
         <h3>Despesa não encontrada</h3>
         <p>A despesa que você está procurando não existe ou foi removida.</p>
@@ -222,55 +227,132 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     </div>
   `,
   styles: [`
-    .expense-detail-container {
-      padding: 32px;
-      max-width: 1000px;
+    // Estilos específicos do componente de detalhes de despesa - Baseado no Dashboard
+    @use '../../../../styles/variables' as *;
+
+    .dashboard-content {
+      max-width: 1200px;
       margin: 0 auto;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: calc(100vh - 80px);
+      position: relative;
+      border-radius: 20px;
+      padding: 24px;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 60%, rgba(255, 167, 38, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        border-radius: 20px;
+      }
     }
 
-    .header {
+    // Header - Baseado no Dashboard
+    .page-header {
       display: flex;
-      align-items: flex-start;
-      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 32px;
+      padding: 32px;
       
       .back-button {
-        margin-top: 8px;
-        color: #64748b;
+        margin-right: 16px;
+        color: rgba(255, 255, 255, 0.7) !important;
+        transition: all 0.3s ease !important;
         
         &:hover {
-          color: #1a202c;
-          background: rgba(0, 0, 0, 0.04);
+          color: white !important;
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
         }
       }
       
-      .header-content {
+      .page-title {
+        display: flex;
+        align-items: center;
+        gap: 20px;
         flex: 1;
         
-        h1 {
+        .page-icon {
+          width: 60px;
+          height: 60px;
+          font-size: 32px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin: 0 0 8px 0;
-          font-size: 28px;
-          font-weight: 700;
-          color: #1a202c;
+          justify-content: center;
+          background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
+          box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+          position: relative;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-radius: 18px;
+            z-index: -1;
+          }
           
           mat-icon {
-            color: #ef4444;
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
             font-size: 32px;
+            width: 32px;
+            height: 32px;
           }
         }
         
-        p {
-          margin: 0;
-          color: #64748b;
-          font-size: 16px;
+        .title-content {
+          h1 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          }
+          
+          p {
+            margin: 0;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+          }
         }
       }
       
       .header-actions {
-        margin-top: 8px;
+        .menu-btn {
+          color: rgba(255, 255, 255, 0.7) !important;
+          transition: all 0.3s ease !important;
+          
+          &:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+          }
+          
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+          }
+        }
       }
     }
 
@@ -281,13 +363,30 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     }
 
     .main-info-card {
-      border-radius: 12px !important;
+      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        pointer-events: none;
+      }
       
       .card-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 20px;
+        padding: 32px 32px 0 32px;
         
         .title-section {
           flex: 1;
@@ -296,17 +395,35 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
             margin: 0 0 12px 0;
             font-size: 24px;
             font-weight: 600;
-            color: #1a202c;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
           }
           
           .category-chip {
-            background: #fef2f2 !important;
-            color: #dc2626 !important;
-            border: 1px solid #fecaca !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            border-radius: 20px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            color: white !important;
+            border: none !important;
+            
+            &.receita {
+              background: linear-gradient(135deg, #10b981, #059669) !important;
+              box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+            }
+            
+            &.despesa {
+              background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+              box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+            }
             
             mat-icon {
               font-size: 16px;
-              margin-right: 4px;
+              width: 16px;
+              height: 16px;
             }
           }
         }
@@ -317,19 +434,22 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
           .value-label {
             display: block;
             font-size: 14px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 4px;
           }
           
           .value-amount {
             font-size: 28px;
             font-weight: 700;
-            color: #dc2626;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
           }
         }
       }
       
       .card-content {
+        padding: 0 32px 32px 32px;
+        
         .info-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -343,10 +463,11 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
               margin: 0 0 16px 0;
               font-size: 16px;
               font-weight: 600;
-              color: #1a202c;
+              color: white;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
               
               mat-icon {
-                color: #ef4444;
+                color: var(--planwise-cyan);
                 font-size: 20px;
               }
             }
@@ -356,8 +477,8 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 8px 0;
-                border-bottom: 1px solid #f1f5f9;
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 
                 &:last-child {
                   border-bottom: none;
@@ -365,34 +486,36 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
                 
                 .label {
                   font-weight: 500;
-                  color: #64748b;
+                  color: rgba(255, 255, 255, 0.7);
                   font-size: 14px;
                 }
                 
                 .value {
                   font-weight: 600;
-                  color: #1a202c;
+                  color: white;
                   font-size: 14px;
                   text-align: right;
                 }
                 
                 .status-active {
-                  background: #f0fdf4 !important;
-                  color: #166534 !important;
-                  border: 1px solid #bbf7d0 !important;
+                  background: linear-gradient(135deg, #10b981, #059669) !important;
+                  color: white !important;
+                  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+                  border: none !important;
                   
                   mat-icon {
-                    color: #16a34a;
+                    color: white;
                   }
                 }
                 
                 .status-inactive {
-                  background: #fef2f2 !important;
-                  color: #dc2626 !important;
-                  border: 1px solid #fecaca !important;
+                  background: linear-gradient(135deg, #6b7280, #4b5563) !important;
+                  color: white !important;
+                  box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3) !important;
+                  border: none !important;
                   
                   mat-icon {
-                    color: #ef4444;
+                    color: white;
                   }
                 }
               }
@@ -403,16 +526,34 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     }
 
     .actions-card {
-      border-radius: 12px !important;
+      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        pointer-events: none;
+      }
       
       .actions-header {
         margin-bottom: 16px;
+        padding: 32px 32px 0 32px;
         
         h3 {
           margin: 0;
           font-size: 18px;
           font-weight: 600;
-          color: #1a202c;
+          color: white;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
       }
       
@@ -420,6 +561,7 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
+        padding: 0 32px 32px 32px;
         
         button {
           mat-icon {
@@ -427,18 +569,42 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
           }
           
           &[color="primary"] {
+            background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark)) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3) !important;
+          }
+          
+          &[color="warn"] {
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
             color: white !important;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
           }
         }
       }
     }
 
     .history-card {
-      border-radius: 12px !important;
+      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        pointer-events: none;
+      }
       
       .card-header {
         margin-bottom: 16px;
+        padding: 32px 32px 0 32px;
         
         h3 {
           display: flex;
@@ -447,33 +613,37 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
           margin: 0;
           font-size: 18px;
           font-weight: 600;
-          color: #1a202c;
+          color: white;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
           
           mat-icon {
-            color: #ef4444;
+            color: var(--planwise-orange);
           }
         }
       }
       
       .history-content {
+        padding: 0 32px 32px 32px;
+        
         .history-item {
           display: flex;
           align-items: center;
           gap: 12px;
           padding: 12px 0;
-          border-bottom: 1px solid #f1f5f9;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           
           .history-icon {
             width: 32px;
             height: 32px;
-            background: #f0fdf4;
+            background: linear-gradient(135deg, #10b981, #059669);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
             
             mat-icon {
-              color: #16a34a;
+              color: white;
               font-size: 18px;
             }
           }
@@ -481,13 +651,13 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
           .history-details {
             .history-title {
               font-weight: 500;
-              color: #1a202c;
+              color: white;
               font-size: 14px;
             }
             
             .history-time {
               font-size: 12px;
-              color: #64748b;
+              color: rgba(255, 255, 255, 0.6);
               margin-top: 2px;
             }
           }
@@ -498,7 +668,7 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
           align-items: center;
           gap: 8px;
           padding: 16px 0;
-          color: #94a3b8;
+          color: rgba(255, 255, 255, 0.6);
           font-size: 14px;
           
           mat-icon {
@@ -520,7 +690,7 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
       }
       
       p {
-        color: #64748b;
+        color: rgba(255, 255, 255, 0.7);
         font-weight: 500;
         margin: 0;
       }
@@ -542,18 +712,18 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
       
       h3 {
         margin: 0 0 8px 0;
-        color: #1a202c;
+        color: white;
         font-size: 20px;
       }
       
       p {
         margin: 0 0 24px 0;
-        color: #64748b;
+        color: rgba(255, 255, 255, 0.7);
         max-width: 400px;
       }
       
       button {
-        background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+        background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark)) !important;
         color: white !important;
         
         mat-icon {
@@ -562,16 +732,17 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
       }
     }
 
-    // Responsive
+    // Responsive Design
     @media (max-width: 768px) {
-      .expense-detail-container {
+      .dashboard-content {
         padding: 16px;
       }
       
-      .header {
-        .header-content h1 {
-          font-size: 24px;
-        }
+      .page-header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+        padding: 16px;
       }
       
       .main-info-card .card-header {
@@ -604,12 +775,14 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy {
   expense: ExpenseResponse | null = null;
   isLoading = false;
   expenseId: number | null = null;
+  hasError = false;
 
   constructor(
     private expenseService: ExpenseService,
     private notificationService: NotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -629,18 +802,35 @@ export class ExpenseDetailComponent implements OnInit, OnDestroy {
     }
 
     this.isLoading = true;
+    this.hasError = false;
+    this.expense = null;
+    this.cdr.detectChanges();
     
     this.expenseService.getExpenseById(this.expenseId)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
+          console.error('Erro ao carregar despesa:', error);
+          this.isLoading = false;
+          this.hasError = true;
           this.notificationService.error('Erro ao carregar despesa');
+          this.cdr.detectChanges();
           return of(null);
         })
       )
-      .subscribe(expense => {
-        this.isLoading = false;
-        this.expense = expense;
+      .subscribe({
+        next: (expense) => {
+          this.isLoading = false;
+          this.hasError = false;
+          this.expense = expense;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Erro no subscribe:', error);
+          this.isLoading = false;
+          this.hasError = true;
+          this.cdr.detectChanges();
+        }
       });
   }
 

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, map, of, catchError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { HttpService } from './http.service';
 import { CategoryService } from './category.service';
+import { environment } from '../../../environments/environment';
 import { 
   ExpenseRequest, 
   ExpenseResponse, 
@@ -20,6 +22,7 @@ export class ExpenseService {
 
   constructor(
     private httpService: HttpService,
+    private http: HttpClient,
     private categoryService: CategoryService
   ) {}
 
@@ -157,7 +160,14 @@ export class ExpenseService {
    * Excluir despesa
    */
   deleteExpense(id: number): Observable<string> {
-    return this.httpService.delete<string>(`${this.baseEndpoint}/${id}`);
+    return this.http.delete(`${environment.apiUrl}/${this.baseEndpoint}/${id}`, {
+      responseType: 'text'
+    }).pipe(
+      catchError(error => {
+        console.error('Erro ao excluir despesa:', error);
+        return of('Erro ao excluir despesa');
+      })
+    );
   }
 
   /**

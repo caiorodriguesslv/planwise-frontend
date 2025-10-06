@@ -178,7 +178,6 @@ import { PageRequest } from '../../../core/models/api.model';
                   <td mat-cell *matCellDef="let expense" class="description-cell">
                     <div class="description-content">
                       <strong>{{ expense.description }}</strong>
-                      <small *ngIf="expense.category">{{ expense.category.name }}</small>
                     </div>
                   </td>
                 </ng-container>
@@ -206,7 +205,7 @@ import { PageRequest } from '../../../core/models/api.model';
                   <th mat-header-cell *matHeaderCellDef class="category-header">Categoria</th>
                   <td mat-cell *matCellDef="let expense" class="category-cell">
                     <mat-chip *ngIf="expense.category" 
-                             [style.background-color]="expense.category.color || '#e0e0e0'"
+                             [class]="'category-chip ' + (expense.category.type === 'RECEITA' ? 'receita' : 'despesa')"
                              class="category-chip">
                       {{ expense.category.name }}
                     </mat-chip>
@@ -410,16 +409,30 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
     this.filterForm.reset();
   }
 
-  viewExpense(expense: ExpenseResponse) {
-    this.notificationService.info(`Ver detalhes da despesa: ${expense.description}`);
+  viewExpense(expense: ExpenseResponse): void {
+    this.router.navigate(['/dashboard/expenses', expense.id]);
   }
 
-  editExpense(expense: ExpenseResponse) {
-    this.notificationService.info(`Editar despesa: ${expense.description}`);
+  editExpense(expense: ExpenseResponse): void {
+    this.router.navigate(['/dashboard/expenses', expense.id, 'edit']);
   }
 
-  deleteExpense(expense: ExpenseResponse) {
-    this.notificationService.warning(`Confirmar exclusão da despesa: ${expense.description}`);
+  deleteExpense(expense: ExpenseResponse): void {
+    if (confirm(`Tem certeza que deseja excluir a despesa "${expense.description}"?`)) {
+      this.expenseService.deleteExpense(expense.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success('Despesa excluída com sucesso!');
+            this.loadExpenses(); // Recarregar a lista
+            this.loadStats(); // Recarregar estatísticas
+          },
+          error: (error) => {
+            console.error('Erro ao excluir despesa:', error);
+            this.notificationService.error('Erro ao excluir despesa');
+          }
+        });
+    }
   }
 
   getActiveFiltersCount(): number {
