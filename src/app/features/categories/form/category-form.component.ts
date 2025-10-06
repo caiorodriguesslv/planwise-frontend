@@ -37,22 +37,23 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
     MatChipsModule,
     MatDialogModule
   ],
+  styleUrls: ['./category-form.component.scss'],
   template: `
     <div class="category-form-container planwise-bg-primary">
       <!-- Header aprimorado -->
-      <div class="page-header planwise-card">
+      <div class="page-header planwise-bg-card">
         <div class="header-left">
           <button mat-icon-button (click)="goBack()" class="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <div class="header-content">
             <div class="title-section">
-              <div class="title-icon planwise-icon-purple">
+              <div class="title-icon">
                 <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
               </div>
               <div class="title-text">
                 <h1 class="planwise-text-primary">{{ isEditMode ? 'Editar Categoria' : 'Nova Categoria' }}</h1>
-                <p class="planwise-text-muted">{{ isEditMode ? 'Modifique os dados da categoria' : 'Crie uma nova categoria para organizar suas transações' }}</p>
+                <p class="planwise-text-muted">{{ isEditMode ? 'Modifique os dados da categoria' : 'Adicione uma nova categoria ao seu controle' }}</p>
               </div>
             </div>
           </div>
@@ -67,200 +68,194 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
 
       <!-- Form moderno -->
       <div class="form-wrapper">
-        <mat-card class="planwise-card">
-          <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="category-form">
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="category-form">
+        
+        <!-- Seção: Informações Básicas -->
+        <div class="form-section basic-info planwise-bg-card">
+          <div class="section-header">
+            <div class="section-icon planwise-icon-cyan">
+              <mat-icon>edit_note</mat-icon>
+            </div>
+            <div class="section-content">
+              <h3 class="planwise-text-primary">Informações Básicas</h3>
+              <p class="planwise-text-muted">Dados principais da categoria</p>
+            </div>
+          </div>
           
-            <!-- Seção: Informações Básicas -->
-            <div class="form-section basic-info planwise-card">
-              <div class="section-header">
-                <div class="section-icon planwise-icon-cyan">
-                  <mat-icon>info</mat-icon>
-                </div>
-                <div class="section-content">
-                  <h3 class="planwise-text-primary">Informações Básicas</h3>
-                  <p class="planwise-text-muted">Dados principais da categoria</p>
-                </div>
+          <div class="section-body">
+            <div class="field-group">
+              <!-- Nome -->
+              <div class="field-wrapper full-width">
+                <mat-form-field appearance="outline" class="modern-field">
+                  <mat-label>Nome da Categoria</mat-label>
+                  <input matInput 
+                         formControlName="name"
+                         placeholder="Ex: Alimentação, Transporte, Salário..."
+                         maxlength="50">
+                  <mat-hint align="end">
+                    {{ categoryForm.get('name')?.value?.length || 0 }}/50 caracteres
+                  </mat-hint>
+                  <mat-error *ngIf="categoryForm.get('name')?.hasError('required')">
+                    Nome é obrigatório
+                  </mat-error>
+                  <mat-error *ngIf="categoryForm.get('name')?.hasError('minlength')">
+                    Nome deve ter pelo menos 2 caracteres
+                  </mat-error>
+                  <mat-error *ngIf="categoryForm.get('name')?.hasError('maxlength')">
+                    Nome deve ter no máximo 50 caracteres
+                  </mat-error>
+                </mat-form-field>
               </div>
-              
-              <div class="section-body">
-                <div class="field-group">
-                  <!-- Nome -->
-                  <div class="field-wrapper full-width">
-                    <mat-form-field appearance="outline" class="modern-field">
-                      <mat-label>Nome da Categoria</mat-label>
-                      <input matInput 
-                             formControlName="name"
-                             placeholder="Ex: Alimentação, Transporte, Salário..."
-                             maxlength="50">
-                      <mat-hint align="end">
-                        {{ categoryForm.get('name')?.value?.length || 0 }}/50 caracteres
-                      </mat-hint>
-                      <mat-error *ngIf="categoryForm.get('name')?.hasError('required')">
-                        Nome é obrigatório
-                      </mat-error>
-                      <mat-error *ngIf="categoryForm.get('name')?.hasError('minlength')">
-                        Nome deve ter pelo menos 2 caracteres
-                      </mat-error>
-                      <mat-error *ngIf="categoryForm.get('name')?.hasError('maxlength')">
-                        Nome deve ter no máximo 50 caracteres
-                      </mat-error>
-                    </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Seção: Configurações -->
+        <div class="form-section config-info planwise-bg-card">
+          <div class="section-header">
+            <div class="section-icon planwise-icon-orange">
+              <mat-icon>tune</mat-icon>
+            </div>
+            <div class="section-content">
+              <h3 class="planwise-text-primary">Configurações</h3>
+              <p class="planwise-text-muted">Tipo e personalização da categoria</p>
+            </div>
+          </div>
+          
+          <div class="section-body">
+            <div class="field-group">
+              <!-- Tipo -->
+              <div class="field-wrapper type-field">
+                <mat-form-field appearance="outline" class="modern-field">
+                  <mat-label>Tipo</mat-label>
+                  <mat-select formControlName="type" placeholder="Selecione o tipo">
+                  <mat-option disabled value="">
+                    <span class="placeholder-option">
+                      <mat-icon>tune</mat-icon>
+                      Escolha um tipo
+                    </span>
+                  </mat-option>
+                  <mat-option value="RECEITA">
+                    <span class="type-option receita">
+                      <mat-icon>savings</mat-icon>
+                      Receita
+                      <small>Para dinheiro que entra</small>
+                    </span>
+                  </mat-option>
+                  <mat-option value="DESPESA">
+                    <span class="type-option despesa">
+                      <mat-icon>shopping_cart</mat-icon>
+                      Despesa
+                      <small>Para dinheiro que sai</small>
+                    </span>
+                  </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="categoryForm.get('type')?.hasError('required')">
+                    Tipo é obrigatório
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Cor (Preview) -->
+              <div class="field-wrapper color-field">
+                <div class="color-preview" *ngIf="categoryForm.get('type')?.value">
+                  <div class="preview-chip">
+                    <mat-icon>palette</mat-icon>
+                    <span>Cor: {{ getPreviewColor() }}</span>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
 
-            <!-- Seção: Configurações -->
-            <div class="form-section config-info planwise-card">
-              <div class="section-header">
-                <div class="section-icon planwise-icon-orange">
-                  <mat-icon>settings</mat-icon>
-                </div>
-                <div class="section-content">
-                  <h3 class="planwise-text-primary">Configurações</h3>
-                  <p class="planwise-text-muted">Tipo e personalização da categoria</p>
-                </div>
-              </div>
-              
-              <div class="section-body">
-                <div class="field-group">
-                  <!-- Tipo -->
-                  <div class="field-wrapper type-field">
-                    <mat-form-field appearance="outline" class="modern-field">
-                      <mat-label>Tipo</mat-label>
-                      <mat-select formControlName="type" placeholder="Selecione o tipo">
-                        <mat-option disabled value="">
-                          <span class="placeholder-option">
-                            <mat-icon>category</mat-icon>
-                            Escolha um tipo
-                          </span>
-                        </mat-option>
-                        <mat-option value="RECEITA">
-                          <span class="type-option receita">
-                            <mat-icon>trending_up</mat-icon>
-                            Receita
-                            <small>Para dinheiro que entra</small>
-                          </span>
-                        </mat-option>
-                        <mat-option value="DESPESA">
-                          <span class="type-option despesa">
-                            <mat-icon>trending_down</mat-icon>
-                            Despesa
-                            <small>Para dinheiro que sai</small>
-                          </span>
-                        </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="categoryForm.get('type')?.hasError('required')">
-                        Tipo é obrigatório
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-
-                  <!-- Cor (Preview) -->
-                  <div class="field-wrapper color-field">
-                    <div class="color-preview" *ngIf="categoryForm.get('type')?.value">
-                      <div class="color-label">Cor da categoria:</div>
-                      <div class="color-sample" [style.background-color]="getPreviewColor()">
-                        <mat-icon>palette</mat-icon>
-                      </div>
-                      <div class="color-info">
-                        <span>Cor gerada automaticamente</span>
-                        <small>Baseada no tipo selecionado</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <!-- Resumo Final -->
+        <div class="form-section summary-section planwise-bg-card" *ngIf="isFormValid()">
+          <div class="section-header">
+            <div class="section-icon planwise-icon-purple">
+              <mat-icon>summarize</mat-icon>
             </div>
-
-            <mat-divider></mat-divider>
-
-            <!-- Resumo Final -->
-            <div class="form-section summary-section planwise-card" *ngIf="isFormValid()">
-              <div class="section-header">
-                <div class="section-icon planwise-icon-cyan">
-                  <mat-icon>summarize</mat-icon>
-                </div>
-                <div class="section-content">
-                  <h3 class="planwise-text-primary">Resumo da Categoria</h3>
-                  <p class="planwise-text-muted">Revise os dados antes de salvar</p>
-                </div>
-              </div>
-              
-              <div class="section-body">
-                <div class="summary-card">
-                  <div class="summary-grid">
-                    <div class="summary-item">
-                      <div class="item-icon">
-                        <mat-icon>label</mat-icon>
-                      </div>
-                      <div class="item-content">
-                        <span class="label">Nome</span>
-                        <span class="value">{{ categoryForm.get('name')?.value }}</span>
-                      </div>
-                    </div>
-                    
-                    <div class="summary-item highlight">
-                      <div class="item-icon">
-                        <mat-icon>{{ getTypeIcon() }}</mat-icon>
-                      </div>
-                      <div class="item-content">
-                        <span class="label">Tipo</span>
-                        <span class="value category-type">{{ getTypeLabel() }}</span>
-                      </div>
-                    </div>
-                    
-                    <div class="summary-item">
-                      <div class="item-icon" [style.background-color]="getPreviewColor()">
-                        <mat-icon>palette</mat-icon>
-                      </div>
-                      <div class="item-content">
-                        <span class="label">Cor</span>
-                        <span class="value">{{ getPreviewColor() }}</span>
-                      </div>
-                    </div>
+            <div class="section-content">
+              <h3 class="planwise-text-primary">Resumo da Categoria</h3>
+              <p class="planwise-text-muted">Revise os dados antes de salvar</p>
+            </div>
+          </div>
+          
+          <div class="section-body">
+            <div class="summary-card">
+              <div class="summary-grid">
+                <div class="summary-item">
+                  <div class="item-icon">
+                    <mat-icon>label</mat-icon>
+                  </div>
+                  <div class="item-content">
+                    <span class="label">Nome</span>
+                    <span class="value">{{ categoryForm.get('name')?.value }}</span>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- Actions aprimoradas -->
-            <div class="form-actions">
-              <div class="action-buttons">
-                <button type="button"
-                        mat-button
-                        (click)="goBack()"
-                        [disabled]="isSubmitting"
-                        class="cancel-btn planwise-text-muted">
-                  <mat-icon>close</mat-icon>
-                  Cancelar
-                </button>
                 
-                <button type="button"
-                        mat-stroked-button
-                        (click)="resetForm()"
-                        [disabled]="isSubmitting || !categoryForm.dirty"
-                        class="reset-btn">
-                  <mat-icon>refresh</mat-icon>
-                  Limpar
-                </button>
-                
-                <button type="submit"
-                        mat-raised-button
-                        [disabled]="!categoryForm.valid || isSubmitting"
-                        class="submit-btn">
-                  <div class="btn-content">
-                    <mat-spinner diameter="20" *ngIf="isSubmitting" class="btn-spinner"></mat-spinner>
-                    <mat-icon *ngIf="!isSubmitting">{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
-                    <span>{{ isSubmitting ? 'Salvando...' : (isEditMode ? 'Salvar Alterações' : 'Criar Categoria') }}</span>
+                <div class="summary-item">
+                  <div class="item-icon">
+                    <mat-icon>{{ getTypeIcon() }}</mat-icon>
                   </div>
-                </button>
+                  <div class="item-content">
+                    <span class="label">Tipo</span>
+                    <span class="value">{{ getTypeLabel() }}</span>
+                  </div>
+                </div>
+                
+                <div class="summary-item">
+                  <div class="item-icon" [style.background-color]="getPreviewColor()">
+                    <mat-icon>palette</mat-icon>
+                  </div>
+                  <div class="item-content">
+                    <span class="label">Cor</span>
+                    <span class="value">{{ getPreviewColor() }}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </form>
-        </mat-card>
+          </div>
+        </div>
+
+        <!-- Ações do formulário -->
+        <div class="form-actions">
+          <div class="action-buttons">
+            <button type="button"
+                    mat-stroked-button
+                    (click)="goBack()"
+                    [disabled]="isSubmitting"
+                    class="cancel-btn">
+              <mat-icon>close</mat-icon>
+              Cancelar
+            </button>
+            
+            <button type="button"
+                    mat-stroked-button
+                    (click)="resetForm()"
+                    [disabled]="isSubmitting || !categoryForm.dirty"
+                    class="reset-btn">
+              <mat-icon>refresh</mat-icon>
+              Limpar
+            </button>
+            
+            <button type="submit"
+                    mat-raised-button
+                    [disabled]="!categoryForm.valid || isSubmitting"
+                    class="submit-btn">
+              <div class="btn-content">
+                <mat-spinner diameter="20" *ngIf="isSubmitting" class="btn-spinner"></mat-spinner>
+                <mat-icon *ngIf="!isSubmitting">{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
+                <span>{{ isSubmitting ? 'Salvando...' : (isEditMode ? 'Salvar Alterações' : 'Criar Categoria') }}</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </form>
       </div>
 
       <!-- Loading Overlay -->
@@ -270,613 +265,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
       </div>
     </div>
   `,
-  styles: [`
-    .category-form-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    /* Header moderno */
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      padding: 24px 32px;
-      
-      .header-left {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        
-        .back-button {
-          margin-right: 20px;
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-          color: #64748b;
-          border-radius: 12px;
-          transition: all 0.3s ease;
-          
-          &:hover {
-            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          }
-          
-          mat-icon {
-            font-size: 24px;
-          }
-        }
-        
-        .header-content {
-          flex: 1;
-          
-          .title-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            
-            .title-icon {
-              width: 60px;
-              height: 60px;
-              background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-              border-radius: 16px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              
-              mat-icon {
-                font-size: 32px;
-                color: white;
-              }
-            }
-            
-            .title-text {
-              h1 {
-                margin: 0 0 4px 0;
-                font-size: 28px;
-                font-weight: 700;
-                color: white;
-                line-height: 1.2;
-              }
-              
-              p {
-                margin: 0;
-                color: rgba(255, 255, 255, 0.7);
-                font-size: 15px;
-                line-height: 1.4;
-              }
-            }
-          }
-        }
-      }
-      
-      .header-right {
-        .progress-indicator {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 20px;
-          background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-          border-radius: 12px;
-          border: 1px solid #7dd3fc;
-          
-          .step {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #0ea5e9, #0284c7);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-          }
-          
-          .step-label {
-            color: #0369a1;
-            font-weight: 600;
-            font-size: 14px;
-          }
-        }
-      }
-    }
-
-    /* Form wrapper */
-    .form-wrapper {
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-    }
-
-    /* Form e seções */
-    .form-card {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      
-      .category-form {
-        padding: 32px;
-      }
-    }
-
-    .form-section {
-      margin-bottom: 32px;
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-      
-      &:last-child {
-        margin-bottom: 0;
-      }
-      
-      &.basic-info {
-        border-left: 4px solid #3b82f6;
-      }
-      
-      &.config-info {
-        border-left: 4px solid #8b5cf6;
-      }
-      
-      &.summary-section {
-        border-left: 4px solid #f59e0b;
-        background: linear-gradient(135deg, #fffbeb, #fef3c7);
-      }
-      
-      .section-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 24px 32px 0;
-        margin-bottom: 24px;
-        
-        .section-icon {
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          
-          mat-icon {
-            font-size: 24px;
-            color: #64748b;
-          }
-        }
-        
-        .section-content {
-          flex: 1;
-          
-          h3 {
-            margin: 0 0 4px 0;
-            font-size: 18px;
-            font-weight: 600;
-            color: white;
-          }
-          
-          p {
-            margin: 0;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.7);
-          }
-        }
-      }
-      
-      .section-body {
-        padding: 0 32px 32px;
-        
-        .field-group {
-          display: grid;
-          gap: 24px;
-          
-          .field-wrapper {
-            &.full-width {
-              grid-column: 1 / -1;
-            }
-            
-            .modern-field {
-              width: 100%;
-            }
-          }
-        }
-      }
-    }
-
-    /* Estilos para tipos */
-    .placeholder-option, .type-option {
-      display: flex !important;
-      align-items: center;
-      gap: 8px;
-      flex-direction: column;
-      padding: 8px 0;
-      
-      &.receita {
-        mat-icon {
-          color: #10b981;
-        }
-      }
-      
-      &.despesa {
-        mat-icon {
-          color: #ef4444;
-        }
-      }
-      
-      small {
-        color: #64748b;
-        font-size: 11px;
-        margin-top: 2px;
-      }
-    }
-
-    /* Color Preview */
-    .color-preview {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: #f8fafc;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      
-      .color-label {
-        font-size: 14px;
-        font-weight: 500;
-        color: #374151;
-      }
-      
-      .color-sample {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        
-        mat-icon {
-          color: white;
-          font-size: 20px;
-        }
-      }
-      
-      .color-info {
-        flex: 1;
-        
-        span {
-          display: block;
-          font-size: 14px;
-          font-weight: 500;
-          color: #1a202c;
-        }
-        
-        small {
-          display: block;
-          font-size: 12px;
-          color: #64748b;
-          margin-top: 2px;
-        }
-      }
-    }
-
-    /* Summary grid */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
-      
-      .summary-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 16px;
-        background: white;
-        border-radius: 12px;
-        border: 1px solid #f1f5f9;
-        transition: all 0.2s ease;
-        
-        &:hover {
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        &.highlight {
-          background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
-          border-color: #c4b5fd;
-          
-          .category-type {
-            color: #7c3aed;
-            font-weight: 700;
-          }
-        }
-        
-        .item-icon {
-          width: 36px;
-          height: 36px;
-          background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          
-          mat-icon {
-            font-size: 20px;
-            color: #64748b;
-          }
-        }
-        
-        .item-content {
-          flex: 1;
-          
-          .label {
-            display: block;
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 2px;
-            text-transform: uppercase;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-          }
-          
-          .value {
-            display: block;
-            font-size: 14px;
-            color: #1a202c;
-            font-weight: 600;
-          }
-        }
-      }
-    }
-
-    /* Actions */
-    .form-actions {
-      padding: 32px;
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      
-      .action-buttons {
-        display: flex;
-        gap: 16px;
-        justify-content: flex-end;
-        align-items: center;
-        
-        .cancel-btn {
-          color: rgba(255, 255, 255, 0.7);
-          
-          mat-icon {
-            margin-right: 8px;
-          }
-          
-          &:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-          }
-        }
-        
-        .reset-btn {
-          color: #0ea5e9;
-          border-color: #0ea5e9;
-          
-          mat-icon {
-            margin-right: 8px;
-          }
-          
-          &:hover {
-            background: rgba(14, 165, 233, 0.1);
-          }
-        }
-        
-        .submit-btn {
-          background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
-          color: white !important;
-          padding: 12px 32px;
-          font-weight: 600;
-          border-radius: 12px;
-          min-width: 160px;
-          
-          .btn-content {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            
-            .btn-spinner {
-              width: 20px;
-              height: 20px;
-            }
-            
-            mat-icon {
-              font-size: 20px;
-            }
-          }
-          
-          &:hover {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
-          }
-          
-          &:disabled {
-            opacity: 0.6;
-            transform: none !important;
-            box-shadow: none !important;
-          }
-        }
-      }
-    }
-
-    /* Loading overlay */
-    .loading-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      border-radius: 20px;
-      
-      mat-spinner {
-        margin-bottom: 16px;
-      }
-      
-      p {
-        color: white;
-        font-weight: 500;
-        margin: 0;
-      }
-    }
-
-    /* Customização do Material Design */
-    ::ng-deep .mat-mdc-form-field {
-      &.modern-field {
-        .mat-mdc-form-field-outline {
-          border-radius: 12px !important;
-          color: rgba(255, 255, 255, 0.3) !important;
-        }
-        
-        &.mat-focused {
-          .mat-mdc-form-field-outline-thick {
-            border-color: #8b5cf6 !important;
-          }
-          
-          .mat-mdc-form-field-label {
-            color: #8b5cf6 !important;
-          }
-        }
-        
-        .mat-mdc-form-field-label {
-          font-weight: 500;
-          color: rgba(255, 255, 255, 0.7) !important;
-        }
-        
-        .mat-mdc-input-element {
-          font-size: 14px;
-          color: white !important;
-        }
-        
-        .mat-mdc-form-field-outline-thick {
-          color: rgba(255, 255, 255, 0.5) !important;
-        }
-      }
-    }
-
-    /* Force dark theme for form fields */
-    ::ng-deep .mat-mdc-form-field {
-      color: white !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
-      background: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-input-control {
-      color: white !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.7) !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-outline {
-      color: rgba(255, 255, 255, 0.3) !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-outline-thick {
-      color: rgba(255, 255, 255, 0.5) !important;
-    }
-
-    /* Responsividade */
-    @media (max-width: 768px) {
-      .category-form-container {
-        padding: 16px;
-      }
-      
-      .page-header {
-        padding: 20px;
-        flex-direction: column;
-        text-align: center;
-        gap: 16px;
-        
-        .header-left {
-          justify-content: center;
-          
-          .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            margin: 0;
-          }
-          
-          .header-content .title-section {
-            flex-direction: column;
-            text-align: center;
-            gap: 12px;
-          }
-        }
-        
-        .header-right {
-          order: -1;
-        }
-      }
-      
-      .form-section {
-        .section-header {
-          padding: 20px 24px 0;
-          
-          .section-icon {
-            width: 40px;
-            height: 40px;
-          }
-        }
-        
-        .section-body {
-          padding: 0 24px 24px;
-        }
-      }
-      
-      .summary-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .form-actions {
-        padding: 24px;
-        
-        .action-buttons {
-          flex-direction: column;
-          
-          .submit-btn {
-            order: -1;
-            width: 100%;
-          }
-        }
-      }
-    }
-
-    @media (max-width: 480px) {
-      .page-header .header-left .header-content .title-section .title-text h1 {
-        font-size: 24px;
-      }
-      
-      .form-section .section-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 12px;
-      }
-    }
-  `]
+  styles: []
 })
 export class CategoryFormComponent implements OnInit, OnDestroy {
 

@@ -369,6 +369,16 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           mat-icon {
             color: white !important;
             font-size: 32px !important;
+            width: 32px !important;
+            height: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: center !important;
+            vertical-align: middle !important;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
           }
           
@@ -476,7 +486,17 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           
           mat-icon {
             font-size: 32px;
+            width: 32px;
+            height: 32px;
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            vertical-align: middle;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
           }
         }
