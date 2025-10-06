@@ -898,20 +898,35 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           width: 80px;
           height: 80px;
           margin: 0 auto 24px;
-          background: rgba(255, 255, 255, 0.05);
+          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
           border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
+          box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+          position: relative;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-radius: 22px;
+            z-index: -1;
+          }
 
           mat-icon {
             font-size: 36px;
             width: 36px;
             height: 36px;
-            color: rgba(255, 255, 255, 0.5);
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 
             &.filter-icon {
-              color: #8b5cf6;
+              color: white;
             }
           }
         }

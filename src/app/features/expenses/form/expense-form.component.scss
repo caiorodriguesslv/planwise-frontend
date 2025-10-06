@@ -116,8 +116,16 @@
   }
   
   mat-icon {
-    color: white;
-    font-size: 28px;
+    color: white !important;
+    font-size: 28px !important;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   }
 }
@@ -537,6 +545,7 @@
     justify-content: center !important;
     gap: 8px !important;
     height: 100% !important;
+    width: 100% !important;
     
     .btn-spinner {
       width: 20px !important;
@@ -550,6 +559,10 @@
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
+      width: 18px !important;
+      height: 18px !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
     
     span {
@@ -558,6 +571,7 @@
       line-height: 1 !important;
       display: flex !important;
       align-items: center !important;
+      white-space: nowrap !important;
     }
   }
   
