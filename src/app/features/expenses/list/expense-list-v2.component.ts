@@ -50,11 +50,15 @@ import { PageRequest } from '../../../core/models/api.model';
     MatSnackBarModule
   ],
   template: `
-    <div class="expense-list-container planwise-bg-primary">
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      
       <!-- Header principal -->
       <div class="page-header">
         <div class="page-title">
-          <mat-icon class="page-icon">trending_down</mat-icon>
+          <div class="page-icon">
+            <mat-icon>trending_down</mat-icon>
+          </div>
           <div class="title-content">
             <h1>Minhas Despesas</h1>
             <p>Gerencie e monitore todos os seus gastos</p>
@@ -66,46 +70,40 @@ import { PageRequest } from '../../../core/models/api.model';
         </button>
       </div>
 
-      <!-- Cards de estatísticas -->
-      <div class="stats-cards">
-        <mat-card class="stat-card">
-          <mat-card-content>
-            <div class="stat-icon red">
-              <mat-icon>account_balance_wallet</mat-icon>
-            </div>
-            <div class="stat-content">
-              <h2>{{ stats.total | currency:'BRL':'symbol':'1.2-2' }}</h2>
-              <p>Total de Despesas</p>
-              <span class="stat-period">Este mês</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card expense">
+          <div class="stat-icon">
+            <mat-icon>account_balance_wallet</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Total de Despesas</h3>
+            <p class="amount">{{ stats.total | currency:'BRL':'symbol':'1.2-2' }}</p>
+            <span class="subtitle">Este mês</span>
+          </div>
+        </div>
 
-        <mat-card class="stat-card">
-          <mat-card-content>
-            <div class="stat-icon blue">
-              <mat-icon>receipt_long</mat-icon>
-            </div>
-            <div class="stat-content">
-              <h2>{{ totalElements || 0 }}</h2>
-              <p>Total de Transações</p>
-              <span class="stat-period">Despesas registradas</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
+        <div class="stat-card income">
+          <div class="stat-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Total de Transações</h3>
+            <p class="amount">{{ totalElements || 0 }}</p>
+            <span class="subtitle">Despesas registradas</span>
+          </div>
+        </div>
 
-        <mat-card class="stat-card">
-          <mat-card-content>
-            <div class="stat-icon purple">
-              <mat-icon>trending_up</mat-icon>
-            </div>
-            <div class="stat-content">
-              <h2>{{ stats.average | currency:'BRL':'symbol':'1.2-2' }}</h2>
-              <p>Média por Despesa</p>
-              <span class="stat-period">Valor médio</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
+        <div class="stat-card balance">
+          <div class="stat-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Média por Despesa</h3>
+            <p class="amount">{{ stats.average | currency:'BRL':'symbol':'1.2-2' }}</p>
+            <span class="subtitle">Valor médio</span>
+          </div>
+        </div>
       </div>
 
       <!-- Filtros -->

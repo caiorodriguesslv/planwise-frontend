@@ -185,7 +185,7 @@ import { NotificationService } from '../../core/services/notification.service';
       margin-bottom: 32px;
       
       .stat-card {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
         border-radius: 20px;
         padding: 28px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
@@ -263,55 +263,72 @@ import { NotificationService } from '../../core/services/notification.service';
         }
         
         &.income .stat-icon {
-          background: linear-gradient(135deg, #00d4ff, #0099cc);
+          background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
           box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
         }
         
         &.expense .stat-icon {
-          background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+          background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
           box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
         
         &.balance .stat-icon {
-          background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
           box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
         
         &.goals .stat-icon {
-          background: linear-gradient(135deg, #ffa726, #ff9800);
+          background: linear-gradient(135deg, var(--planwise-orange), var(--planwise-orange-dark));
           box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4);
         }
       }
     }
 
     .quick-actions {
-      margin-bottom: 32px;
+      margin-bottom: 40px;
       
       h2 {
-        margin: 0 0 20px 0;
-        font-size: 20px;
+        margin: 0 0 24px 0;
+        font-size: 24px;
         font-weight: 700;
-        color: #1a202c;
+        color: white;
+        text-align: center;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 60px;
+          height: 3px;
+          background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-purple));
+          border-radius: 2px;
+        }
       }
       
       .actions-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        max-width: 1000px;
+        margin: 0 auto;
         
         .action-card {
-          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-          border-radius: 20px;
-          padding: 28px;
+          background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+          border-radius: 24px;
+          padding: 32px;
           display: flex;
           align-items: center;
-          gap: 20px;
+          gap: 24px;
           cursor: pointer;
           transition: all 0.3s ease;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
           position: relative;
           overflow: hidden;
+          min-height: 120px;
           
           &::before {
             content: '';
@@ -325,21 +342,35 @@ import { NotificationService } from '../../core/services/notification.service';
           }
           
           .action-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+            background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+            position: relative;
+            
+            &::before {
+              content: '';
+              position: absolute;
+              top: -2px;
+              left: -2px;
+              right: -2px;
+              bottom: -2px;
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+              border-radius: 18px;
+              z-index: -1;
+            }
             
             mat-icon {
-              font-size: 28px;
-              width: 28px;
-              height: 28px;
+              font-size: 32px;
+              width: 32px;
+              height: 32px;
               color: white;
+              filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
             }
           }
           
@@ -347,65 +378,77 @@ import { NotificationService } from '../../core/services/notification.service';
             flex: 1;
             
             h3 {
-              margin: 0 0 4px 0;
-              font-size: 16px;
-              font-weight: 600;
+              margin: 0 0 8px 0;
+              font-size: 18px;
+              font-weight: 700;
               color: white;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             }
             
             p {
               margin: 0;
-              font-size: 13px;
-              color: rgba(255, 255, 255, 0.7);
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.8);
+              line-height: 1.4;
             }
           }
           
           &:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
           }
           
-          &.income-action {
-            .action-icon {
-              background: linear-gradient(135deg, #00d4ff, #0099cc);
-              box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
-            }
+          &.income-action .action-icon {
+            background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+          }
+          
+          &.expense-action .action-icon {
+            background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+          }
+          
+          &.goal-action .action-icon {
+            background: linear-gradient(135deg, var(--planwise-orange), var(--planwise-orange-dark));
+            box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4);
+          }
+          
+          &.report-action .action-icon {
+            background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+          }
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .actions-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 0 16px;
+        }
+        
+        .action-card {
+          padding: 24px;
+          min-height: 100px;
+          
+          .action-icon {
+            width: 56px;
+            height: 56px;
             
-            &:hover {
-              border-color: #00d4ff;
+            mat-icon {
+              font-size: 28px;
+              width: 28px;
+              height: 28px;
             }
           }
           
-          &.expense-action {
-            .action-icon {
-              background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-              box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+          .action-content {
+            h3 {
+              font-size: 16px;
             }
             
-            &:hover {
-              border-color: #ff6b6b;
-            }
-          }
-          
-          &.goal-action {
-            .action-icon {
-              background: linear-gradient(135deg, #ffa726, #ff9800);
-              box-shadow: 0 4px 12px rgba(255, 167, 38, 0.3);
-            }
-            
-            &:hover {
-              border-color: #ffa726;
-            }
-          }
-          
-          &.report-action {
-            .action-icon {
-              background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-              box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-            }
-            
-            &:hover {
-              border-color: #8b5cf6;
+            p {
+              font-size: 13px;
             }
           }
         }

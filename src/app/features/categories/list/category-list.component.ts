@@ -48,14 +48,18 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
     MatDividerModule
   ],
   template: `
-    <div class="category-list-container planwise-bg-primary">
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      
       <!-- Header principal -->
-      <div class="page-header planwise-card">
+      <div class="page-header">
         <div class="page-title">
-          <mat-icon class="page-icon planwise-icon-purple">category</mat-icon>
+          <div class="page-icon">
+            <mat-icon>category</mat-icon>
+          </div>
           <div class="title-content">
-            <h1 class="planwise-text-primary">Minhas Categorias</h1>
-            <p class="planwise-text-muted">Organize suas receitas e despesas por categoria</p>
+            <h1>Minhas Categorias</h1>
+            <p>Organize suas receitas e despesas por categoria</p>
           </div>
         </div>
         <button mat-raised-button color="primary" class="new-category-btn" (click)="createNew()">
@@ -64,60 +68,54 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         </button>
       </div>
 
-      <!-- Cards de estatísticas -->
-      <div class="stats-cards">
-        <mat-card class="planwise-card">
-          <mat-card-content>
-            <div class="planwise-card-icon planwise-icon-purple">
-              <mat-icon>category</mat-icon>
-            </div>
-            <div class="stat-content">
-              <h2 class="planwise-text-primary">{{ stats.total }}</h2>
-              <p class="planwise-text-secondary">Total de Categorias</p>
-              <span class="planwise-text-muted">Ativas</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-icon">
+            <mat-icon>category</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Total de Categorias</h3>
+            <p class="amount">{{ stats.total }}</p>
+            <span class="subtitle">Ativas</span>
+          </div>
+        </div>
 
-        <mat-card class="planwise-card">
-          <mat-card-content>
-            <div class="planwise-card-icon planwise-icon-cyan">
-              <mat-icon>trending_up</mat-icon>
-            </div>
-            <div class="stat-content">
-              <h2 class="planwise-text-primary">{{ stats.byType.receitas }}</h2>
-              <p class="planwise-text-secondary">Receitas</p>
-              <span class="planwise-text-muted">Categorias de entrada</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
+        <div class="stat-card income">
+          <div class="stat-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Receitas</h3>
+            <p class="amount">{{ stats.byType.receitas }}</p>
+            <span class="subtitle">Categorias de entrada</span>
+          </div>
+        </div>
 
-        <mat-card class="planwise-card">
-          <mat-card-content>
-            <div class="planwise-card-icon planwise-icon-red">
-              <mat-icon>trending_down</mat-icon>
-            </div>
-            <div class="stat-content">
-              <h2 class="planwise-text-primary">{{ stats.byType.despesas }}</h2>
-              <p class="planwise-text-secondary">Despesas</p>
-              <span class="planwise-text-muted">Categorias de saída</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
+        <div class="stat-card expense">
+          <div class="stat-icon">
+            <mat-icon>trending_down</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>Despesas</h3>
+            <p class="amount">{{ stats.byType.despesas }}</p>
+            <span class="subtitle">Categorias de saída</span>
+          </div>
+        </div>
       </div>
 
       <!-- Filtros -->
-      <mat-card class="planwise-card">
+      <mat-card class="filters-card">
         <mat-card-header class="filters-header">
-          <mat-card-title class="planwise-text-primary">
+          <mat-card-title>
             <mat-icon>filter_list</mat-icon>
             Filtros de Busca
           </mat-card-title>
           <div class="filters-actions">
-            <span class="active-filters planwise-text-secondary" *ngIf="getActiveFiltersCount() > 0">
+            <span class="active-filters" *ngIf="getActiveFiltersCount() > 0">
               {{ getActiveFiltersCount() }} filtro(s) ativo(s)
             </span>
-            <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0" class="planwise-text-muted">
+            <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0">
               <mat-icon>clear</mat-icon>
               Limpar
             </button>
@@ -136,21 +134,22 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="filter-type">
-                <mat-label>Tipo</mat-label>
+                <mat-label>Tipo da categoria</mat-label>
                 <mat-select formControlName="type">
                   <mat-option value="">
-                    <span class="select-all-option">
+                    <span class="select-option">
+                      <mat-icon>filter_list</mat-icon>
                       Todos os tipos
                     </span>
                   </mat-option>
                   <mat-option value="RECEITA">
-                    <span class="type-option receita">
+                    <span class="select-option income">
                       <mat-icon>trending_up</mat-icon>
                       Receita
                     </span>
                   </mat-option>
                   <mat-option value="DESPESA">
-                    <span class="type-option despesa">
+                    <span class="select-option expense">
                       <mat-icon>trending_down</mat-icon>
                       Despesa
                     </span>
@@ -163,7 +162,7 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       </mat-card>
 
       <!-- Tabela de categorias -->
-      <mat-card class="planwise-card">
+      <mat-card class="table-card">
         <mat-card-content>
           <!-- Loading spinner -->
           <div *ngIf="isLoading" class="loading-container">
@@ -251,20 +250,38 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
               </table>
             </div>
 
-            <!-- Estado vazio melhorado -->
+            <!-- Estado vazio -->
             <div *ngIf="categories.length === 0" class="empty-state">
-              <div class="empty-state-content">
+              <div class="empty-content">
                 <div class="empty-icon">
-                  <mat-icon>category</mat-icon>
+                  <mat-icon [class.filter-icon]="getActiveFiltersCount() > 0">
+                    {{ getActiveFiltersCount() > 0 ? 'filter_list' : 'category' }}
+                  </mat-icon>
                 </div>
-                <h3 class="planwise-text-primary">{{ getActiveFiltersCount() > 0 ? 'Nenhuma categoria encontrada' : 'Nenhuma categoria cadastrada' }}</h3>
-                <p class="planwise-text-muted">{{ getActiveFiltersCount() > 0 ? 'Tente ajustar os filtros de busca ou limpar todos os filtros.' : 'Comece criando sua primeira categoria para organizar suas receitas e despesas.' }}</p>
+
+                <div class="empty-text">
+                  <h3>
+                    {{ getActiveFiltersCount() > 0 ? 'Nenhum resultado encontrado' : 'Nenhuma categoria cadastrada' }}
+                  </h3>
+                  <p>
+                    {{ getActiveFiltersCount() > 0 ? 
+                      'Não encontramos nenhuma categoria com os filtros selecionados.' : 
+                      'Organize suas finanças criando categorias para suas receitas e despesas.' }}
+                  </p>
+                </div>
+
                 <div class="empty-actions">
-                  <button *ngIf="getActiveFiltersCount() > 0" mat-stroked-button (click)="clearFilters()" class="clear-btn">
-                    <mat-icon>clear</mat-icon>
+                  <button *ngIf="getActiveFiltersCount() > 0"
+                          mat-stroked-button
+                          (click)="clearFilters()"
+                          class="clear-filters-button">
+                    <mat-icon>refresh</mat-icon>
                     Limpar Filtros
                   </button>
-                  <button mat-raised-button color="primary" (click)="createNew()" class="create-btn">
+                  
+                  <button mat-flat-button
+                          (click)="createNew()"
+                          class="new-category-button">
                     <mat-icon>add</mat-icon>
                     Nova Categoria
                   </button>
@@ -286,14 +303,32 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
     </div>
   `,
   styles: [`
-    .category-list-container {
+    .dashboard-content {
       max-width: 1200px;
       margin: 0 auto;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: calc(100vh - 80px);
+      position: relative;
+      border-radius: 20px;
       padding: 24px;
-      min-height: 100vh;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 60%, rgba(255, 167, 38, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        border-radius: 20px;
+      }
     }
 
-    /* Header */
+    /* Header - Baseado no Dashboard */
     .page-header {
       display: flex;
       justify-content: space-between;
@@ -314,6 +349,33 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           display: flex;
           align-items: center;
           justify-content: center;
+          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+          position: relative;
+          transition: all 0.3s ease;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-radius: 18px;
+            z-index: -1;
+          }
+          
+          mat-icon {
+            color: white !important;
+            font-size: 32px !important;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+          }
+          
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.6);
+          }
         }
         
         .title-content {
@@ -321,59 +383,74 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             margin: 0 0 4px 0;
             font-size: 28px;
             font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
           }
           
           p {
             margin: 0;
             font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
           }
         }
       }
       
       .new-category-btn {
-        background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+        background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark)) !important;
         color: white !important;
         padding: 12px 24px;
         font-weight: 600;
         border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
         
         mat-icon {
           margin-right: 8px;
         }
         
         &:hover {
-          background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+          background: linear-gradient(135deg, var(--planwise-purple-dark), #6d28d9) !important;
           transform: translateY(-1px);
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
         }
       }
     }
 
     /* Stats Cards */
-    .stats-cards {
+    .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 24px;
       margin-bottom: 32px;
-      
+
       .stat-card {
-        border-radius: 16px;
-        overflow: hidden;
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
         
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+          pointer-events: none;
         }
         
-        mat-card-content {
-          padding: 24px;
-          display: flex;
-          align-items: center;
-          gap: 20px;
+        &:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
         }
         
         .stat-icon {
@@ -383,113 +460,264 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-shrink: 0;
+          position: relative;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-radius: 18px;
+            z-index: -1;
+          }
           
           mat-icon {
             font-size: 32px;
-            width: 32px;
-            height: 32px;
             color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
           }
         }
         
-        .stat-content {
-          flex: 1;
-          
-          h2 {
+        .stat-info {
+          h3 {
             margin: 0 0 4px 0;
-            font-size: 32px;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+          }
+          
+          .amount {
+            margin: 0 0 2px 0;
+            font-size: 24px;
             font-weight: 700;
             color: white;
           }
           
-          p {
-            margin: 0 0 4px 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-          }
-          
-          .stat-period {
+          .subtitle {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.6);
           }
         }
         
         &.total .stat-icon {
-          background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+          box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
         
-        &.green .stat-icon {
-          background: linear-gradient(135deg, #10b981, #059669);
+        &.income .stat-icon {
+          background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
+          box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
         }
         
-        &.red .stat-icon {
-          background: linear-gradient(135deg, #ef4444, #dc2626);
+        &.expense .stat-icon {
+          background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
+          box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
       }
     }
 
-    /* Filters */
+    /* Filtros - Baseado no Dashboard */
     .filters-card {
-      margin-bottom: 24px;
-      border-radius: 16px;
+      margin-bottom: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      overflow: hidden;
       
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        pointer-events: none;
+      }
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 32px 20px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .filters-header mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .filters-header mat-card-title mat-icon {
+      font-size: 24px;
+      color: var(--planwise-purple);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .filters-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .active-filters {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(139, 92, 246, 0.2);
+      padding: 4px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .filters-actions button {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+    }
+
+    .filters-actions button:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .filters-actions button.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .filters-form {
+      padding: 20px 24px 24px 24px;
+      
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        align-items: end;
+      }
+    }
+
+    .filter-search {
+      grid-column: span 2;
+    }
+
+    .filter-type {
+      min-width: 200px;
+    }
+
+    /* Tabela - Baseado no Dashboard */
+    .table-card {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    /* Search Filters */
+    .search-filters {
+      background: #1c2029;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+
       .filters-header {
-        padding: 24px 24px 0;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
         
-        mat-card-title {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin: 0;
-          font-size: 18px;
-          font-weight: 600;
-          color: white;
-          
-          mat-icon {
-            color: #ff6b6b;
-          }
+        mat-icon {
+          color: rgba(255, 255, 255, 0.7);
+          margin-right: 12px;
         }
-        
-        .filters-actions {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          
-          .active-filters {
-            color: #8b5cf6;
-            font-size: 13px;
-            font-weight: 600;
+
+        span {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 16px;
+          font-weight: 500;
+          flex: 1;
+        }
+
+        .clear-filters-btn {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 14px;
+
+          mat-icon {
+            font-size: 18px;
+            margin-right: 4px;
           }
-          
-          button.disabled {
-            opacity: 0.5;
-            pointer-events: none;
+
+          &:hover {
+            color: rgba(255, 255, 255, 0.9);
           }
         }
       }
-      
-      .filters-form {
-        .filter-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 20px;
-          
-          .select-all-option, .type-option {
+
+      .filters-content {
+        .filters-form {
+          .filter-group {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            
-            &.receita mat-icon {
-              color: #10b981;
+            gap: 16px;
+
+            .search-field {
+              flex: 2;
+
+              .search-input-wrapper {
+                display: flex;
+                align-items: center;
+
+                mat-icon {
+                  margin-right: 8px;
+                  color: rgba(255, 255, 255, 0.5);
+                }
+
+                input {
+                  color: white;
+                }
+              }
             }
-            
-            &.despesa mat-icon {
-              color: #ef4444;
+
+            .type-field {
+              flex: 1;
+
+              .select-option {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                mat-icon {
+                  font-size: 18px;
+                }
+
+                &.income mat-icon {
+                  color: #00BCD4;
+                }
+
+                &.expense mat-icon {
+                  color: #FF5252;
+                }
+              }
             }
           }
         }
@@ -640,47 +868,85 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       align-items: center;
       justify-content: center;
       min-height: 400px;
-      text-align: center;
-      
-      .empty-state-content {
-        max-width: 400px;
-        
+      padding: 48px 24px;
+
+      .empty-content {
+        max-width: 420px;
+        text-align: center;
+
         .empty-icon {
-          width: 120px;
-          height: 120px;
+          width: 80px;
+          height: 80px;
           margin: 0 auto 24px;
-          background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
-          
+
           mat-icon {
-            font-size: 48px;
-            width: 48px;
-            height: 48px;
-            color: #9ca3af;
+            font-size: 36px;
+            width: 36px;
+            height: 36px;
+            color: rgba(255, 255, 255, 0.5);
+
+            &.filter-icon {
+              color: #8b5cf6;
+            }
           }
         }
-        
-        h3 {
-          margin: 0 0 12px 0;
-          font-size: 20px;
-          font-weight: 600;
-          color: white;
+
+        .empty-text {
+          margin-bottom: 32px;
+
+          h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 12px;
+          }
+
+          p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+          }
         }
-        
-        p {
-          margin: 0 0 24px 0;
-          color: rgba(255, 255, 255, 0.7);
-          line-height: 1.6;
-        }
-        
+
         .empty-actions {
           display: flex;
-          gap: 12px;
+          gap: 16px;
           justify-content: center;
-          flex-wrap: wrap;
+
+          .clear-filters-button {
+            color: rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 255, 255, 0.2);
+
+            mat-icon {
+              margin-right: 8px;
+            }
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.05);
+              border-color: rgba(255, 255, 255, 0.3);
+              color: rgba(255, 255, 255, 0.9);
+            }
+          }
+
+          .new-category-button {
+            background: #8b5cf6;
+            color: white;
+
+            mat-icon {
+              margin-right: 8px;
+            }
+
+            &:hover {
+              background: #7c3aed;
+              box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            }
+          }
         }
       }
     }
