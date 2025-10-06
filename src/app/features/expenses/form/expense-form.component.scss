@@ -352,14 +352,29 @@
     
     .mat-mdc-input-element {
       color: white !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      
+      &:focus {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: var(--planwise-purple) !important;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+      }
       
       &::placeholder {
-        color: rgba(255, 255, 255, 0.5) !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 400 !important;
       }
     }
     
     .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.7) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
     }
     
     .mat-mdc-form-field-hint {
@@ -372,20 +387,94 @@
     
     // Override para mat-select
     .mat-mdc-select {
-      background: transparent !important;
+      background: rgba(255, 255, 255, 0.2) !important;
       color: white !important;
+      border: 2px solid rgba(255, 255, 255, 0.3) !important;
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      min-height: 48px !important;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
+      }
+      
+      &:focus {
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-color: var(--planwise-purple) !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3) !important;
+      }
     }
     
     .mat-mdc-select-value {
       color: white !important;
+      font-weight: 600 !important;
+      font-size: 16px !important;
+    }
+    
+    .mat-mdc-select-value-text {
+      color: white !important;
+      font-weight: 600 !important;
+      font-size: 16px !important;
     }
     
     .mat-mdc-select-placeholder {
-      color: rgba(255, 255, 255, 0.5) !important;
+      color: rgba(255, 255, 255, 0.8) !important;
+      font-weight: 500 !important;
+      font-size: 16px !important;
     }
     
     .mat-mdc-select-arrow {
       color: white !important;
+      font-size: 20px !important;
+    }
+    
+    // Forçar cor branca para o texto selecionado
+    .mat-mdc-select .mat-mdc-select-value .mat-mdc-select-value-text {
+      color: white !important;
+    }
+    
+    // Override para qualquer texto dentro do select
+    .mat-mdc-select * {
+      color: white !important;
+    }
+    
+    // Estilo específico para o texto da linha mínima
+    .mat-mdc-select-min-line {
+      color: white !important;
+      font-weight: 600 !important;
+      font-size: 16px !important;
+    }
+    
+    // Override mais específico para o valor selecionado
+    .mat-mdc-select-value .mat-mdc-select-value-text .mat-mdc-select-min-line {
+      color: white !important;
+    }
+    
+    // Estilos específicos para campo de valor
+    .currency-input {
+      .mat-mdc-input-element {
+        color: #10b981 !important;
+        font-weight: 600 !important;
+        font-size: 18px !important;
+        
+        &:focus {
+          color: #059669 !important;
+          border-color: #10b981 !important;
+          box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+        }
+      }
+    }
+    
+    // Estilos para o prefixo R$
+    .currency-prefix {
+      color: #10b981 !important;
+      font-weight: 600 !important;
+      font-size: 16px !important;
+      margin-right: 8px !important;
+      padding-right: 4px !important;
     }
     
     // Override para mat-option (dropdown options)
@@ -393,22 +482,26 @@
       background: var(--planwise-bg-secondary) !important;
       color: white !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 12px 16px;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      padding: 16px 20px !important;
+      min-height: 48px !important;
       
       &:hover {
-        background: rgba(255, 255, 255, 0.1) !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: white !important;
       }
       
       &.mat-mdc-option-active {
-        background: rgba(139, 92, 246, 0.2) !important;
+        background: rgba(139, 92, 246, 0.3) !important;
         color: white !important;
+        font-weight: 700 !important;
       }
       
       &.mat-mdc-option-selected {
-        background: rgba(139, 92, 246, 0.3) !important;
+        background: rgba(139, 92, 246, 0.4) !important;
         color: white !important;
+        font-weight: 700 !important;
       }
       
       // Estilo para placeholder
@@ -730,6 +823,21 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
 }
 
+// Override global para texto do select
+::ng-deep .mat-mdc-select-min-line {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+::ng-deep .mat-mdc-select-value-text {
+  color: white !important;
+}
+
+::ng-deep .mat-mdc-select-value .mat-mdc-select-value-text {
+  color: white !important;
+}
+
 ::ng-deep .mat-mdc-option {
   background: var(--planwise-bg-secondary) !important;
   color: white !important;
@@ -747,5 +855,158 @@
   &.mat-mdc-option-selected {
     background: rgba(139, 92, 246, 0.3) !important;
     color: white !important;
+  }
+}
+
+// Estilos para a seção de resumo
+.summary-section {
+  .summary-card {
+    background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+      pointer-events: none;
+    }
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .item-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+
+      mat-icon {
+        color: white;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .item-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .label {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .value {
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        word-break: break-word;
+      }
+    }
+  }
+
+  // Cores específicas para cada tipo de item
+  .summary-item:nth-child(1) .item-icon {
+    background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+  }
+
+  .summary-item:nth-child(2) .item-icon {
+    background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  }
+
+  .summary-item:nth-child(3) .item-icon {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
+  }
+
+  .summary-item:nth-child(4) .item-icon {
+    background: linear-gradient(135deg, var(--planwise-orange), var(--planwise-orange-dark));
+    box-shadow: 0 4px 15px rgba(255, 167, 38, 0.3);
+  }
+}
+
+// Responsividade para a seção de resumo
+@media (max-width: 768px) {
+  .summary-section {
+    .summary-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .summary-item {
+      padding: 12px;
+      gap: 12px;
+
+      .item-icon {
+        width: 40px;
+        height: 40px;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .item-content {
+        .label {
+          font-size: 11px;
+        }
+
+        .value {
+          font-size: 14px;
+        }
+      }
+    }
   }
 }

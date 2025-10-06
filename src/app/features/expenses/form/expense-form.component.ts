@@ -88,10 +88,9 @@ import { CategoryResponse } from '../../../core/models/category.model';
               <!-- Description -->
               <div class="field-wrapper full-width">
                 <mat-form-field appearance="outline" class="modern-field">
-                  <mat-label>Descrição da Despesa</mat-label>
                   <input matInput 
                          formControlName="description"
-                         placeholder="Ex: Compra no supermercado, Conta de luz..."
+                         placeholder="Descrição da Despesa"
                          maxlength="100">
                   <mat-hint align="end">
                     {{ expenseForm.get('description')?.value?.length || 0 }}/100 caracteres
@@ -111,8 +110,7 @@ import { CategoryResponse } from '../../../core/models/category.model';
               <!-- Category -->
               <div class="field-wrapper full-width">
                 <mat-form-field appearance="outline" class="modern-field">
-                  <mat-label>Categoria</mat-label>
-                  <mat-select formControlName="categoryId" placeholder="Selecione uma categoria">
+                  <mat-select formControlName="categoryId" placeholder="Categoria">
                     <mat-option disabled value="">
                       📂 Escolha uma categoria
                     </mat-option>
@@ -148,11 +146,10 @@ import { CategoryResponse } from '../../../core/models/category.model';
               <!-- Value -->
               <div class="field-wrapper value-field">
                 <mat-form-field appearance="outline" class="modern-field value-input">
-                  <mat-label> Valor da Despesa</mat-label>
                   <input matInput 
                          type="number"
                          formControlName="value"
-                         placeholder="0,00"
+                         placeholder="Valor da Despesa"
                          step="0.01"
                          min="0.01">
                   <span matTextPrefix class="currency-prefix">R$</span>
@@ -176,10 +173,10 @@ import { CategoryResponse } from '../../../core/models/category.model';
               <!-- Date -->
               <div class="field-wrapper date-field">
                 <mat-form-field appearance="outline" class="modern-field">
-                  <mat-label>Data da Despesa</mat-label>
                   <input matInput 
                          [matDatepicker]="picker"
                          formControlName="date"
+                         placeholder="Data da Despesa"
                          [max]="maxDate"
                          readonly>
                   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
