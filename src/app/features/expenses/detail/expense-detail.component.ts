@@ -51,9 +51,6 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
           </div>
         </div>
         <div class="header-actions" *ngIf="expense">
-          <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Mais opções" class="menu-btn">
-            <mat-icon>more_vert</mat-icon>
-          </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="editExpense()">
               <mat-icon>edit</mat-icon>
@@ -233,11 +230,15 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     .dashboard-content {
       max-width: 1200px;
       margin: 0 auto;
-      background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%);
       min-height: calc(100vh - 80px);
       position: relative;
-      border-radius: 20px;
-      padding: 24px;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       
       &::before {
         content: '';
@@ -247,30 +248,69 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         right: 0;
         bottom: 0;
         background: 
-          radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at 40% 60%, rgba(255, 167, 38, 0.05) 0%, transparent 50%);
+          radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.15) 0%, transparent 60%),
+          radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
+          radial-gradient(circle at 50% 50%, rgba(255, 167, 38, 0.08) 0%, transparent 70%),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
         pointer-events: none;
-        border-radius: 20px;
+        border-radius: 24px;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        right: 1px;
+        bottom: 1px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        border-radius: 23px;
+        pointer-events: none;
       }
     }
 
-    // Header - Baseado no Dashboard
+    // Header - Design melhorado
     .page-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 32px;
-      padding: 32px;
+      margin-bottom: 40px;
+      padding: 40px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        pointer-events: none;
+      }
       
       .back-button {
-        margin-right: 16px;
-        color: rgba(255, 255, 255, 0.7) !important;
-        transition: all 0.3s ease !important;
+        margin-right: 20px;
+        color: rgba(255, 255, 255, 0.8) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        backdrop-filter: blur(10px);
         
         &:hover {
           color: white !important;
-          background: rgba(255, 255, 255, 0.1) !important;
+          background: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.2) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
         
         mat-icon {
@@ -287,35 +327,53 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         flex: 1;
         
         .page-icon {
-          width: 60px;
-          height: 60px;
-          font-size: 32px;
-          border-radius: 16px;
+          width: 70px;
+          height: 70px;
+          font-size: 36px;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
-          box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+          background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%);
+          box-shadow: 
+            0 12px 35px rgba(255, 107, 107, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
           position: relative;
+          z-index: 2;
           
           &::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            border-radius: 18px;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 23px;
             z-index: -1;
+          }
+          
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            border-radius: 20px;
+            z-index: 1;
           }
           
           mat-icon {
             color: white;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-            font-size: 32px;
-            width: 32px;
-            height: 32px;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+            font-size: 36px;
+            width: 36px;
+            height: 36px;
+            z-index: 3;
+            position: relative;
           }
         }
         
@@ -363,12 +421,25 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     }
 
     .main-info-card {
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-      border-radius: 20px !important;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 100%) !important;
+      border-radius: 24px !important;
+      box-shadow: 
+        0 16px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(20px);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 20px 60px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      }
       
       &::before {
         content: '';
@@ -377,7 +448,18 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        pointer-events: none;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
         pointer-events: none;
       }
       
@@ -526,12 +608,25 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
     }
 
     .actions-card {
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-      border-radius: 20px !important;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 100%) !important;
+      border-radius: 24px !important;
+      box-shadow: 
+        0 16px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(20px);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 20px 60px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      }
       
       &::before {
         content: '';
@@ -540,7 +635,18 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        pointer-events: none;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
         pointer-events: none;
       }
       
@@ -564,32 +670,86 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         padding: 0 32px 32px 32px;
         
         button {
+          border-radius: 12px !important;
+          font-weight: 600 !important;
+          text-transform: none !important;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          
           mat-icon {
             margin-right: 8px;
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+          
+          &:hover {
+            transform: translateY(-2px);
           }
           
           &[color="primary"] {
-            background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark)) !important;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%) !important;
             color: white !important;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3) !important;
+            box-shadow: 
+              0 8px 25px rgba(255, 107, 107, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            
+            &:hover {
+              box-shadow: 
+                0 12px 35px rgba(255, 107, 107, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+            }
           }
           
           &[color="warn"] {
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%) !important;
             color: white !important;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+            box-shadow: 
+              0 8px 25px rgba(239, 68, 68, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            
+            &:hover {
+              box-shadow: 
+                0 12px 35px rgba(239, 68, 68, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+            }
+          }
+          
+          &[disabled] {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+            color: rgba(255, 255, 255, 0.5) !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
           }
         }
       }
     }
 
     .history-card {
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-      border-radius: 20px !important;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 100%) !important;
+      border-radius: 24px !important;
+      box-shadow: 
+        0 16px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(20px);
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 20px 60px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      }
       
       &::before {
         content: '';
@@ -598,7 +758,18 @@ import { ExpenseResponse } from '../../../core/models/expense.model';
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        pointer-events: none;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
         pointer-events: none;
       }
       

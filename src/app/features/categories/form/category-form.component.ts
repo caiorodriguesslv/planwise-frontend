@@ -40,7 +40,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
   styleUrls: ['./category-form.component.scss'],
   template: `
     <div class="category-form-container planwise-bg-primary">
-      <!-- Header aprimorado -->
+      <!-- Header compacto -->
       <div class="page-header planwise-bg-card">
         <div class="header-left">
           <button mat-icon-button (click)="goBack()" class="back-button">

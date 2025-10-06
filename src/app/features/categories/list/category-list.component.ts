@@ -134,7 +134,6 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="filter-type">
-                <mat-label>Tipo da categoria</mat-label>
                 <mat-select formControlName="type">
                   <mat-option value="">
                     🔍 Todos os tipos
@@ -300,10 +299,16 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
       min-height: calc(100vh - 80px);
       position: relative;
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 24px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       
-      &::before {
+      &::after {
         content: '';
         position: absolute;
         top: 0;
@@ -315,17 +320,39 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
           radial-gradient(circle at 40% 60%, rgba(255, 167, 38, 0.05) 0%, transparent 50%);
         pointer-events: none;
-        border-radius: 20px;
+        border-radius: 24px;
+        z-index: 1;
       }
     }
 
-    /* Header - Baseado no Dashboard */
+    /* Header - Padrão Moderno */
     .page-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 32px;
       padding: 32px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        border-radius: 20px;
+        pointer-events: none;
+      }
       
       .page-title {
         display: flex;
@@ -333,35 +360,50 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         gap: 20px;
         
         .page-icon {
-          width: 60px;
-          height: 60px;
-          font-size: 32px;
-          border-radius: 16px;
+          width: 70px;
+          height: 70px;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+          background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+          box-shadow: 
+            0 12px 35px rgba(139, 92, 246, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
           position: relative;
+          z-index: 2;
           transition: all 0.3s ease;
           
           &::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            border-radius: 18px;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 23px;
             z-index: -1;
+          }
+          
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            border-radius: 20px;
+            z-index: 1;
           }
           
           mat-icon {
             color: white !important;
-            font-size: 32px !important;
-            width: 32px !important;
-            height: 32px !important;
+            font-size: 36px !important;
+            width: 36px !important;
+            height: 36px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -370,12 +412,17 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             padding: 0 !important;
             text-align: center !important;
             vertical-align: middle !important;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+            z-index: 3;
+            position: relative;
           }
           
           &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.6);
+            box-shadow: 
+              0 16px 45px rgba(139, 92, 246, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.3);
           }
         }
         
@@ -397,46 +444,22 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       }
       
       .new-category-btn {
-        background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark)) !important;
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%) !important;
         color: white !important;
-        padding: 12px 24px;
+        padding: 14px 28px;
         font-weight: 600;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        border-radius: 16px;
+        min-width: 180px;
+        height: 52px;
+        box-shadow: 
+          0 8px 25px rgba(139, 92, 246, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-        
-        mat-icon {
-          margin-right: 8px;
-        }
-        
-        &:hover {
-          background: linear-gradient(135deg, var(--planwise-purple-dark), #6d28d9) !important;
-          transform: translateY(-1px);
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
-        }
-      }
-    }
-
-    /* Stats Cards */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
-
-      .stat-card {
-        background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        align-items: center;
-        gap: 20px;
+        backdrop-filter: blur(10px);
         transition: all 0.3s ease;
         position: relative;
-        overflow: hidden;
+        z-index: 2;
         
         &::before {
           content: '';
@@ -445,40 +468,127 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+          border-radius: 16px;
+          pointer-events: none;
+        }
+        
+        mat-icon {
+          margin-right: 8px;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 
+            0 12px 35px rgba(139, 92, 246, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+
+    /* Stats Cards - Padrão Moderno */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+
+      .stat-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 
+          0 12px 40px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 2;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+          border-radius: 24px;
+          pointer-events: none;
+        }
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+          border-radius: 24px;
           pointer-events: none;
         }
         
         &:hover {
           transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+          box-shadow: 
+            0 16px 50px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         
         .stat-icon {
-          width: 64px;
-          height: 64px;
-          border-radius: 16px;
+          width: 70px;
+          height: 70px;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
           position: relative;
+          z-index: 2;
           
           &::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            border-radius: 18px;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 23px;
             z-index: -1;
           }
           
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            border-radius: 20px;
+            z-index: 1;
+          }
+          
           mat-icon {
-            font-size: 32px;
-            width: 32px;
-            height: 32px;
+            font-size: 36px;
+            width: 36px;
+            height: 36px;
             color: white;
             display: flex;
             align-items: center;
@@ -488,7 +598,9 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             padding: 0;
             text-align: center;
             vertical-align: middle;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+            z-index: 3;
+            position: relative;
           }
         }
         
@@ -514,34 +626,48 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         }
         
         &.total .stat-icon {
-          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
-          box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+          background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+          box-shadow: 
+            0 12px 35px rgba(139, 92, 246, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         
         &.income .stat-icon {
-          background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
-          box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+          background: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #006699 100%);
+          box-shadow: 
+            0 12px 35px rgba(0, 212, 255, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         
         &.expense .stat-icon {
-          background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
-          box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+          background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%);
+          box-shadow: 
+            0 12px 35px rgba(255, 107, 107, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
       }
     }
 
-    /* Filtros - Baseado no Dashboard */
+    /* Filtros - Padrão Moderno */
     .filters-card {
       margin-bottom: 40px;
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      border-radius: 24px;
+      box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(20px);
       max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
       position: relative;
       overflow: hidden;
+      z-index: 2;
       
       &::before {
         content: '';
@@ -550,7 +676,20 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        border-radius: 24px;
+        pointer-events: none;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        border-radius: 24px;
         pointer-events: none;
       }
     }
@@ -741,15 +880,46 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       }
     }
 
-    /* Tabela - Baseado no Dashboard */
+    /* Tabela - Padrão Moderno */
     .table-card {
-      border-radius: 20px;
+      border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        border-radius: 24px;
+        pointer-events: none;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        border-radius: 24px;
+        pointer-events: none;
+      }
     }
 
     .table-container {
@@ -993,7 +1163,7 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       }
     }
 
-    /* Empty State */
+    /* Empty State - Padrão Moderno */
     .empty-state {
       display: flex;
       flex-direction: column;
@@ -1001,14 +1171,19 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
       justify-content: center;
       padding: 80px 32px;
       text-align: center;
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
       position: relative;
       overflow: hidden;
       max-width: 1200px;
       margin: 0 auto;
+      z-index: 2;
       
       &::before {
         content: '';
@@ -1017,7 +1192,20 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        border-radius: 24px;
+        pointer-events: none;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        border-radius: 24px;
         pointer-events: none;
       }
 
@@ -1026,17 +1214,21 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
         text-align: center;
 
         .empty-icon {
-          width: 96px;
-          height: 96px;
+          width: 110px;
+          height: 110px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           margin: 0 auto 32px auto;
-          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+          background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
           color: white;
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+          box-shadow: 
+            0 12px 35px rgba(139, 92, 246, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
           position: relative;
+          z-index: 2;
           
           &::before {
             content: '';
@@ -1045,16 +1237,28 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
             left: -3px;
             right: -3px;
             bottom: -3px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
             border-radius: 50%;
             z-index: -1;
+          }
+          
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            border-radius: 50%;
+            z-index: 1;
           }
         }
 
         .empty-icon mat-icon {
-          font-size: 48px !important;
-          width: 48px !important;
-          height: 48px !important;
+          font-size: 56px !important;
+          width: 56px !important;
+          height: 56px !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
@@ -1063,7 +1267,9 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           padding: 0 !important;
           text-align: center !important;
           vertical-align: middle !important;
-          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+          filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+          z-index: 3;
+          position: relative;
         }
 
         .empty-text {
@@ -1106,16 +1312,52 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
           }
 
           .new-category-button {
-            background: #8b5cf6;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
             color: white;
+            border-radius: 16px;
+            padding: 14px 28px;
+            font-weight: 600;
+            min-width: 180px;
+            height: 52px;
+            box-shadow: 
+              0 8px 25px rgba(139, 92, 246, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+
+            &::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+              border-radius: 16px;
+              pointer-events: none;
+            }
 
             mat-icon {
               margin-right: 8px;
+              font-size: 20px;
+              width: 20px;
+              height: 20px;
             }
 
             &:hover {
-              background: #7c3aed;
-              box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+              transform: translateY(-2px);
+              box-shadow: 
+                0 12px 35px rgba(139, 92, 246, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+
+            &:active {
+              transform: translateY(0);
             }
           }
         }
