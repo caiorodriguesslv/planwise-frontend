@@ -385,62 +385,43 @@
 // Ações do formulário
 .form-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 40px;
-  padding: 24px 0;
-  border-top: none;
-  background: transparent !important;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    pointer-events: none;
+  }
 }
 
 .action-buttons {
   display: flex;
   gap: 20px;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .cancel-btn {
-  color: var(--planwise-text-muted) !important;
-  border: 1px solid var(--planwise-border) !important;
-  background: transparent !important;
-  padding: 8px 16px !important;
-  border-radius: 8px !important;
-  
-  mat-icon {
-    margin-right: 8px;
-    font-size: 18px;
-  }
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: var(--planwise-text-secondary) !important;
-  }
-}
-
-.reset-btn {
-  color: var(--planwise-text-muted) !important;
-  border: 1px solid var(--planwise-border) !important;
-  background: transparent !important;
-  padding: 8px 16px !important;
-  border-radius: 8px !important;
-  
-  mat-icon {
-    margin-right: 8px;
-    font-size: 18px;
-  }
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: var(--planwise-text-secondary) !important;
-  }
-}
-
-.submit-btn {
-  background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark)) !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
   color: white !important;
   border: none !important;
   padding: 12px 24px !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   font-weight: 600 !important;
   font-size: 14px !important;
   min-width: 140px !important;
@@ -448,6 +429,8 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+  transition: all 0.3s ease !important;
   
   mat-icon {
     font-size: 18px;
@@ -460,9 +443,9 @@
   }
   
   &:hover {
-    background: linear-gradient(135deg, var(--planwise-purple-dark), #6b46c1) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
   }
   
   &:disabled {
@@ -473,6 +456,118 @@
     
     mat-icon, span {
       color: rgba(255, 255, 255, 0.5) !important;
+    }
+  }
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  min-width: 140px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3) !important;
+  transition: all 0.3s ease !important;
+  
+  mat-icon {
+    font-size: 18px;
+    color: white !important;
+  }
+  
+  span {
+    color: white !important;
+    font-weight: 600 !important;
+  }
+  
+  &:hover {
+    background: linear-gradient(135deg, #d97706, #b45309) !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4) !important;
+  }
+  
+  &:disabled {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    transform: none !important;
+    box-shadow: none !important;
+    
+    mat-icon, span {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+  }
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  min-width: 160px !important;
+  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+  transition: all 0.3s ease !important;
+  line-height: 1 !important;
+  
+  .btn-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    height: 100% !important;
+    
+    .btn-spinner {
+      width: 20px !important;
+      height: 20px !important;
+    }
+    
+    mat-icon {
+      font-size: 18px !important;
+      color: white !important;
+      line-height: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    
+    span {
+      color: white !important;
+      font-weight: 600 !important;
+      line-height: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+  }
+  
+  &:hover {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+  }
+  
+  &:disabled {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    transform: none !important;
+    box-shadow: none !important;
+    
+    .btn-content {
+      mat-icon, span {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
     }
   }
 }
@@ -599,12 +694,19 @@
   }
   
   .form-actions {
-    flex-direction: column;
-    gap: 16px;
+    padding: 24px;
   }
   
   .action-buttons {
     flex-direction: column;
+    gap: 16px;
     width: 100%;
+    
+    .cancel-btn,
+    .reset-btn,
+    .submit-btn {
+      width: 100%;
+      min-width: auto;
+    }
   }
 }
