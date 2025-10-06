@@ -885,67 +885,92 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
     /* Empty State */
     .empty-state {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 400px;
-      padding: 48px 24px;
+      padding: 80px 32px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      max-width: 1200px;
+      margin: 0 auto;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+        pointer-events: none;
+      }
 
       .empty-content {
         max-width: 420px;
         text-align: center;
 
         .empty-icon {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto 24px;
-          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
-          border-radius: 20px;
+          width: 96px;
+          height: 96px;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+          margin: 0 auto 32px auto;
+          background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
+          color: white;
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
           position: relative;
           
           &::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            border-radius: 22px;
+            border-radius: 50%;
             z-index: -1;
           }
+        }
 
-          mat-icon {
-            font-size: 36px;
-            width: 36px;
-            height: 36px;
-            color: white;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-
-            &.filter-icon {
-              color: white;
-            }
-          }
+        .empty-icon mat-icon {
+          font-size: 48px !important;
+          width: 48px !important;
+          height: 48px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          line-height: 1 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          text-align: center !important;
+          vertical-align: middle !important;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .empty-text {
           margin-bottom: 32px;
 
           h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0 0 12px;
+            margin: 0 0 16px 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
           }
 
           p {
-            font-size: 15px;
-            line-height: 1.5;
-            color: rgba(255, 255, 255, 0.6);
-            margin: 0;
+            margin: 0 0 32px 0;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
           }
         }
 
