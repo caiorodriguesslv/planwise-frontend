@@ -13,12 +13,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 
 import { ExpenseService } from '../../../core/services/expense.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { LoadingService } from '../../../core/services/loading.service';
-import { ExpenseRequest } from '../../../core/models/expense.model';
+import { ExpenseRequest, ExpenseResponse } from '../../../core/models/expense.model';
 import { CategoryResponse } from '../../../core/models/category.model';
 
 @Component({
@@ -34,7 +35,8 @@ import { CategoryResponse } from '../../../core/models/category.model';
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ],
   styleUrls: ['./expense-form.component.scss'],
   template: `
@@ -327,7 +329,8 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private loadingService: LoadingService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {
     this.initializeForm();
   }
@@ -379,6 +382,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     if (!this.expenseId) return;
 
     this.isLoading = true;
+    
     this.expenseService.getExpenseById(this.expenseId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -389,12 +393,16 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
             value: expense.value,
             date: new Date(expense.date)
           });
-          this.isLoading = false;
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 0);
         },
         error: (error) => {
           console.error('Erro ao carregar despesa:', error);
           this.notificationService.error('Erro ao carregar despesa');
-          this.isLoading = false;
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 0);
         }
       });
   }
@@ -421,12 +429,13 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
           this.loadingService.hide();
           this.isSubmitting = false;
           
-          const message = this.isEditMode 
-            ? 'Despesa atualizada com sucesso!' 
-            : 'Despesa criada com sucesso!';
-          
-          this.notificationService.success(message);
-          this.router.navigate(['/dashboard/expenses']);
+          if (this.isEditMode) {
+            this.notificationService.success('Despesa atualizada com sucesso!');
+            this.router.navigate(['/dashboard/expenses']);
+          } else {
+            // Mostrar modal de sucesso para nova despesa
+            this.showSuccessModal(response);
+          }
         },
         error: (error) => {
           this.loadingService.hide();
@@ -440,6 +449,26 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
 
   resetForm(): void {
     this.expenseForm.reset();
+  }
+
+  async showSuccessModal(expense: ExpenseResponse): Promise<void> {
+    const { ExpenseSuccessModalComponent } = await import('../modal/expense-success-modal.component');
+    
+    const dialogRef = this.dialog.open(ExpenseSuccessModalComponent, {
+      width: '400px',
+      disableClose: true,
+      data: { expense }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result === 'continue') {
+        // Criar nova despesa
+        this.resetForm();
+      } else if (result === 'viewList') {
+        // Ver lista de despesas
+        this.goBack();
+      }
+    });
   }
 
   goBack(): void {

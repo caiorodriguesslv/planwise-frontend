@@ -4,10 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { CategoryResponse, CategoryType } from '../../../core/models/category.model';
+import { ExpenseResponse } from '../../../core/models/expense.model';
 
 @Component({
-  selector: 'app-category-success-modal',
+  selector: 'app-expense-success-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,24 +19,28 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
   template: `
     <div class="success-modal">
       <div class="modal-header">
-        <h2>Categoria Criada com Sucesso!</h2>
-        <p>Sua categoria foi salva no sistema</p>
+        <h2>Despesa Criada com Sucesso!</h2>
+        <p>Sua despesa foi salva no sistema</p>
       </div>
 
       <div class="modal-content">
-        <mat-card class="category-card">
-          <div class="category-info">
-            <div class="category-name">
-              <mat-icon>label</mat-icon>
-              <span>{{ data.category.name }}</span>
+        <mat-card class="expense-card">
+          <div class="expense-info">
+            <div class="expense-description">
+              <mat-icon>description</mat-icon>
+              <span>{{ data.expense.description }}</span>
             </div>
-            <div class="category-type" [class.receita-type]="data.category.type === 'RECEITA'" [class.despesa-type]="data.category.type === 'DESPESA'">
-              <mat-icon>{{ getTypeIcon() }}</mat-icon>
-              <span>{{ getTypeLabel() }}</span>
+            <div class="expense-value">
+              <mat-icon>attach_money</mat-icon>
+              <span>R$ {{ data.expense.value | number:'1.2-2' }}</span>
             </div>
-            <div class="category-color">
-              <div class="color-preview" [style.background-color]="getCategoryColor()"></div>
-              <span>{{ getCategoryColor() }}</span>
+            <div class="expense-category">
+              <mat-icon>category</mat-icon>
+              <span>{{ data.expense.category.name || 'Sem categoria' }}</span>
+            </div>
+            <div class="expense-date">
+              <mat-icon>calendar_today</mat-icon>
+              <span>{{ data.expense.date | date:'dd/MM/yyyy' }}</span>
             </div>
           </div>
         </mat-card>
@@ -85,7 +89,6 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       z-index: 999 !important;
     }
     
-    
     .success-modal {
       padding: 32px;
       text-align: center;
@@ -113,11 +116,6 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       color: white !important;
     }
     
-    // Override para todos os elementos do modal
-    ::ng-deep .success-modal * {
-      color: white !important;
-    }
-    
     // Override para mat-card específico
     ::ng-deep .success-modal .mat-mdc-card {
       background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
@@ -129,7 +127,6 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       position: relative;
       z-index: 1;
     }
-
 
     .modal-header h2 {
       margin: 0 0 12px 0;
@@ -145,7 +142,6 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       font-size: 16px;
       line-height: 1.4;
     }
-    
 
     .modal-content {
       margin-bottom: 32px;
@@ -153,7 +149,7 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       z-index: 1;
     }
 
-    .category-card {
+    .expense-card {
       background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
       border-radius: 16px;
       padding: 24px;
@@ -174,14 +170,8 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
         pointer-events: none;
       }
     }
-    
-    // Override para mat-card
-    ::ng-deep .category-card.mat-mdc-card {
-      background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-      color: white !important;
-    }
 
-    .category-info {
+    .expense-info {
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -189,9 +179,10 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       z-index: 1;
     }
 
-    .category-name,
-    .category-type,
-    .category-color {
+    .expense-description,
+    .expense-value,
+    .expense-category,
+    .expense-date {
       display: flex;
       align-items: center;
       gap: 16px;
@@ -208,39 +199,34 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
         transform: translateY(-2px);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       }
-      
     }
 
-    .category-name mat-icon {
+    .expense-description mat-icon {
       color: #3b82f6;
       font-size: 24px;
       width: 24px;
       height: 24px;
     }
 
-    .category-type mat-icon {
-      color: #ff9800;
+    .expense-value mat-icon {
+      color: #10b981;
       font-size: 24px;
       width: 24px;
       height: 24px;
     }
-    
-    // Ícone para receita (verde)
-    .category-type.receita-type mat-icon {
-      color: #10b981;
-    }
-    
-    // Ícone para despesa (vermelho)
-    .category-type.despesa-type mat-icon {
-      color: #ef4444;
-    }
 
-    .color-preview {
+    .expense-category mat-icon {
+      color: #8b5cf6;
+      font-size: 24px;
       width: 24px;
       height: 24px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .expense-date mat-icon {
+      color: #f59e0b;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
     }
 
     .modal-actions {
@@ -309,7 +295,6 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
       }
     }
 
-
     @media (max-width: 480px) {
       .modal-actions {
         flex-direction: column;
@@ -321,34 +306,17 @@ import { CategoryResponse, CategoryType } from '../../../core/models/category.mo
     }
   `]
 })
-export class CategorySuccessModalComponent {
+export class ExpenseSuccessModalComponent {
   constructor(
-    public dialogRef: MatDialogRef<CategorySuccessModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { category: CategoryResponse }
+    public dialogRef: MatDialogRef<ExpenseSuccessModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { expense: ExpenseResponse }
   ) {}
-
-  getTypeIcon(): string {
-    return this.data.category.type === CategoryType.RECEITA ? 'trending_up' : 'trending_down';
-  }
-
-  getTypeLabel(): string {
-    return this.data.category.type === CategoryType.RECEITA ? 'Receita' : 'Despesa';
-  }
-
-  getCategoryColor(): string {
-    // Gerar cor baseada no tipo
-    if (this.data.category.type === CategoryType.RECEITA) {
-      return '#4caf50'; // Verde para receita
-    } else {
-      return '#f44336'; // Vermelho para despesa
-    }
-  }
 
   continue(): void {
     this.dialogRef.close('continue');
   }
 
   viewList(): void {
-    this.dialogRef.close('view');
+    this.dialogRef.close('viewList');
   }
 }

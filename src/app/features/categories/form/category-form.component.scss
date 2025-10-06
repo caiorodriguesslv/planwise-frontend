@@ -752,6 +752,24 @@
       color: white;
       font-size: 20px;
     }
+    
+    // Ícone para receita (verde)
+    &.receita-icon {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      
+      mat-icon {
+        color: white;
+      }
+    }
+    
+    // Ícone para despesa (vermelho)
+    &.despesa-icon {
+      background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+      
+      mat-icon {
+        color: white;
+      }
+    }
   }
   
   .item-content {

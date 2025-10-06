@@ -132,10 +132,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
                   <mat-label>Tipo</mat-label>
                   <mat-select formControlName="type" placeholder="Selecione o tipo">
                   <mat-option disabled value="">
-                    <span class="placeholder-option">
-                      <mat-icon>tune</mat-icon>
-                      Escolha um tipo
-                    </span>
+                    🔧 Escolha um tipo
                   </mat-option>
                   <mat-option value="RECEITA">
                     💰 Receita - Para dinheiro que entra
@@ -182,7 +179,7 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
                 </div>
                 
                 <div class="summary-item">
-                  <div class="item-icon">
+                  <div class="item-icon" [class.receita-icon]="getTypeLabel() === 'Receita'" [class.despesa-icon]="getTypeLabel() === 'Despesa'">
                     <mat-icon>{{ getTypeIcon() }}</mat-icon>
                   </div>
                   <div class="item-content">

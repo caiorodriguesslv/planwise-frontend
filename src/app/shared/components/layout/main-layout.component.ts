@@ -233,7 +233,7 @@ import { AuthService } from '../../../core/services/auth.service';
       position: fixed;
       height: 100vh;
       overflow: hidden;
-      z-index: 1000;
+      z-index: 1002;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
@@ -484,7 +484,7 @@ import { AuthService } from '../../../core/services/auth.service';
       top: 0;
       left: 0;
       transform: none;
-      z-index: 999;
+      z-index: 1003;
       height: 80px;
       min-height: 80px;
       

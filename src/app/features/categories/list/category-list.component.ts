@@ -1229,8 +1229,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const filters = this.buildFilters();
     
-    // Debug: Log para verificar o que está sendo enviado
-    console.log('Loading categories with:', { pageRequest: this.pageRequest, filters });
     
     this.categoryService.getCategories(this.pageRequest, filters)
       .pipe(
@@ -1258,15 +1256,12 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((response: PaginatedResponse<CategoryResponse>) => {
-        console.log('Categories loaded:', response);
         this.categories = response.content || [];
         this.totalElements = response.totalElements || 0;
         this.isLoading = false;
         
         // Forçar detecção de mudanças
         this.cdr.detectChanges();
-        console.log('Categories after update:', this.categories);
-        console.log('Is loading:', this.isLoading);
       });
   }
 
@@ -1287,7 +1282,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       .subscribe(stats => {
         this.stats = stats;
         this.cdr.detectChanges();
-        console.log('Stats loaded:', this.stats);
       });
   }
 

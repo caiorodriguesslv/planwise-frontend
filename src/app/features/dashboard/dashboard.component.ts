@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Subject, takeUntil, catchError, of } from 'rxjs';
+import { Subject, takeUntil, catchError, of, map } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth.service';
 import { ExpenseService } from '../../core/services/expense.service';
+import { CategoryService } from '../../core/services/category.service';
 import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
@@ -56,16 +57,6 @@ import { NotificationService } from '../../core/services/notification.service';
           </div>
         </div>
 
-        <div class="stat-card balance">
-          <div class="stat-icon">
-            <mat-icon>account_balance_wallet</mat-icon>
-          </div>
-          <div class="stat-info">
-            <h3>Saldo</h3>
-            <p class="amount">{{ balance | currency:'BRL':'symbol':'1.2-2' }}</p>
-            <span class="subtitle">Disponível</span>
-          </div>
-        </div>
 
         <div class="stat-card goals">
           <div class="stat-icon">
@@ -124,14 +115,47 @@ import { NotificationService } from '../../core/services/notification.service';
 
       <!-- Recent Activity -->
       <div class="recent-activity">
-        <h2>Atividade Recente</h2>
+        <div class="activity-header">
+          <h2>Atividade Recente</h2>
+          <button mat-icon-button (click)="refreshActivities()" class="refresh-btn" [disabled]="isLoadingActivities">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
         <div class="activity-list">
-          <div class="activity-item empty">
+          <!-- Loading State -->
+          <div class="activity-item loading" *ngIf="isLoadingActivities">
+            <mat-spinner diameter="24"></mat-spinner>
+            <div class="activity-content">
+              <p>Carregando atividades...</p>
+            </div>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="activity-item empty" *ngIf="!isLoadingActivities && recentActivities.length === 0">
             <mat-icon>info</mat-icon>
             <div class="activity-content">
               <p>Nenhuma atividade recente</p>
               <span>Comece adicionando suas primeiras transações</span>
             </div>
+          </div>
+          
+          <!-- Activities List -->
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <div class="activity-icon" [style.background-color]="activity.color">
+              <mat-icon>{{ activity.icon }}</mat-icon>
+            </div>
+            <div class="activity-content">
+              <p>{{ activity.title }}</p>
+              <span>{{ activity.subtitle }} • {{ formatActivityDate(activity.date) }}</span>
+            </div>
+          </div>
+          
+          <!-- Load More Button -->
+          <div class="load-more-container" *ngIf="hasMoreActivities && !isLoadingActivities">
+            <button mat-stroked-button (click)="loadMoreActivities()" class="load-more-btn">
+              <mat-icon>expand_more</mat-icon>
+              Carregar mais atividades
+            </button>
           </div>
         </div>
       </div>
@@ -180,7 +204,7 @@ import { NotificationService } from '../../core/services/notification.service';
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
       margin-bottom: 32px;
       
@@ -238,6 +262,16 @@ import { NotificationService } from '../../core/services/notification.service';
             font-size: 32px;
             color: white;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            width: 32px !important;
+            height: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: center !important;
+            vertical-align: middle !important;
           }
         }
         
@@ -456,11 +490,38 @@ import { NotificationService } from '../../core/services/notification.service';
     }
 
     .recent-activity {
-      h2 {
-        margin: 0 0 20px 0;
-        font-size: 20px;
-        font-weight: 700;
-        color: white;
+      .activity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        
+        h2 {
+          margin: 0;
+          font-size: 20px;
+          font-weight: 700;
+          color: white;
+        }
+        
+        .refresh-btn {
+          color: rgba(255, 255, 255, 0.7) !important;
+          transition: all 0.3s ease !important;
+          
+          &:hover:not(:disabled) {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+          }
+          
+          &:disabled {
+            opacity: 0.5;
+          }
+          
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+        }
       }
       
       .activity-list {
@@ -470,10 +531,30 @@ import { NotificationService } from '../../core/services/notification.service';
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         
         .activity-item {
-          padding: 24px;
+          padding: 16px 24px;
           display: flex;
           align-items: center;
           gap: 16px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.05);
+          }
+          
+          &.loading {
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            
+            p {
+              margin: 0;
+              font-weight: 500;
+            }
+          }
           
           &.empty {
             text-align: center;
@@ -493,6 +574,69 @@ import { NotificationService } from '../../core/services/notification.service';
             
             span {
               font-size: 14px;
+            }
+          }
+          
+          .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            
+            mat-icon {
+              color: white;
+              font-size: 20px;
+              width: 20px;
+              height: 20px;
+            }
+          }
+          
+          .activity-content {
+            flex: 1;
+            
+            p {
+              margin: 0 0 4px 0;
+              font-weight: 600;
+              color: white;
+              font-size: 14px;
+            }
+            
+            span {
+              font-size: 12px;
+              color: rgba(255, 255, 255, 0.6);
+            }
+          }
+        }
+        
+        .load-more-container {
+          padding: 16px 24px;
+          text-align: center;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          
+          .load-more-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+            color: white !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 12px !important;
+            padding: 12px 24px !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            transition: all 0.3s ease !important;
+            
+            &:hover {
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
+              transform: translateY(-1px);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+            }
+            
+            mat-icon {
+              margin-right: 8px;
+              font-size: 18px;
+              width: 18px;
+              height: 18px;
             }
           }
         }
@@ -521,12 +665,11 @@ import { NotificationService } from '../../core/services/notification.service';
     }
   `]
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Estatísticas do dashboard
   totalIncome: number = 0;
   totalExpenses: number = 0;
-  balance: number = 0;
   activeGoals: number = 0;
   isLoading: boolean = false;
 
@@ -534,11 +677,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isLoadingStats: boolean = false;
   isNotLoadingStats: boolean = true;
 
+  // Atividade recente
+  recentActivities: any[] = [];
+  isLoadingActivities: boolean = false;
+  hasMoreActivities: boolean = true;
+  currentPage: number = 0;
+  pageSize: number = 5;
+
   private destroy$ = new Subject<void>();
 
   constructor(
     public authService: AuthService,
     private expenseService: ExpenseService,
+    private categoryService: CategoryService,
     private notificationService: NotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef
@@ -546,6 +697,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadDashboardStats();
+    this.loadRecentActivities();
+  }
+
+  ngAfterViewInit(): void {
+    // Recarregar atividades quando o usuário retorna ao dashboard
+    this.refreshActivities();
   }
 
   ngOnDestroy(): void {
@@ -556,19 +713,155 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadDashboardStats(): void {
     this.isLoadingStats = true;
     this.isNotLoadingStats = false;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
 
-    // Simular carregamento de estatísticas
-    setTimeout(() => {
-      this.totalIncome = 0;
-      this.totalExpenses = 0;
-      this.balance = 0;
-      this.activeGoals = 0;
-      
-      this.isLoadingStats = false;
-      this.isNotLoadingStats = true;
-      this.cdr.markForCheck();
-    }, 1000);
+    // Carregar estatísticas reais
+    this.loadExpenseStats();
+  }
+
+  private loadExpenseStats(): void {
+    // Calcular período do mês atual
+    const currentDate = new Date();
+
+    this.expenseService.getAllExpensesList()
+    .pipe(
+      takeUntil(this.destroy$),
+      map((allExpenses: any[]) => {
+        // Filtrar e calcular total em uma única operação
+        const filteredExpenses = allExpenses.filter((expense: any) => {
+          // Parsear a data corretamente - assumindo formato YYYY-MM-DD
+          const expenseDate = new Date(expense.date + 'T00:00:00');
+          const expenseYear = expenseDate.getFullYear();
+          const expenseMonth = expenseDate.getMonth();
+          const currentYear = currentDate.getFullYear();
+          const currentMonth = currentDate.getMonth();
+          
+          // Verificar se está no mês atual
+          return expenseYear === currentYear && expenseMonth === currentMonth;
+        });
+        
+        const total = filteredExpenses.reduce((total: number, expense: any) => total + expense.value, 0);
+        
+        // Fallback: se não há despesas filtradas, mostrar total geral
+        if (filteredExpenses.length === 0) {
+          return allExpenses.reduce((total: number, expense: any) => total + expense.value, 0);
+        }
+        
+        return total;
+      })
+    )
+    .subscribe({
+      next: (totalExpenses: number) => {
+        this.totalExpenses = totalExpenses;
+        this.totalIncome = 0; // Por enquanto, sem receitas
+        this.activeGoals = 0; // Por enquanto, sem metas
+        
+        this.isLoadingStats = false;
+        this.isNotLoadingStats = true;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar estatísticas:', error);
+        this.notificationService.error('Erro ao carregar estatísticas');
+        
+        this.totalIncome = 0;
+        this.totalExpenses = 0;
+        this.activeGoals = 0;
+        
+        this.isLoadingStats = false;
+        this.isNotLoadingStats = true;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private loadRecentActivities(loadMore: boolean = false): void {
+    if (this.isLoadingActivities) return;
+    
+    this.isLoadingActivities = true;
+    this.cdr.detectChanges();
+
+    // Carregar despesas e categorias recentes
+    const expenses$ = this.expenseService.getAllExpensesList();
+    const categories$ = this.categoryService.getAllCategories();
+
+    expenses$.pipe(
+      takeUntil(this.destroy$),
+      map(expenses => expenses.map(expense => ({
+        type: 'expense',
+        id: expense.id,
+        title: expense.description,
+        subtitle: `R$ ${expense.value.toFixed(2)}`,
+        date: expense.date,
+        icon: 'trending_down',
+        color: '#ef4444'
+      })))
+    ).subscribe(expenseActivities => {
+      categories$.pipe(
+        takeUntil(this.destroy$),
+        map(categories => categories.map(category => ({
+          type: 'category',
+          id: category.id,
+          title: category.name,
+          subtitle: category.type === 'RECEITA' ? 'Receita' : 'Despesa',
+          date: category.createdAt,
+          icon: 'category',
+          color: category.type === 'RECEITA' ? '#10b981' : '#ef4444'
+        })))
+      ).subscribe(categoryActivities => {
+        // Combinar e ordenar por data
+        const allActivities = [...expenseActivities, ...categoryActivities]
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        if (loadMore) {
+          // Adicionar mais atividades
+          const startIndex = this.currentPage * this.pageSize;
+          const endIndex = startIndex + this.pageSize;
+          const newActivities = allActivities.slice(startIndex, endIndex);
+          
+          this.recentActivities = [...this.recentActivities, ...newActivities];
+          this.hasMoreActivities = newActivities.length === this.pageSize;
+          this.currentPage++;
+        } else {
+          // Carregar primeira página
+          this.recentActivities = allActivities.slice(0, this.pageSize);
+          this.hasMoreActivities = allActivities.length > this.pageSize;
+          this.currentPage = 1;
+        }
+
+        this.isLoadingActivities = false;
+        this.cdr.detectChanges();
+      });
+    });
+  }
+
+  loadMoreActivities(): void {
+    if (this.hasMoreActivities && !this.isLoadingActivities) {
+      this.loadRecentActivities(true);
+    }
+  }
+
+  refreshActivities(): void {
+    // Reset pagination and reload activities
+    this.currentPage = 0;
+    this.hasMoreActivities = true;
+    this.recentActivities = [];
+    this.loadRecentActivities();
+  }
+
+  formatActivityDate(date: string): string {
+    const activityDate = new Date(date);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - activityDate.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) {
+      return 'Agora mesmo';
+    } else if (diffInHours < 24) {
+      return `${diffInHours}h atrás`;
+    } else {
+      const diffInDays = Math.floor(diffInHours / 24);
+      return `${diffInDays}d atrás`;
+    }
   }
 
   navigateTo(route: string): void {
