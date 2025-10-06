@@ -137,22 +137,13 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
                 <mat-label>Tipo da categoria</mat-label>
                 <mat-select formControlName="type">
                   <mat-option value="">
-                    <span class="select-option">
-                      <mat-icon>filter_list</mat-icon>
-                      Todos os tipos
-                    </span>
+                    🔍 Todos os tipos
                   </mat-option>
                   <mat-option value="RECEITA">
-                    <span class="select-option income">
-                      <mat-icon>trending_up</mat-icon>
-                      Receita
-                    </span>
+                    💰 Receita
                   </mat-option>
                   <mat-option value="DESPESA">
-                    <span class="select-option expense">
-                      <mat-icon>trending_down</mat-icon>
-                      Despesa
-                    </span>
+                    🛒 Despesa
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -638,6 +629,116 @@ import { PaginatedResponse, PageRequest } from '../../../core/models/api.model';
 
     .filter-type {
       min-width: 200px;
+      
+      // Estilos para o dropdown de filtro de tipo
+      .mat-mdc-form-field {
+        .mat-mdc-select {
+          background: transparent !important;
+          color: white !important;
+        }
+        
+        .mat-mdc-select-value {
+          color: white !important;
+        }
+        
+        .mat-mdc-select-arrow {
+          color: white !important;
+        }
+      }
+    }
+    
+    // Estilos globais para dropdown de filtro de tipo
+    ::ng-deep .filter-type .mat-mdc-select-panel {
+      background: var(--planwise-bg-secondary) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+      max-height: 300px !important;
+    }
+    
+    ::ng-deep .filter-type .mat-mdc-option {
+      background: var(--planwise-bg-secondary) !important;
+      color: white !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 16px;
+      min-height: 48px !important;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+      }
+      
+      &.mat-mdc-option-active {
+        background: rgba(139, 92, 246, 0.2) !important;
+        color: white !important;
+      }
+      
+      &.mat-mdc-option-selected {
+        background: rgba(139, 92, 246, 0.3) !important;
+        color: white !important;
+      }
+      
+      // Estilo para opção de receita
+      &[value="RECEITA"] {
+        color: #10b981 !important;
+        
+        &:hover, &.mat-mdc-option-active, &.mat-mdc-option-selected {
+          background: rgba(16, 185, 129, 0.2) !important;
+          color: #10b981 !important;
+        }
+      }
+      
+      // Estilo para opção de despesa
+      &[value="DESPESA"] {
+        color: #ef4444 !important;
+        
+        &:hover, &.mat-mdc-option-active, &.mat-mdc-option-selected {
+          background: rgba(239, 68, 68, 0.2) !important;
+          color: #ef4444 !important;
+        }
+      }
+      
+      // Estilo para placeholder (Todos os tipos)
+      &[value=""] {
+        color: rgba(255, 255, 255, 0.7) !important;
+        font-style: italic;
+        
+        &:hover, &.mat-mdc-option-active, &.mat-mdc-option-selected {
+          background: rgba(255, 255, 255, 0.1) !important;
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+      }
+    }
+    
+    // Override adicional para garantir tema escuro
+    ::ng-deep .mat-mdc-select-panel {
+      background: var(--planwise-bg-secondary) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    ::ng-deep .mat-mdc-option {
+      background: var(--planwise-bg-secondary) !important;
+      color: white !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+      }
+      
+      &.mat-mdc-option-active {
+        background: rgba(139, 92, 246, 0.2) !important;
+        color: white !important;
+      }
+      
+      &.mat-mdc-option-selected {
+        background: rgba(139, 92, 246, 0.3) !important;
+        color: white !important;
+      }
     }
 
     /* Tabela - Baseado no Dashboard */

@@ -138,18 +138,10 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
                     </span>
                   </mat-option>
                   <mat-option value="RECEITA">
-                    <span class="type-option receita">
-                      <mat-icon>savings</mat-icon>
-                      Receita
-                      <small>Para dinheiro que entra</small>
-                    </span>
+                    💰 Receita - Para dinheiro que entra
                   </mat-option>
                   <mat-option value="DESPESA">
-                    <span class="type-option despesa">
-                      <mat-icon>shopping_cart</mat-icon>
-                      Despesa
-                      <small>Para dinheiro que sai</small>
-                    </span>
+                    🛒 Despesa - Para dinheiro que sai
                   </mat-option>
                   </mat-select>
                   <mat-error *ngIf="categoryForm.get('type')?.hasError('required')">
@@ -158,15 +150,6 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
                 </mat-form-field>
               </div>
 
-              <!-- Cor (Preview) -->
-              <div class="field-wrapper color-field">
-                <div class="color-preview" *ngIf="categoryForm.get('type')?.value">
-                  <div class="preview-chip">
-                    <mat-icon>palette</mat-icon>
-                    <span>Cor: {{ getPreviewColor() }}</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -208,15 +191,6 @@ import { CategorySuccessModalComponent } from '../modal/category-success-modal.c
                   </div>
                 </div>
                 
-                <div class="summary-item">
-                  <div class="item-icon" [style.background-color]="getPreviewColor()">
-                    <mat-icon>palette</mat-icon>
-                  </div>
-                  <div class="item-content">
-                    <span class="label">Cor</span>
-                    <span class="value">{{ getPreviewColor() }}</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -376,13 +350,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     return this.categoryForm.valid;
   }
 
-  getPreviewColor(): string {
-    const type = this.categoryForm.get('type')?.value as CategoryType;
-    if (type) {
-      return this.categoryService.generateCategoryColor(type);
-    }
-    return '#6b7280';
-  }
 
   getTypeIcon(): string {
     const type = this.categoryForm.get('type')?.value;

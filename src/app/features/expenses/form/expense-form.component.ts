@@ -112,16 +112,10 @@ import { CategoryResponse } from '../../../core/models/category.model';
                   <mat-label>Categoria</mat-label>
                   <mat-select formControlName="categoryId" placeholder="Selecione uma categoria">
                     <mat-option disabled value="">
-                      <span class="placeholder-option">
-                        <mat-icon>category</mat-icon>
-                        Escolha uma categoria
-                      </span>
+                      📂 Escolha uma categoria
                     </mat-option>
                     <mat-option *ngFor="let category of categories" [value]="category.id">
-                      <span class="category-option">
-                        <span class="category-color" [style.background-color]="category.color || '#ccc'"></span>
-                        {{ category.name }}
-                      </span>
+                      🏷️ {{ category.name }}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="expenseForm.get('categoryId')?.hasError('required')">
@@ -152,14 +146,14 @@ import { CategoryResponse } from '../../../core/models/category.model';
               <!-- Value -->
               <div class="field-wrapper value-field">
                 <mat-form-field appearance="outline" class="modern-field value-input">
-                  <mat-label>Valor da Despesa</mat-label>
+                  <mat-label> Valor da Despesa</mat-label>
                   <input matInput 
                          type="number"
                          formControlName="value"
                          placeholder="0,00"
                          step="0.01"
                          min="0.01">
-                  <span matTextPrefix class="currency-prefix">R$ </span>
+                  <span matTextPrefix class="currency-prefix">R$</span>
                   <mat-error *ngIf="expenseForm.get('value')?.hasError('required')">
                     Valor é obrigatório
                   </mat-error>
