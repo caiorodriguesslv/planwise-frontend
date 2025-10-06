@@ -1,0 +1,85 @@
+<div class="dashboard-content">
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card income">
+      <div class="stat-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Receitas</h3>
+        <p class="amount">R$ 0,00</p>
+        <span class="subtitle">Este mês</span>
+      </div>
+    </div>
+
+    <div class="stat-card expense">
+      <div class="stat-icon">
+        <mat-icon>trending_down</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Despesas</h3>
+        <p class="amount">R$ 0,00</p>
+        <span class="subtitle">Este mês</span>
+      </div>
+    </div>
+
+    <div class="stat-card balance">
+      <div class="stat-icon">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Saldo</h3>
+        <p class="amount">R$ 0,00</p>
+        <span class="subtitle">Disponível</span>
+      </div>
+    </div>
+
+    <div class="stat-card goals">
+      <div class="stat-icon">
+        <mat-icon>flag</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Metas</h3>
+        <p class="amount">0</p>
+        <span class="subtitle">Ativas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2>Ações Rápidas</h2>
+    <div class="actions-grid">
+      <div class="action-card" (click)="navigateTo('/dashboard/receitas', $event)">
+        <mat-icon>add_circle</mat-icon>
+        <span>Nova Receita</span>
+      </div>
+      <div class="action-card" (click)="navigateTo('/dashboard/expenses/new', $event)">
+        <mat-icon>remove_circle</mat-icon>
+        <span>Nova Despesa</span>
+      </div>
+      <div class="action-card" (click)="navigateTo('/dashboard/metas', $event)">
+        <mat-icon>emoji_events</mat-icon>
+        <span>Nova Meta</span>
+      </div>
+      <div class="action-card" (click)="navigateTo('/dashboard/relatorios', $event)">
+        <mat-icon>assessment</mat-icon>
+        <span>Ver Relatórios</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <h2>Atividade Recente</h2>
+    <div class="activity-list">
+      <div class="activity-item empty">
+        <mat-icon>info</mat-icon>
+        <div class="activity-content">
+          <p>Nenhuma atividade recente</p>
+          <span>Comece adicionando suas primeiras transações</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

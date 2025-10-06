@@ -1,0 +1,45 @@
+<div class="success-modal">
+  <div class="modal-header">
+    <h2>Despesa Criada com Sucesso!</h2>
+    <p>Sua despesa foi salva no sistema</p>
+  </div>
+
+  <div class="modal-content">
+    <mat-card class="expense-card">
+      <div class="expense-info">
+        <div class="expense-description">
+          <mat-icon>description</mat-icon>
+          <span>{{ data.expense.description }}</span>
+        </div>
+        <div class="expense-value">
+          <mat-icon>attach_money</mat-icon>
+          <span>R$ {{ data.expense.value | number:'1.2-2' }}</span>
+        </div>
+        <div class="expense-category">
+          <mat-icon>category</mat-icon>
+          <span>{{ data.expense.category.name || 'Sem categoria' }}</span>
+        </div>
+        <div class="expense-date">
+          <mat-icon>calendar_today</mat-icon>
+          <span>{{ data.expense.date | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="modal-actions">
+    <button mat-stroked-button 
+            (click)="continue()" 
+            class="continue-btn">
+      <mat-icon>add</mat-icon>
+      Criar Outra
+    </button>
+    
+    <button mat-raised-button 
+            (click)="viewList()" 
+            class="view-btn">
+      <mat-icon>list</mat-icon>
+      Ver Lista
+    </button>
+  </div>
+</div>

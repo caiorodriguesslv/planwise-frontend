@@ -43,19 +43,18 @@
   }
 }
 
-// Header - Design melhorado
+// Header - Design melhorado com padrão de cores das categorias
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
-  padding: 40px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  margin-bottom: 32px;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 100%);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  0 16px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
   
@@ -66,7 +65,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
   }
   
@@ -83,9 +82,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%);
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
       box-shadow: 
-        0 12px 35px rgba(255, 107, 107, 0.4),
+        0 12px 35px rgba(239, 68, 68, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
       position: relative;
@@ -137,7 +136,10 @@
       
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        box-shadow: 
+          0 16px 45px rgba(239, 68, 68, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
       }
     }
     
@@ -159,13 +161,13 @@
   }
   
   .new-expense-btn {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%) !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%) !important;
     color: white !important;
     padding: 14px 28px;
     font-weight: 600;
     border-radius: 16px;
     box-shadow: 
-      0 8px 25px rgba(255, 107, 107, 0.4),
+      0 8px 25px rgba(239, 68, 68, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -181,10 +183,10 @@
     }
     
     &:hover {
-      background: linear-gradient(135deg, #ee5a52 0%, #dc2626 50%, #b91c1c 100%) !important;
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%) !important;
       transform: translateY(-2px);
       box-shadow: 
-        0 12px 35px rgba(255, 107, 107, 0.5),
+        0 12px 35px rgba(239, 68, 68, 0.5),
         0 0 0 1px rgba(255, 255, 255, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
@@ -200,9 +202,9 @@
   margin-bottom: 32px;
   
   .stat-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
     border-radius: 24px;
-    padding: 32px;
+    padding: 28px;
     box-shadow: 
       0 16px 50px rgba(0, 0, 0, 0.3),
       0 0 0 1px rgba(255, 255, 255, 0.1),
@@ -210,7 +212,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -321,18 +323,27 @@
     }
     
     &.expense .stat-icon {
-      background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark));
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%);
+      box-shadow: 
+        0 12px 35px rgba(255, 107, 107, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     
     &.income .stat-icon {
-      background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark));
-      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+      background: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #006699 100%);
+      box-shadow: 
+        0 12px 35px rgba(0, 212, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     
     &.balance .stat-icon {
-      background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark));
-      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+      box-shadow: 
+        0 12px 35px rgba(139, 92, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
   }
 }
@@ -340,10 +351,10 @@
 // Filtros
 .filters-card {
   margin-bottom: 40px;
-  border-radius: 20px;
+  border-radius: 24px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 100%);
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -357,7 +368,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
   }
 }
@@ -407,6 +418,7 @@
 .filters-actions button {
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
+  transition: all 0.3s ease;
 }
 
 .filters-actions button:hover {
@@ -719,7 +731,7 @@
 }
 
 .clear-btn {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%) !important;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%) !important;
   color: white !important;
   border: none !important;
   padding: 12px 24px !important;
@@ -737,8 +749,8 @@
   overflow: hidden !important;
   backdrop-filter: blur(10px) !important;
   box-shadow: 
-    0 4px 12px rgba(255, 107, 107, 0.3),
-    0 0 0 1px rgba(255, 107, 107, 0.2),
+    0 4px 12px rgba(239, 68, 68, 0.3),
+    0 0 0 1px rgba(239, 68, 68, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   
   &::before {
@@ -783,8 +795,8 @@
   &:hover {
     transform: translateY(-2px) !important;
     box-shadow: 
-      0 8px 20px rgba(255, 107, 107, 0.4),
-      0 0 0 1px rgba(255, 107, 107, 0.3),
+      0 8px 20px rgba(239, 68, 68, 0.4),
+      0 0 0 1px rgba(239, 68, 68, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
   }
   
@@ -805,7 +817,7 @@
 }
 
 .create-btn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%) !important;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%) !important;
   color: white !important;
   border: none !important;
   padding: 12px 24px !important;
@@ -823,8 +835,8 @@
   overflow: hidden !important;
   backdrop-filter: blur(10px) !important;
   box-shadow: 
-    0 4px 12px rgba(16, 185, 129, 0.3),
-    0 0 0 1px rgba(16, 185, 129, 0.2),
+    0 4px 12px rgba(239, 68, 68, 0.3),
+    0 0 0 1px rgba(239, 68, 68, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   
   &::before {
@@ -869,8 +881,8 @@
   &:hover {
     transform: translateY(-2px) !important;
     box-shadow: 
-      0 8px 20px rgba(16, 185, 129, 0.4),
-      0 0 0 1px rgba(16, 185, 129, 0.3),
+      0 8px 20px rgba(239, 68, 68, 0.4),
+      0 0 0 1px rgba(239, 68, 68, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
   }
   

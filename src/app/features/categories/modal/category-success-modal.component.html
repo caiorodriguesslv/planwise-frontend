@@ -1,0 +1,41 @@
+<div class="success-modal">
+  <div class="modal-header">
+    <h2>Categoria Criada com Sucesso!</h2>
+    <p>Sua categoria foi salva no sistema</p>
+  </div>
+
+  <div class="modal-content">
+    <mat-card class="category-card">
+      <div class="category-info">
+        <div class="category-name">
+          <mat-icon>label</mat-icon>
+          <span>{{ data.category.name }}</span>
+        </div>
+        <div class="category-type" [class.receita-type]="data.category.type === 'RECEITA'" [class.despesa-type]="data.category.type === 'DESPESA'">
+          <mat-icon>{{ getTypeIcon() }}</mat-icon>
+          <span>{{ getTypeLabel() }}</span>
+        </div>
+        <div class="category-color">
+          <div class="color-preview" [style.background-color]="getCategoryColor()"></div>
+          <span>{{ getCategoryColor() }}</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="modal-actions">
+    <button mat-stroked-button 
+            (click)="continue()" 
+            class="continue-btn">
+      <mat-icon>add</mat-icon>
+      Criar Outra
+    </button>
+    
+    <button mat-raised-button 
+            (click)="viewList()" 
+            class="view-btn">
+      <mat-icon>list</mat-icon>
+      Ver Lista
+    </button>
+  </div>
+</div>

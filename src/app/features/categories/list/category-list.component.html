@@ -1,0 +1,243 @@
+<!-- Dashboard Content -->
+<div class="dashboard-content">
+  
+  <!-- Header principal -->
+  <div class="page-header">
+    <div class="page-title">
+      <div class="page-icon">
+        <mat-icon>category</mat-icon>
+      </div>
+      <div class="title-content">
+        <h1>Minhas Categorias</h1>
+        <p>Organize suas receitas e despesas por categoria</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" class="new-category-btn" (click)="createNew()">
+      <mat-icon>add</mat-icon>
+      Nova Categoria
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card total">
+      <div class="stat-icon">
+        <mat-icon>category</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Total de Categorias</h3>
+        <p class="amount">{{ stats.total }}</p>
+        <span class="subtitle">Ativas</span>
+      </div>
+    </div>
+
+    <div class="stat-card income">
+      <div class="stat-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Receitas</h3>
+        <p class="amount">{{ stats.byType.receitas }}</p>
+        <span class="subtitle">Categorias de entrada</span>
+      </div>
+    </div>
+
+    <div class="stat-card expense">
+      <div class="stat-icon">
+        <mat-icon>trending_down</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Despesas</h3>
+        <p class="amount">{{ stats.byType.despesas }}</p>
+        <span class="subtitle">Categorias de saída</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <mat-card class="filters-card">
+    <mat-card-header class="filters-header">
+      <mat-card-title>
+        <mat-icon>filter_list</mat-icon>
+        Filtros de Busca
+      </mat-card-title>
+      <div class="filters-actions">
+        <span class="active-filters" *ngIf="getActiveFiltersCount() > 0">
+          {{ getActiveFiltersCount() }} filtro(s) ativo(s)
+        </span>
+        <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0">
+          <mat-icon>clear</mat-icon>
+          Limpar
+        </button>
+      </div>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filters-form">
+        <div class="filter-grid">
+          <mat-form-field appearance="outline" class="filter-search">
+            <mat-label>Buscar categorias</mat-label>
+            <input matInput 
+                   formControlName="search" 
+                   placeholder="Digite o nome da categoria...">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-type">
+            <mat-select formControlName="type">
+              <mat-option value="">
+                🔍 Todos os tipos
+              </mat-option>
+              <mat-option value="RECEITA">
+                💰 Receita
+              </mat-option>
+              <mat-option value="DESPESA">
+                🛒 Despesa
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabela de categorias -->
+  <mat-card class="table-card">
+    <mat-card-content>
+      <!-- Loading spinner -->
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+        <h3 class="planwise-text-primary">Carregando categorias...</h3>
+        <p class="planwise-text-muted">Por favor, aguarde enquanto buscamos seus dados.</p>
+      </div>
+
+      <!-- Tabela ou Estado Vazio -->
+      <div *ngIf="!isLoading" class="table-container">
+        <!-- Tabela de dados -->
+        <div *ngIf="categories.length > 0" class="data-table">
+          <table mat-table [dataSource]="categories" class="categories-table">
+            <!-- Coluna Nome -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef class="name-header">Nome</th>
+              <td mat-cell *matCellDef="let category" class="name-cell">
+                <div class="name-content">
+                  <div class="category-color" [style.background-color]="category.color || getDeterministicColor(category.type, category.id)"></div>
+                  <strong>{{ category.name }}</strong>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Coluna Tipo -->
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef class="type-header">Tipo</th>
+              <td mat-cell *matCellDef="let category" class="type-cell">
+                <mat-chip [class]="'type-chip ' + (category.type === 'RECEITA' ? 'receita' : 'despesa')">
+                  <mat-icon>{{ category.type === 'RECEITA' ? 'trending_up' : 'trending_down' }}</mat-icon>
+                  {{ category.type }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <!-- Coluna Data de Criação -->
+            <ng-container matColumnDef="createdAt">
+              <th mat-header-cell *matHeaderCellDef class="date-header">Criado em</th>
+              <td mat-cell *matCellDef="let category" class="date-cell">
+                {{ formatDate(category.createdAt) }}
+              </td>
+            </ng-container>
+
+            <!-- Coluna Status -->
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef class="status-header">Status</th>
+              <td mat-cell *matCellDef="let category" class="status-cell">
+                <mat-chip [class]="'status-chip ' + (category.active ? 'active' : 'inactive')">
+                  <mat-icon>{{ category.active ? 'check_circle' : 'block' }}</mat-icon>
+                  {{ category.active ? 'Ativa' : 'Inativa' }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <!-- Coluna Ações -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="actions-header">Ações</th>
+              <td mat-cell *matCellDef="let category" class="actions-cell">
+                <div class="action-buttons">
+                  <button mat-icon-button [matMenuTriggerFor]="actionsMenu" class="action-btn menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  
+                  <mat-menu #actionsMenu="matMenu">
+                    <button mat-menu-item (click)="editCategory(category)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Editar</span>
+                    </button>
+                    <button mat-menu-item (click)="duplicateCategory(category)">
+                      <mat-icon>content_copy</mat-icon>
+                      <span>Duplicar</span>
+                    </button>
+                    <mat-divider></mat-divider>
+                    <button mat-menu-item (click)="deleteCategory(category)" class="delete-action">
+                      <mat-icon>delete</mat-icon>
+                      <span>Excluir</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-header"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+          </table>
+        </div>
+
+        <!-- Estado vazio -->
+        <div *ngIf="categories.length === 0" class="empty-state">
+          <div class="empty-content">
+            <div class="empty-icon">
+              <mat-icon [class.filter-icon]="getActiveFiltersCount() > 0">
+                {{ getActiveFiltersCount() > 0 ? 'filter_list' : 'category' }}
+              </mat-icon>
+            </div>
+
+            <div class="empty-text">
+              <h3>
+                {{ getActiveFiltersCount() > 0 ? 'Nenhum resultado encontrado' : 'Nenhuma categoria cadastrada' }}
+              </h3>
+              <p>
+                {{ getActiveFiltersCount() > 0 ? 
+                  'Não encontramos nenhuma categoria com os filtros selecionados.' : 
+                  'Organize suas finanças criando categorias para suas receitas e despesas.' }}
+              </p>
+            </div>
+
+            <div class="empty-actions">
+              <button *ngIf="getActiveFiltersCount() > 0"
+                      mat-stroked-button
+                      (click)="clearFilters()"
+                      class="clear-filters-button">
+                <mat-icon>refresh</mat-icon>
+                Limpar Filtros
+              </button>
+              
+              <button mat-flat-button
+                      (click)="createNew()"
+                      class="new-category-button">
+                <mat-icon>add</mat-icon>
+                Nova Categoria
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginação -->
+      <mat-paginator *ngIf="!isLoading && totalElements > 0"
+                     [length]="totalElements"
+                     [pageSize]="pageRequest.size"
+                     [pageSizeOptions]="[5, 10, 20, 50]"
+                     (page)="onPageChange($event)"
+                     aria-label="Selecione a página de categorias">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

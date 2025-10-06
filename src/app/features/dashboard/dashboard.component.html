@@ -1,0 +1,135 @@
+<!-- Dashboard Content -->
+<div class="dashboard-content">
+  
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoadingStats" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando estatísticas...</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid" *ngIf="isNotLoadingStats">
+    <div class="stat-card income">
+      <div class="stat-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Receitas</h3>
+        <p class="amount">{{ totalIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <span class="subtitle">Este mês</span>
+      </div>
+    </div>
+
+    <div class="stat-card expense">
+      <div class="stat-icon">
+        <mat-icon>trending_down</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Despesas</h3>
+        <p class="amount">{{ totalExpenses | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <span class="subtitle">Este mês</span>
+      </div>
+    </div>
+
+    <div class="stat-card goals">
+      <div class="stat-icon">
+        <mat-icon>flag</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Metas</h3>
+        <p class="amount">{{ activeGoals }}</p>
+        <span class="subtitle">Ativas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2>Ações Rápidas</h2>
+    <div class="actions-grid">
+      <div class="action-card income-action" (click)="navigateTo('/dashboard/expenses/new')">
+        <div class="action-icon">
+          <mat-icon>add</mat-icon>
+        </div>
+        <div class="action-content">
+          <h3>Nova Receita</h3>
+          <p>Registrar entrada</p>
+        </div>
+      </div>
+      <div class="action-card expense-action" (click)="navigateTo('/dashboard/expenses/new')">
+        <div class="action-icon">
+          <mat-icon>remove</mat-icon>
+        </div>
+        <div class="action-content">
+          <h3>Nova Despesa</h3>
+          <p>Registrar gasto</p>
+        </div>
+      </div>
+      <div class="action-card goal-action" (click)="navigateTo('/dashboard/metas')">
+        <div class="action-icon">
+          <mat-icon>flag</mat-icon>
+        </div>
+        <div class="action-content">
+          <h3>Nova Meta</h3>
+          <p>Definir objetivo</p>
+        </div>
+      </div>
+      <div class="action-card report-action" (click)="navigateTo('/dashboard/relatorios')">
+        <div class="action-icon">
+          <mat-icon>analytics</mat-icon>
+        </div>
+        <div class="action-content">
+          <h3>Ver Relatórios</h3>
+          <p>Analisar dados</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <div class="activity-header">
+      <h2>Atividade Recente</h2>
+      <button mat-icon-button (click)="refreshActivities()" class="refresh-btn" [disabled]="isLoadingActivities">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    <div class="activity-list">
+      <!-- Loading State -->
+      <div class="activity-item loading" *ngIf="isLoadingActivities">
+        <mat-spinner diameter="24"></mat-spinner>
+        <div class="activity-content">
+          <p>Carregando atividades...</p>
+        </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div class="activity-item empty" *ngIf="!isLoadingActivities && recentActivities.length === 0">
+        <mat-icon>info</mat-icon>
+        <div class="activity-content">
+          <p>Nenhuma atividade recente</p>
+          <span>Comece adicionando suas primeiras transações</span>
+        </div>
+      </div>
+      
+      <!-- Activities List -->
+      <div class="activity-item" *ngFor="let activity of recentActivities">
+        <div class="activity-icon" [style.background-color]="activity.color">
+          <mat-icon>{{ activity.icon }}</mat-icon>
+        </div>
+        <div class="activity-content">
+          <p>{{ activity.title }}</p>
+          <span>{{ activity.subtitle }} • {{ formatActivityDate(activity.date) }}</span>
+        </div>
+      </div>
+      
+      <!-- Load More Button -->
+      <div class="load-more-container" *ngIf="hasMoreActivities && !isLoadingActivities">
+        <button mat-stroked-button (click)="loadMoreActivities()" class="load-more-btn">
+          <mat-icon>expand_more</mat-icon>
+          Carregar mais atividades
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
