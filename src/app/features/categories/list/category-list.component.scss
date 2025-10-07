@@ -375,7 +375,8 @@
     0 16px 50px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   backdrop-filter: blur(20px);
   width: 100%;
@@ -404,6 +405,18 @@
     bottom: 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
+  }
+  
+  // Força bordas brancas em todos os elementos filhos
+  * {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  // Força bordas brancas em mat-cards
+  &.mat-mdc-card,
+  &[class*="mat-card"] {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
   }
 }
 
@@ -597,7 +610,8 @@
 /* Tabela - Padrão Moderno */
 .table-card {
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   backdrop-filter: blur(20px);
   box-shadow: 
@@ -630,6 +644,18 @@
     bottom: 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
+  }
+  
+  // Força bordas brancas em todos os elementos filhos
+  * {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  // Força bordas brancas em mat-cards
+  &.mat-mdc-card,
+  &[class*="mat-card"] {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
   }
 }
 
