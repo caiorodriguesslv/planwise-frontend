@@ -1,6 +1,6 @@
-<div class="expense-form-container planwise-bg-primary">
+<div class="expense-form-container">
   <!-- Header aprimorado -->
-  <div class="page-header planwise-bg-card">
+  <div class="page-header">
     <div class="header-left">
       <button mat-icon-button (click)="goBack()" class="back-button">
         <mat-icon>arrow_back</mat-icon>
@@ -30,7 +30,7 @@
     <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="expense-form">
     
     <!-- Seção: Informações Básicas -->
-    <div class="form-section basic-info planwise-bg-card">
+    <div class="form-section basic-info">
       <div class="section-header">
         <div class="section-icon planwise-icon-cyan">
           <mat-icon>description</mat-icon>
@@ -88,7 +88,7 @@
     <mat-divider></mat-divider>
 
     <!-- Seção: Informações Financeiras -->
-    <div class="form-section financial-info planwise-bg-card">
+    <div class="form-section financial-info">
       <div class="section-header">
         <div class="section-icon planwise-icon-orange">
           <mat-icon>attach_money</mat-icon>

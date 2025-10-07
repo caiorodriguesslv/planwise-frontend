@@ -2,13 +2,14 @@
 @use '../../../../styles/variables' as *;
 
 .dashboard-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%);
   min-height: calc(100vh - 80px);
   position: relative;
   border-radius: 24px;
-  padding: 32px;
+  padding: 40px;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.05),
@@ -350,7 +351,7 @@
 
 // Filtros
 .filters-card {
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   border-radius: 24px;
   box-shadow: 
     0 16px 50px rgba(0, 0, 0, 0.3),
@@ -358,9 +359,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  margin: 0;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(20px);
@@ -476,9 +476,8 @@
     0 16px 50px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  margin: 0;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(20px);
@@ -658,8 +657,8 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   backdrop-filter: blur(20px);
   
   &::before {
