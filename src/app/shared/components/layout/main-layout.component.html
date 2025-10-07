@@ -9,9 +9,7 @@
   <app-sidebar
     [navigationSections]="navigationSections"
     [currentRoute]="currentRoute"
-    [isMobileOpen]="isMobileMenuOpen()"
-    (itemClick)="onNavigationItemClick($event)"
-    (toggleCollapseClick)="toggleSidebarCollapse()">
+    (itemClick)="onNavigationItemClick($event)">
   </app-sidebar>
 
   <!-- Main Content -->

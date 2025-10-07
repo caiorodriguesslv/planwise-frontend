@@ -4,8 +4,9 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
-import { SidebarComponent, NavigationSection, NavigationItem } from './sidebar/sidebar.component';
-import { HeaderComponent, UserInfo } from './header/header.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { HeaderComponent } from './header/header.component';
+import { NavigationSection, NavigationItem, UserInfo } from './types';
 import { MobileOverlayComponent } from './mobile-overlay/mobile-overlay.component';
 
 @Component({
@@ -28,7 +29,6 @@ export class MainLayoutComponent implements OnInit {
   // Signals para estado reativo
   private _isMobileMenuOpen = signal(false);
   private _isMobile = signal(false);
-  private _isSidebarCollapsed = signal(false);
 
   // Navigation sections
   navigationSections: NavigationSection[] = [
@@ -39,7 +39,7 @@ export class MainLayoutComponent implements OnInit {
           id: 'dashboard',
           label: 'Dashboard',
           icon: 'dashboard',
-          route: '/dashboard'
+          route: '/dashboard/dashboard'
         }
       ]
     },
@@ -142,6 +142,10 @@ export class MainLayoutComponent implements OnInit {
       title: 'Dashboard',
       subtitle: 'Visão geral do seu planejamento financeiro'
     },
+    '/dashboard/dashboard': {
+      title: 'Dashboard',
+      subtitle: 'Visão geral do seu planejamento financeiro'
+    },
     '/dashboard/expenses': {
       title: 'Despesas',
       subtitle: 'Gerencie e monitore todos os seus gastos'
@@ -203,9 +207,6 @@ export class MainLayoutComponent implements OnInit {
     }
   }
 
-  toggleSidebarCollapse(): void {
-    this._isSidebarCollapsed.set(!this._isSidebarCollapsed());
-  }
 
   getPageTitle(): string {
     // Buscar por rota exata primeiro
@@ -279,9 +280,6 @@ export class MainLayoutComponent implements OnInit {
     return this._isMobile();
   }
 
-  isSidebarCollapsed(): boolean {
-    return this._isSidebarCollapsed();
-  }
 
   toggleMobileMenu(): void {
     this._isMobileMenuOpen.set(!this._isMobileMenuOpen());

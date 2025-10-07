@@ -9,6 +9,11 @@ export const dashboardRoutes: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
         loadComponent: () => import('./dashboard.component').then(m => m.DashboardComponent),
         title: 'Dashboard - PlanWise'
       },

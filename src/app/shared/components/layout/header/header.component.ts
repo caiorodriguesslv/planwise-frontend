@@ -3,12 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-export interface UserInfo {
-  name: string;
-  role: string;
-  avatar?: string;
-}
+import { UserInfo } from '../types';
 
 @Component({
   selector: 'app-header',
@@ -40,7 +35,7 @@ export interface UserInfo {
           </div>
           <div class="avatar" (click)="onUserClick.emit()">
             <mat-icon *ngIf="!userInfo?.avatar">person</mat-icon>
-            <img *ngIf="userInfo?.avatar" [src]="userInfo.avatar" [alt]="userInfo?.name ?? 'User'">
+            <img *ngIf="userInfo?.avatar" [src]="userInfo?.avatar" [alt]="userInfo?.name ?? 'User'">
           </div>
         </div>
       </div>
