@@ -35,9 +35,23 @@ import { LoadingService } from '../../../core/services/loading.service';
 })
 export class LoginComponent implements OnInit {
 
+  // Modo atual (login ou register)
+  isLoginMode = true;
+  
+  // Formulários
   loginForm: FormGroup;
+  registerForm: FormGroup;
+  currentForm: FormGroup;
+  
+  // Controles de visibilidade
   hidePassword = true;
+  hideConfirmPassword = true;
+  
+  // URL de retorno
   returnUrl = '/dashboard';
+  
+  // Partículas para o gráfico
+  particles = Array.from({ length: 20 }, (_, i) => ({ id: i }));
 
   constructor(
     private fb: FormBuilder,
@@ -46,7 +60,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.loginForm = this.createForm();
+    this.loginForm = this.createLoginForm();
+    this.registerForm = this.createRegisterForm();
+    this.currentForm = this.loginForm;
   }
 
   ngOnInit(): void {
@@ -57,7 +73,7 @@ export class LoginComponent implements OnInit {
   /**
    * Cria o formulário de login
    */
-  private createForm(): FormGroup {
+  private createLoginForm(): FormGroup {
     return this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -65,28 +81,82 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Submete o formulário de login
+   * Cria o formulário de registro
+   */
+  private createRegisterForm(): FormGroup {
+    return this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordMatchValidator });
+  }
+
+  /**
+   * Validador para verificar se as senhas coincidem
+   */
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+    
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
+
+  /**
+   * Alterna para modo de login
+   */
+  setLoginMode(): void {
+    this.isLoginMode = true;
+    this.currentForm = this.loginForm;
+  }
+
+  /**
+   * Alterna para modo de registro
+   */
+  setRegisterMode(): void {
+    this.isLoginMode = false;
+    this.currentForm = this.registerForm;
+  }
+
+  /**
+   * Submete o formulário (login ou register)
    */
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      const credentials = this.loginForm.value;
+    if (this.currentForm.valid) {
+      const formData = this.currentForm.value;
 
-      this.authService.login(credentials).subscribe({
-        next: () => {
-          // AuthService já faz o redirecionamento automático para dashboard
-          // Só redirecionamos aqui se for para uma URL específica diferente
-          if (this.returnUrl && this.returnUrl !== '/dashboard') {
-            setTimeout(() => {
-              this.router.navigateByUrl(this.returnUrl);
-            }, 200); // Aguarda um pouco mais para garantir que AuthService terminou
+      if (this.isLoginMode) {
+        // Login
+        this.authService.login(formData).subscribe({
+          next: () => {
+            if (this.returnUrl && this.returnUrl !== '/dashboard') {
+              setTimeout(() => {
+                this.router.navigateByUrl(this.returnUrl);
+              }, 200);
+            }
+          },
+          error: (error) => {
+            this.currentForm.patchValue({ password: '' });
           }
-        },
-        error: (error) => {
-          // Erro já é tratado pelo AuthService e interceptors
-          // Limpa apenas a senha por segurança
-          this.loginForm.patchValue({ password: '' });
-        }
-      });
+        });
+      } else {
+        // Register
+        this.authService.register(formData).subscribe({
+          next: () => {
+            // Após registro bem-sucedido, alterna para login
+            this.setLoginMode();
+            // Preenche o email no formulário de login
+            this.loginForm.patchValue({ email: formData.email });
+          },
+          error: (error) => {
+            // Erro já é tratado pelo AuthService
+            this.currentForm.patchValue({ password: '', confirmPassword: '' });
+          }
+        });
+      }
     } else {
       // Marca todos os campos como touched para mostrar erros
       this.markFormGroupTouched();

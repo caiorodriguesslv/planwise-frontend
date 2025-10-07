@@ -1,21 +1,11 @@
-.login-container {
+.auth-container {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
   position: relative;
   overflow: hidden;
   
-  // Background com imagem e fallback vibrante
-  background-color: #ff6b6b;
-  background-image: url('/login-background.jpg');
-  
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  
+  // Background moderno com gradiente do sistema
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%);
   
   // Efeito de animação suave no background
   &::before {
@@ -25,13 +15,23 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      45deg,
-      rgba(63, 81, 181, 0.1) 0%,
-      transparent 50%,
-      rgba(156, 39, 176, 0.1) 100%
-    );
+    background: 
+      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
     animation: backgroundShift 20s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
   }
 }
 
@@ -41,6 +41,740 @@
   }
   50% { 
     background-position: 100% 50%; 
+  }
+}
+
+// Seção do formulário (esquerda)
+.auth-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 15px 30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: cardSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  // Hover no card
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+      0 35px 70px rgba(0, 0, 0, 0.5),
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    transition: all 0.4s ease;
+  }
+  
+  // Animação de entrada do card
+  @keyframes cardSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+// Logo
+.logo {
+  text-align: center;
+  margin-bottom: 32px;
+  
+  svg {
+    height: 48px;
+    width: auto;
+  }
+}
+
+// Títulos
+.auth-title {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.auth-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+// Seletor de modo
+.mode-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  
+  // Indicador animado
+  &::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: linear-gradient(135deg, #ff6b6b 0%, #e84393 50%, #c44569 100%);
+    border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    box-shadow: 
+      0 4px 15px rgba(255, 107, 107, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+  }
+  
+  // Animação para register
+  &.register-mode::before {
+    transform: translateX(100%);
+  }
+}
+
+.mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  position: relative;
+  z-index: 2;
+  
+  // Hover suave
+  &:hover:not(.active) {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Estado ativo
+  &.active {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+  }
+  
+  // Ícone com animação
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  &:hover mat-icon {
+    transform: scale(1.1);
+  }
+  
+  &.active mat-icon {
+    transform: scale(1.05);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+}
+
+// Formulário
+.auth-form {
+  .full-width {
+    width: 100%;
+    margin-bottom: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  // Estilização moderna dos campos
+  ::ng-deep mat-form-field {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
+    opacity: 1;
+    
+    // Animação de entrada escalonada
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.3s; }
+    &:nth-child(4) { animation-delay: 0.4s; }
+    
+    // Container do campo - FORÇA os estilos
+    .mat-mdc-form-field-flex {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 12px !important;
+      padding: 8px 16px !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      backdrop-filter: blur(10px) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      box-shadow: none !important;
+      
+      // Efeito de brilho sutil
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+    }
+    
+    // Hover nos campos
+    &:hover .mat-mdc-form-field-flex {
+      transform: translateY(-2px) !important;
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(0, 212, 255, 0.3) !important;
+      
+      &::before {
+        opacity: 1 !important;
+      }
+    }
+    
+    // Focus nos campos
+    &.mat-focused .mat-mdc-form-field-flex {
+      transform: translateY(-1px) !important;
+      box-shadow: 
+        0 12px 30px rgba(0, 212, 255, 0.2),
+        0 0 0 1px rgba(0, 212, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+      border-color: rgba(0, 212, 255, 0.6) !important;
+      
+      &::before {
+        opacity: 1 !important;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 50%) !important;
+      }
+    }
+    
+    // Labels modernos
+    .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    // Input text
+    .mat-mdc-input-element {
+      color: white !important;
+      font-size: 16px;
+      font-weight: 400;
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 400;
+      }
+    }
+    
+    // Ícones
+    .mat-mdc-form-field-icon-suffix {
+      color: rgba(255, 255, 255, 0.7) !important;
+      transition: all 0.3s ease;
+    }
+    
+    &:hover .mat-mdc-form-field-icon-suffix {
+      color: rgba(0, 212, 255, 0.8) !important;
+      transform: scale(1.1);
+    }
+    
+    &.mat-focused .mat-mdc-form-field-icon-suffix {
+      color: #00d4ff !important;
+      transform: scale(1.1);
+    }
+    
+    // REMOVER COMPLETAMENTE as bordas de erro do Angular Material
+    &.mat-form-field-invalid .mat-mdc-form-field-flex {
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      box-shadow: none !important;
+    }
+    
+    // Sobrescrever TODOS os estilos de erro do Angular Material
+    &.mat-form-field-invalid .mat-mdc-form-field-outline {
+      color: rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    &.mat-form-field-invalid .mat-mdc-form-field-outline-thick {
+      color: rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    // Forçar remoção de bordas vermelhas do Angular Material
+    &.mat-form-field-invalid .mat-mdc-form-field-outline-start,
+    &.mat-form-field-invalid .mat-mdc-form-field-outline-end,
+    &.mat-form-field-invalid .mat-mdc-form-field-outline-gap {
+      border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    // Remover outline padrão do Angular Material
+    &.mat-form-field-invalid .mat-mdc-form-field-outline {
+      border-width: 1px !important;
+      border-style: solid !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    // Manter bordas de erro apenas para campos com erro real (touched)
+    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-flex {
+      border-color: rgba(255, 107, 107, 0.6) !important;
+      box-shadow: 
+        0 0 0 1px rgba(255, 107, 107, 0.3),
+        0 4px 15px rgba(255, 107, 107, 0.1) !important;
+    }
+    
+    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-outline {
+      color: rgba(255, 107, 107, 0.6) !important;
+    }
+    
+    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-outline-thick {
+      color: rgba(255, 107, 107, 0.6) !important;
+    }
+    
+    // Mensagens de erro estilizadas
+    .mat-mdc-form-field-error {
+      color: #ff6b6b !important;
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 4px;
+      padding-left: 4px;
+      opacity: 0;
+      transform: translateY(-5px);
+      transition: all 0.3s ease;
+    }
+    
+    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-error {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    // Animação de entrada dos campos
+    animation: fieldSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+    
+    @keyframes fieldSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    // Efeito de pulsação sutil no focus
+    &.mat-focused .mat-mdc-form-field-flex::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(139, 92, 246, 0.3));
+      z-index: -1;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.02); }
+    }
+  }
+}
+
+// Botão de autenticação
+.auth-button {
+  height: 56px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin-top: 24px !important;
+  border-radius: 16px !important;
+  color: #ffffff !important;
+  border: none !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  
+  // Gradiente moderno do sistema
+  background: linear-gradient(135deg, #ff6b6b 0%, #e84393 50%, #c44569 100%) !important;
+  box-shadow: 
+    0 8px 32px rgba(255, 107, 107, 0.4),
+    0 4px 16px rgba(232, 67, 147, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+      0 12px 40px rgba(255, 107, 107, 0.5),
+      0 6px 20px rgba(232, 67, 147, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+// Links de alternância
+.auth-links {
+  text-align: center;
+  margin-top: 24px;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+  
+  p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .auth-link {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: inline-block;
+    
+    // Efeito de hover com sublinhado animado
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00d4ff, #8b5cf6);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    &:hover {
+      color: #8b5cf6;
+      text-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+      transform: translateY(-2px);
+      
+      &::after {
+        width: 100%;
+      }
+    }
+    
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+  }
+  
+  // Animação de entrada dos links
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// Seção visual (direita)
+.auth-visual-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+// Gráfico abstrato
+.abstract-graphic {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 40px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: graphicFloat 6s ease-in-out infinite;
+  
+  // Hover no gráfico
+  &:hover {
+    transform: scale(1.05) rotate(5deg);
+    filter: brightness(1.2);
+  }
+  
+  // Animação de flutuação
+  @keyframes graphicFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+}
+
+.graphic-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid;
+  animation: rotate 20s linear infinite;
+  
+  &.ring-1 {
+    width: 100%;
+    height: 100%;
+    border-color: rgba(0, 212, 255, 0.3);
+    animation-duration: 15s;
+  }
+  
+  &.ring-2 {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border-color: rgba(139, 92, 246, 0.4);
+    animation-duration: 20s;
+    animation-direction: reverse;
+  }
+  
+  &.ring-3 {
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+    border-color: rgba(255, 107, 107, 0.5);
+    animation-duration: 25s;
+  }
+}
+
+.graphic-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #00d4ff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
+  animation: float 3s ease-in-out infinite;
+  
+  &:nth-child(odd) {
+    background: #8b5cf6;
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+    animation-delay: -1.5s;
+  }
+  
+  &:nth-child(3n) {
+    background: #ff6b6b;
+    box-shadow: 0 0 8px rgba(255, 107, 107, 0.8);
+    animation-delay: -3s;
+  }
+  
+  // Posicionamento aleatório das partículas
+  &:nth-child(1) { top: 20%; left: 30%; }
+  &:nth-child(2) { top: 40%; left: 70%; }
+  &:nth-child(3) { top: 60%; left: 20%; }
+  &:nth-child(4) { top: 80%; left: 80%; }
+  &:nth-child(5) { top: 30%; left: 50%; }
+  &:nth-child(6) { top: 70%; left: 40%; }
+  &:nth-child(7) { top: 10%; left: 60%; }
+  &:nth-child(8) { top: 50%; left: 10%; }
+  &:nth-child(9) { top: 90%; left: 30%; }
+  &:nth-child(10) { top: 15%; left: 80%; }
+}
+
+// Card de depoimento
+.testimonial-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  max-width: 400px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: testimonialSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
+  
+  // Hover no card de depoimento
+  &:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.4),
+      0 12px 30px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    transition: all 0.4s ease;
+  }
+  
+  // Animação de entrada do depoimento
+  @keyframes testimonialSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(50px) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+}
+
+.testimonial-content {
+  position: relative;
+  z-index: 2;
+}
+
+.testimonial-text {
+  color: white;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.testimonial-author {
+  strong {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+  }
+}
+
+// Animações
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.8; }
+  50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+}
+
+// Responsivo
+@media (max-width: 1024px) {
+  .auth-container {
+    flex-direction: column;
+  }
+  
+  .auth-visual-section {
+    display: none;
+  }
+  
+  .auth-form-section {
+    padding: 20px;
+  }
+  
+  .auth-card {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-card {
+    padding: 24px;
+  }
+  
+  .auth-title {
+    font-size: 28px;
+  }
+  
+  .mode-selector {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .mode-btn {
+    width: 100%;
   }
 }
 
@@ -62,12 +796,12 @@
   mat-card {
     border-radius: 24px !important;
     box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.3),
+      0 25px 50px rgba(0, 0, 0, 0.4),
       0 15px 30px rgba(0, 0, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
     backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
     
     // Animação de entrada mais dinâmica
@@ -242,11 +976,13 @@
   text-transform: none !important;
   letter-spacing: 0.5px !important;
   
-  // Gradiente vibrante e colorido
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 25%, #fd79a8 75%, #e84393 100%) !important;
+  // Gradiente moderno do sistema
+  background: linear-gradient(135deg, #ff6b6b 0%, #e84393 50%, #c44569 100%) !important;
   box-shadow: 
-    0 8px 32px rgba(238, 90, 36, 0.3),
-    0 4px 16px rgba(255, 107, 107, 0.2) !important;
+    0 8px 32px rgba(255, 107, 107, 0.4),
+    0 4px 16px rgba(232, 67, 147, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   
   position: relative;
   overflow: hidden;

@@ -1,106 +1,190 @@
-<div class="login-container planwise-bg-primary">
-  <div class="login-card">
-    <mat-card class="planwise-card">
-      <mat-card-header>
-        <div class="header-content">
-          <div class="logo">
-            <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#3f51b5;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#9c27b0;stop-opacity:1" />
-                </linearGradient>
-              </defs>
-              <text x="10" y="40" font-family="Roboto, sans-serif" font-size="32" font-weight="700" fill="url(#logoGradient)">
-                PlanWise
-              </text>
-            </svg>
-          </div>
-          <mat-card-title class="planwise-text-primary">Entrar na sua conta</mat-card-title>
-          <mat-card-subtitle class="planwise-text-muted">Gerencie suas finanças de forma inteligente</mat-card-subtitle>
-        </div>
-      </mat-card-header>
+<div class="auth-container">
+  <!-- Coluna Esquerda - Formulário -->
+  <div class="auth-form-section">
+    <div class="auth-card">
+      <!-- Logo -->
+      <div class="logo">
+        <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <text x="10" y="40" font-family="Roboto, sans-serif" font-size="32" font-weight="700" fill="url(#logoGradient)">
+            PlanWise
+          </text>
+        </svg>
+      </div>
 
-      <mat-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-          
-          <!-- Email Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Email</mat-label>
-            <input 
-              matInput 
-              type="email" 
-              formControlName="email" 
-              placeholder="seu@email.com"
-              autocomplete="email">
-            <mat-icon matSuffix>mail_outline</mat-icon>
-            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-              Email é obrigatório
-            </mat-error>
-            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-              Email inválido
-            </mat-error>
-          </mat-form-field>
+      <!-- Título -->
+      <h1 class="auth-title">{{ isLoginMode ? 'Entrar na sua conta' : 'Criar sua conta' }}</h1>
+      <p class="auth-subtitle">{{ isLoginMode ? 'Gerencie suas finanças de forma inteligente' : 'Comece a gerenciar suas finanças hoje mesmo' }}</p>
 
-          <!-- Password Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Senha</mat-label>
-            <input 
-              matInput 
-              [type]="hidePassword ? 'password' : 'text'" 
-              formControlName="password"
-              placeholder="Sua senha"
-              autocomplete="current-password">
-            <button 
-              mat-icon-button 
-              matSuffix 
-              type="button"
-              (click)="hidePassword = !hidePassword"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-              Senha é obrigatória
-            </mat-error>
-            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-              Senha deve ter no mínimo 6 caracteres
-            </mat-error>
-          </mat-form-field>
+      <!-- Seletor de Modo -->
+      <div class="mode-selector" [class.register-mode]="!isLoginMode">
+        <button 
+          class="mode-btn" 
+          [class.active]="isLoginMode"
+          (click)="setLoginMode()">
+          <mat-icon>login</mat-icon>
+          Entrar
+        </button>
+        <button 
+          class="mode-btn" 
+          [class.active]="!isLoginMode"
+          (click)="setRegisterMode()">
+          <mat-icon>person_add</mat-icon>
+          Criar Conta
+        </button>
+      </div>
 
-          <!-- Submit Button -->
+      <!-- Formulário -->
+      <form [formGroup]="currentForm" (ngSubmit)="onSubmit()" class="auth-form">
+        
+        <!-- Nome (apenas no register) -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="!isLoginMode">
+          <mat-label>Nome completo</mat-label>
+          <input 
+            matInput 
+            type="text" 
+            formControlName="name" 
+            placeholder="Seu nome completo"
+            autocomplete="name">
+          <mat-icon matSuffix>person_outline</mat-icon>
+          <mat-error *ngIf="currentForm.get('name')?.hasError('required')">
+            Nome é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input 
+            matInput 
+            type="email" 
+            formControlName="email" 
+            placeholder="seu@email.com"
+            autocomplete="email">
+          <mat-icon matSuffix>mail_outline</mat-icon>
+          <mat-error *ngIf="currentForm.get('email')?.hasError('required')">
+            Email é obrigatório
+          </mat-error>
+          <mat-error *ngIf="currentForm.get('email')?.hasError('email')">
+            Email inválido
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Senha -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input 
+            matInput 
+            [type]="hidePassword ? 'password' : 'text'" 
+            formControlName="password"
+            [placeholder]="isLoginMode ? 'Sua senha' : 'Crie uma senha segura'"
+            [autocomplete]="isLoginMode ? 'current-password' : 'new-password'">
           <button 
-            mat-raised-button 
-            color="primary" 
-            type="submit" 
-            class="login-button full-width"
-            [disabled]="loginForm.invalid || loadingService.isCurrentlyLoading">
-            
-            <span *ngIf="!loadingService.isCurrentlyLoading">
-              <mat-icon>account_circle</mat-icon>
-              Entrar
-            </span>
-            
-            <span *ngIf="loadingService.isCurrentlyLoading" class="loading-content">
-              <mat-spinner diameter="20"></mat-spinner>
-              Entrando...
-            </span>
+            mat-icon-button 
+            matSuffix 
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
+          <mat-error *ngIf="currentForm.get('password')?.hasError('required')">
+            Senha é obrigatória
+          </mat-error>
+          <mat-error *ngIf="currentForm.get('password')?.hasError('minlength')">
+            Senha deve ter no mínimo 6 caracteres
+          </mat-error>
+        </mat-form-field>
 
-        </form>
-      </mat-card-content>
+        <!-- Confirmar Senha (apenas no register) -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="!isLoginMode">
+          <mat-label>Confirmar senha</mat-label>
+          <input 
+            matInput 
+            [type]="hideConfirmPassword ? 'password' : 'text'" 
+            formControlName="confirmPassword"
+            placeholder="Digite a senha novamente"
+            autocomplete="new-password">
+          <button 
+            mat-icon-button 
+            matSuffix 
+            type="button"
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+            [attr.aria-label]="'Hide confirm password'"
+            [attr.aria-pressed]="hideConfirmPassword">
+            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="currentForm.get('confirmPassword')?.hasError('required')">
+            Confirmação de senha é obrigatória
+          </mat-error>
+          <mat-error *ngIf="currentForm.hasError('passwordMismatch') && currentForm.get('confirmPassword')?.touched">
+            As senhas não coincidem
+          </mat-error>
+        </mat-form-field>
 
-      <mat-divider></mat-divider>
+        <!-- Botão Submit -->
+        <button 
+          mat-raised-button 
+          type="submit" 
+          class="auth-button full-width"
+          [disabled]="currentForm.invalid || loadingService.isCurrentlyLoading">
+          
+          <span *ngIf="!loadingService.isCurrentlyLoading">
+            <mat-icon>{{ isLoginMode ? 'login' : 'person_add' }}</mat-icon>
+            {{ isLoginMode ? 'Entrar' : 'Criar conta' }}
+          </span>
+          
+          <span *ngIf="loadingService.isCurrentlyLoading" class="loading-content">
+            <mat-spinner diameter="20"></mat-spinner>
+            {{ isLoginMode ? 'Entrando...' : 'Criando conta...' }}
+          </span>
+        </button>
 
-      <mat-card-actions class="card-actions">
-        <p class="register-text">
-          Não tem uma conta? 
-          <a routerLink="/auth/register" class="register-link">
-            Criar conta gratuita
-          </a>
+        <!-- Links de alternância -->
+        <div class="auth-links">
+          <p *ngIf="isLoginMode">
+            Não tem uma conta? 
+            <a (click)="setRegisterMode()" class="auth-link">Criar conta gratuita</a>
+          </p>
+          <p *ngIf="!isLoginMode">
+            Já tem uma conta? 
+            <a (click)="setLoginMode()" class="auth-link">Entrar agora</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Coluna Direita - Visual -->
+  <div class="auth-visual-section">
+    <!-- Gráfico Abstrato -->
+    <div class="abstract-graphic">
+      <div class="graphic-ring ring-1"></div>
+      <div class="graphic-ring ring-2"></div>
+      <div class="graphic-ring ring-3"></div>
+      <div class="graphic-particles">
+        <div class="particle" *ngFor="let particle of particles"></div>
+      </div>
+    </div>
+
+    <!-- Card de Depoimento -->
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p class="testimonial-text">
+          "Graças ao PlanWise, consegui organizar minhas finanças de forma eficiente! 
+          Interface intuitiva, recursos completos e resultados excelentes. 
+          Altamente recomendado!"
         </p>
-      </mat-card-actions>
-
-    </mat-card>
+        <div class="testimonial-author">
+          <strong>Maria Silva</strong>
+          <span>Usuária Satisfeita</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
