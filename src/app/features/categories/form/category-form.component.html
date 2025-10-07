@@ -1,6 +1,6 @@
-<div class="category-form-container planwise-bg-primary">
+<div class="category-form-container">
   <!-- Header compacto -->
-  <div class="page-header planwise-bg-card">
+  <div class="page-header">
     <div class="header-left">
       <button mat-icon-button (click)="goBack()" class="back-button">
         <mat-icon>arrow_back</mat-icon>
@@ -30,7 +30,7 @@
     <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="category-form">
     
     <!-- Seção: Informações Básicas -->
-    <div class="form-section basic-info planwise-bg-card">
+    <div class="form-section basic-info">
       <div class="section-header">
         <div class="section-icon planwise-icon-cyan">
           <mat-icon>edit_note</mat-icon>
@@ -72,7 +72,7 @@
     <mat-divider></mat-divider>
 
     <!-- Seção: Configurações -->
-    <div class="form-section config-info planwise-bg-card">
+    <div class="form-section config-info">
       <div class="section-header">
         <div class="section-icon planwise-icon-orange">
           <mat-icon>tune</mat-icon>
@@ -112,7 +112,7 @@
     <mat-divider></mat-divider>
 
     <!-- Resumo Final -->
-    <div class="form-section summary-section planwise-bg-card" *ngIf="isFormValid()">
+    <div class="form-section summary-section" *ngIf="isFormValid()">
       <div class="section-header">
         <div class="section-icon planwise-icon-purple">
           <mat-icon>summarize</mat-icon>

@@ -463,8 +463,8 @@ body {
   box-shadow: none !important;
 }
 
-// Override para seções do formulário
-::ng-deep .form-section {
+// Override para seções do formulário (exceto category-form)
+::ng-deep .form-section:not(.category-form-container .form-section) {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
   border: none !important;
   border-width: 0 !important;
@@ -474,8 +474,8 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
 }
 
-// Override agressivo para remover todas as bordas
-::ng-deep * {
+// Override agressivo para remover todas as bordas (exceto category-form)
+::ng-deep *:not(.category-form-container *):not(.category-form-container) {
   border-color: transparent !important;
 }
 
@@ -606,4 +606,63 @@ body {
   .field-wrapper {
     background: transparent !important;
   }
+}
+
+// Estilos específicos para category-form-container
+::ng-deep .category-form-container {
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 24px !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(20px) !important;
+  overflow: hidden !important;
+  position: relative !important;
+  min-height: 100vh !important;
+  padding: 20px !important;
+  padding-top: 0 !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+::ng-deep .category-form-container .page-header {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    0 16px 50px rgba(0, 0, 0, 0.3), 
+    0 0 0 1px rgba(255, 255, 255, 0.1), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(20px) !important;
+  position: relative !important;
+  z-index: 2 !important;
+  margin-top: 20px !important;
+  margin-bottom: 24px !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+::ng-deep .category-form-container .form-section {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 24px !important;
+  box-shadow: 
+    0 16px 50px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+::ng-deep .category-form-container .form-actions {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 24px !important;
+  box-shadow: 
+    0 16px 50px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(20px) !important;
 }
