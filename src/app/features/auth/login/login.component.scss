@@ -1,13 +1,14 @@
+// ========================================
+// AUTH COMPONENT - PRIMENG UNIFIED STYLES
+// ========================================
+
 .auth-container {
   min-height: 100vh;
   display: flex;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%);
   position: relative;
   overflow: hidden;
   
-  // Background moderno com gradiente do sistema
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%);
-  
-  // Efeito de animação suave no background
   &::before {
     content: '';
     position: absolute;
@@ -20,37 +21,16 @@
       radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
       radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
       linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
-    animation: backgroundShift 20s ease-in-out infinite;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
   }
 }
 
-@keyframes backgroundShift {
-  0%, 100% { 
-    background-position: 0% 50%; 
-  }
-  50% { 
-    background-position: 100% 50%; 
-  }
-}
-
-// Seção do formulário (esquerda)
 .auth-form-section {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 40px 20px;
   position: relative;
   z-index: 2;
 }
@@ -58,114 +38,87 @@
 .auth-card {
   width: 100%;
   max-width: 480px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
-  padding: 40px;
+  padding: 48px 40px;
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.4),
-    0 15px 30px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: cardSlideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  
-  // Hover no card
-  &:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 
-      0 35px 70px rgba(0, 0, 0, 0.5),
-      0 20px 40px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+  animation: cardSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+      radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+    border-radius: 24px;
     pointer-events: none;
-    transition: all 0.4s ease;
-  }
-  
-  // Animação de entrada do card
-  @keyframes cardSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateY(30px) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
   }
 }
 
-// Logo
 .logo {
   text-align: center;
   margin-bottom: 32px;
   
   svg {
     height: 48px;
-    width: auto;
+      width: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 212, 255, 0.3));
   }
 }
 
-// Títulos
 .auth-title {
-  color: white;
   font-size: 32px;
   font-weight: 700;
+  color: #ffffff;
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
 }
 
 .auth-subtitle {
-  color: rgba(255, 255, 255, 0.8);
   font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+    line-height: 1.5;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
 }
 
-// Seletor de modo
+// Seletor de Modo
 .mode-selector {
   display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 6px;
   margin-bottom: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
-  overflow: hidden;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
   
-  // Indicador animado
   &::before {
     content: '';
     position: absolute;
-    top: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    height: calc(100% - 8px);
-    background: linear-gradient(135deg, #ff6b6b 0%, #e84393 50%, #c44569 100%);
-    border-radius: 8px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    top: 6px;
+    left: 6px;
+    width: calc(50% - 6px);
+    height: calc(100% - 12px);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+    border-radius: 12px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
-    box-shadow: 
-      0 4px 15px rgba(255, 107, 107, 0.3),
-      0 0 0 1px rgba(255, 255, 255, 0.2);
   }
   
-  // Animação para register
   &.register-mode::before {
     transform: translateX(100%);
   }
@@ -173,320 +126,272 @@
 
 .mode-btn {
   flex: 1;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 16px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-  position: relative;
-  z-index: 2;
   
-  // Hover suave
-  &:hover:not(.active) {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  i {
+    font-size: 16px;
   }
   
-  // Estado ativo
   &.active {
-    color: white;
+    color: #ffffff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  &:hover:not(.active) {
+    color: rgba(255, 255, 255, 0.9);
     transform: translateY(-1px);
-  }
-  
-  // Ícone com animação
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  &:hover mat-icon {
-    transform: scale(1.1);
-  }
-  
-  &.active mat-icon {
-    transform: scale(1.05);
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   }
 }
 
 // Formulário
 .auth-form {
-  .full-width {
+  .form-field {
+    margin-bottom: 24px;
+    animation: fieldSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
     width: 100%;
-    margin-bottom: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  // Estilização moderna dos campos
-  ::ng-deep mat-form-field {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateY(0);
-    opacity: 1;
     
-    // Animação de entrada escalonada
     &:nth-child(1) { animation-delay: 0.1s; }
     &:nth-child(2) { animation-delay: 0.2s; }
     &:nth-child(3) { animation-delay: 0.3s; }
     &:nth-child(4) { animation-delay: 0.4s; }
+  }
+  
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     
-    // Container do campo - FORÇA os estilos
-    .mat-mdc-form-field-flex {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    i {
+      font-size: 16px;
+      color: rgba(0, 212, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+  }
+  
+  // Estilos para inputs de texto
+  input[pInputText] {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: blur(10px) !important;
+      
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+      
+    &:focus {
+      outline: none !important;
+      border-color: rgba(0, 212, 255, 0.5) !important;
+      box-shadow: 
+        0 0 0 3px rgba(0, 212, 255, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.2) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+    
+    &:hover:not(:focus) {
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      background: rgba(255, 255, 255, 0.07) !important;
+    }
+    
+    &.p-invalid {
+      border-color: rgba(255, 99, 99, 0.6) !important;
+      background: rgba(255, 99, 99, 0.05) !important;
+    }
+  }
+  
+  // Estilos para p-password
+  ::ng-deep p-password {
+    display: block;
+    width: 100%;
+    position: relative;
+    
+    .p-password {
+      width: 100%;
+      display: block;
+      position: relative;
+    }
+    
+    .p-inputtext {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 12px !important;
-      padding: 8px 16px !important;
+      padding: 14px 16px !important;
+      padding-right: 48px !important;
+      font-size: 14px !important;
+      color: #ffffff !important;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
       backdrop-filter: blur(10px) !important;
-      position: relative !important;
-      overflow: hidden !important;
-      box-shadow: none !important;
-      
-      // Efeito de brilho sutil
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-      }
-    }
-    
-    // Hover nos campos
-    &:hover .mat-mdc-form-field-flex {
-      transform: translateY(-2px) !important;
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.15),
-        0 0 0 1px rgba(255, 255, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-      border-color: rgba(0, 212, 255, 0.3) !important;
-      
-      &::before {
-        opacity: 1 !important;
-      }
-    }
-    
-    // Focus nos campos
-    &.mat-focused .mat-mdc-form-field-flex {
-      transform: translateY(-1px) !important;
-      box-shadow: 
-        0 12px 30px rgba(0, 212, 255, 0.2),
-        0 0 0 1px rgba(0, 212, 255, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-      border-color: rgba(0, 212, 255, 0.6) !important;
-      
-      &::before {
-        opacity: 1 !important;
-        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 50%) !important;
-      }
-    }
-    
-    // Labels modernos
-    .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.9) !important;
-      font-weight: 500;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    // Input text
-    .mat-mdc-input-element {
-      color: white !important;
-      font-size: 16px;
-      font-weight: 400;
       
       &::placeholder {
-        color: rgba(255, 255, 255, 0.6) !important;
-        font-weight: 400;
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+      
+      &:focus {
+        outline: none !important;
+        border-color: rgba(0, 212, 255, 0.5) !important;
+        box-shadow: 
+          0 0 0 3px rgba(0, 212, 255, 0.1),
+          0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+      
+      &:hover:not(:focus) {
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        background: rgba(255, 255, 255, 0.07) !important;
+      }
+      
+      &.p-invalid {
+        border-color: rgba(255, 99, 99, 0.6) !important;
+        background: rgba(255, 99, 99, 0.05) !important;
       }
     }
     
-    // Ícones
-    .mat-mdc-form-field-icon-suffix {
-      color: rgba(255, 255, 255, 0.7) !important;
-      transition: all 0.3s ease;
-    }
-    
-    &:hover .mat-mdc-form-field-icon-suffix {
-      color: rgba(0, 212, 255, 0.8) !important;
-      transform: scale(1.1);
-    }
-    
-    &.mat-focused .mat-mdc-form-field-icon-suffix {
-      color: #00d4ff !important;
-      transform: scale(1.1);
-    }
-    
-    // REMOVER COMPLETAMENTE as bordas de erro do Angular Material
-    &.mat-form-field-invalid .mat-mdc-form-field-flex {
-      border-color: rgba(255, 255, 255, 0.15) !important;
-      box-shadow: none !important;
-    }
-    
-    // Sobrescrever TODOS os estilos de erro do Angular Material
-    &.mat-form-field-invalid .mat-mdc-form-field-outline {
-      color: rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    &.mat-form-field-invalid .mat-mdc-form-field-outline-thick {
-      color: rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    // Forçar remoção de bordas vermelhas do Angular Material
-    &.mat-form-field-invalid .mat-mdc-form-field-outline-start,
-    &.mat-form-field-invalid .mat-mdc-form-field-outline-end,
-    &.mat-form-field-invalid .mat-mdc-form-field-outline-gap {
-      border-color: rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    // Remover outline padrão do Angular Material
-    &.mat-form-field-invalid .mat-mdc-form-field-outline {
-      border-width: 1px !important;
-      border-style: solid !important;
-      border-color: rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    // Manter bordas de erro apenas para campos com erro real (touched)
-    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-flex {
-      border-color: rgba(255, 107, 107, 0.6) !important;
-      box-shadow: 
-        0 0 0 1px rgba(255, 107, 107, 0.3),
-        0 4px 15px rgba(255, 107, 107, 0.1) !important;
-    }
-    
-    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-outline {
-      color: rgba(255, 107, 107, 0.6) !important;
-    }
-    
-    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-outline-thick {
-      color: rgba(255, 107, 107, 0.6) !important;
-    }
-    
-    // Mensagens de erro estilizadas
-    .mat-mdc-form-field-error {
-      color: #ff6b6b !important;
-      font-size: 12px;
-      font-weight: 500;
-      margin-top: 4px;
-      padding-left: 4px;
-      opacity: 0;
-      transform: translateY(-5px);
-      transition: all 0.3s ease;
-    }
-    
-    &.mat-form-field-invalid.mat-form-field-touched .mat-mdc-form-field-error {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    // Animação de entrada dos campos
-    animation: fieldSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
-    
-    @keyframes fieldSlideIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
+    .p-password-toggle-mask-icon,
+    button {
+      position: absolute !important;
+      right: 12px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      background: transparent !important;
+      border: none !important;
+      color: rgba(255, 255, 255, 0.6) !important;
+      transition: all 0.3s ease !important;
+      cursor: pointer !important;
+      padding: 8px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 10 !important;
+      width: auto !important;
+      height: auto !important;
+      
+      &:hover {
+        color: rgba(255, 255, 255, 0.9) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 6px !important;
       }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+      
+      &:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.3) !important;
+      }
+      
+      i,
+      .p-icon,
+      svg {
+        color: inherit !important;
+        fill: currentColor !important;
+        width: 18px !important;
+        height: 18px !important;
       }
     }
-    
-    // Efeito de pulsação sutil no focus
-    &.mat-focused .mat-mdc-form-field-flex::after {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(139, 92, 246, 0.3));
-      z-index: -1;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.02); }
-    }
+  }
+  
+  .error-message {
+    color: #ff6363 !important;
+    font-size: 12px !important;
+    margin-top: 6px !important;
+    display: block !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
   }
 }
 
-// Botão de autenticação
-.auth-button {
-  height: 56px !important;
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  margin-top: 24px !important;
-  border-radius: 16px !important;
-  color: #ffffff !important;
+// Botão
+::ng-deep .auth-button {
+  width: 100% !important;
+  height: 48px !important;
+  background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%) !important;
   border: none !important;
-  text-transform: none !important;
-  letter-spacing: 0.5px !important;
-  
-  // Gradiente moderno do sistema
-  background: linear-gradient(135deg, #ff6b6b 0%, #e84393 50%, #c44569 100%) !important;
+  border-radius: 12px !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-top: 24px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   box-shadow: 
-    0 8px 32px rgba(255, 107, 107, 0.4),
-    0 4px 16px rgba(232, 67, 147, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    0 4px 12px rgba(0, 212, 255, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both !important;
   
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
   
   &:hover:not(:disabled) {
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-2px) !important;
     box-shadow: 
-      0 12px 40px rgba(255, 107, 107, 0.5),
-      0 6px 20px rgba(232, 67, 147, 0.4),
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+      0 8px 20px rgba(0, 212, 255, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.2) !important;
+    
+    &::before {
+      left: 100%;
+    }
   }
   
   &:active:not(:disabled) {
-    transform: translateY(0) scale(0.98);
+    transform: translateY(0) !important;
   }
   
   &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
   }
   
-  mat-icon {
-    margin-right: 8px;
+  .p-button-label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
+  
+  .p-button-icon {
+    color: #ffffff !important;
   }
 }
 
-// Links de alternância
+// Links
 .auth-links {
   text-align: center;
-  margin-top: 24px;
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+  margin-top: 32px;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both;
   
   p {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
     margin: 0;
-    transition: all 0.3s ease;
   }
   
   .auth-link {
@@ -494,82 +399,35 @@
     text-decoration: none;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    display: inline-block;
-    
-    // Efeito de hover com sublinhado animado
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #00d4ff, #8b5cf6);
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    transition: all 0.3s ease;
     
     &:hover {
       color: #8b5cf6;
-      text-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
-      transform: translateY(-2px);
-      
-      &::after {
-        width: 100%;
-      }
-    }
-    
-    &:active {
-      transform: translateY(0) scale(0.98);
-    }
-  }
-  
-  // Animação de entrada dos links
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
     }
   }
 }
 
-// Seção visual (direita)
+// Seção Visual
 .auth-visual-section {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  padding: 40px 20px;
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
-// Gráfico abstrato
 .abstract-graphic {
   position: relative;
-  width: 300px;
-  height: 300px;
-  margin-bottom: 40px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 400px;
+  height: 400px;
   animation: graphicFloat 6s ease-in-out infinite;
-  
-  // Hover no gráfico
-  &:hover {
-    transform: scale(1.05) rotate(5deg);
-    filter: brightness(1.2);
-  }
-  
-  // Animação de flutuação
-  @keyframes graphicFloat {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(2deg); }
-  }
 }
 
 .graphic-ring {
@@ -579,168 +437,190 @@
   animation: rotate 20s linear infinite;
   
   &.ring-1 {
-    width: 100%;
-    height: 100%;
+    width: 120px;
+    height: 120px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-color: rgba(0, 212, 255, 0.3);
     animation-duration: 15s;
   }
   
   &.ring-2 {
-    width: 80%;
-    height: 80%;
-    top: 10%;
-    left: 10%;
-    border-color: rgba(139, 92, 246, 0.4);
-    animation-duration: 20s;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-color: rgba(139, 92, 246, 0.2);
+    animation-duration: 25s;
     animation-direction: reverse;
   }
   
   &.ring-3 {
-    width: 60%;
-    height: 60%;
-    top: 20%;
-    left: 20%;
-    border-color: rgba(255, 107, 107, 0.5);
-    animation-duration: 25s;
+    width: 280px;
+    height: 280px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-color: rgba(255, 165, 0, 0.15);
+    animation-duration: 35s;
   }
 }
 
 .graphic-particles {
   position: absolute;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
-}
-
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: #00d4ff;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
-  animation: float 3s ease-in-out infinite;
+  width: 100%;
+  height: 100%;
   
-  &:nth-child(odd) {
-    background: #8b5cf6;
-    box-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
-    animation-delay: -1.5s;
-  }
-  
-  &:nth-child(3n) {
-    background: #ff6b6b;
-    box-shadow: 0 0 8px rgba(255, 107, 107, 0.8);
-    animation-delay: -3s;
-  }
-  
-  // Posicionamento aleatório das partículas
-  &:nth-child(1) { top: 20%; left: 30%; }
-  &:nth-child(2) { top: 40%; left: 70%; }
-  &:nth-child(3) { top: 60%; left: 20%; }
-  &:nth-child(4) { top: 80%; left: 80%; }
-  &:nth-child(5) { top: 30%; left: 50%; }
-  &:nth-child(6) { top: 70%; left: 40%; }
-  &:nth-child(7) { top: 10%; left: 60%; }
-  &:nth-child(8) { top: 50%; left: 10%; }
-  &:nth-child(9) { top: 90%; left: 30%; }
-  &:nth-child(10) { top: 15%; left: 80%; }
-}
-
-// Card de depoimento
-.testimonial-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  position: relative;
-  overflow: hidden;
-  max-width: 400px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: testimonialSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
-  
-  // Hover no card de depoimento
-  &:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 
-      0 30px 60px rgba(0, 0, 0, 0.4),
-      0 12px 30px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-  
-  &::before {
-    content: '';
+  .particle {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
-    pointer-events: none;
-    transition: all 0.4s ease;
+    width: 4px;
+    height: 4px;
+    background: rgba(0, 212, 255, 0.6);
+    border-radius: 50%;
+    animation: particleFloat 8s ease-in-out infinite;
+    
+    &:nth-child(1) { top: 5%; left: 3%; animation-delay: 0.1s; animation-duration: 9s; }
+    &:nth-child(2) { top: 10%; left: 6%; animation-delay: 0.2s; animation-duration: 10s; }
+    &:nth-child(3) { top: 15%; left: 9%; animation-delay: 0.3s; animation-duration: 11s; }
+    &:nth-child(4) { top: 20%; left: 12%; animation-delay: 0.4s; animation-duration: 8s; }
+    &:nth-child(5) { top: 25%; left: 15%; animation-delay: 0.5s; animation-duration: 9s; }
+    &:nth-child(6) { top: 30%; left: 18%; animation-delay: 0.6s; animation-duration: 10s; }
+    &:nth-child(7) { top: 35%; left: 21%; animation-delay: 0.7s; animation-duration: 11s; }
+    &:nth-child(8) { top: 40%; left: 24%; animation-delay: 0.8s; animation-duration: 8s; }
+    &:nth-child(9) { top: 45%; left: 27%; animation-delay: 0.9s; animation-duration: 9s; }
+    &:nth-child(10) { top: 50%; left: 30%; animation-delay: 1s; animation-duration: 10s; }
+    &:nth-child(11) { top: 55%; left: 33%; animation-delay: 1.1s; animation-duration: 11s; }
+    &:nth-child(12) { top: 60%; left: 36%; animation-delay: 1.2s; animation-duration: 8s; }
+    &:nth-child(13) { top: 65%; left: 39%; animation-delay: 1.3s; animation-duration: 9s; }
+    &:nth-child(14) { top: 70%; left: 42%; animation-delay: 1.4s; animation-duration: 10s; }
+    &:nth-child(15) { top: 75%; left: 45%; animation-delay: 1.5s; animation-duration: 11s; }
+    &:nth-child(16) { top: 80%; left: 48%; animation-delay: 1.6s; animation-duration: 8s; }
+    &:nth-child(17) { top: 85%; left: 51%; animation-delay: 1.7s; animation-duration: 9s; }
+    &:nth-child(18) { top: 90%; left: 54%; animation-delay: 1.8s; animation-duration: 10s; }
+    &:nth-child(19) { top: 95%; left: 57%; animation-delay: 1.9s; animation-duration: 11s; }
+    &:nth-child(20) { top: 100%; left: 60%; animation-delay: 2s; animation-duration: 8s; }
   }
+}
+
+.testimonial-card {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 320px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  animation: testimonialSlideIn 1s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
   
-  // Animação de entrada do depoimento
-  @keyframes testimonialSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateX(50px) scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-    }
-  }
-}
-
-.testimonial-content {
-  position: relative;
-  z-index: 2;
-}
-
-.testimonial-text {
-  color: white;
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 24px;
-  font-style: italic;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.testimonial-author {
-  strong {
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 4px;
-  }
-  
-  span {
-    color: rgba(255, 255, 255, 0.7);
+  .testimonial-text {
+    color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  
+  .testimonial-author {
+    display: flex;
+    flex-direction: column;
+    
+    strong {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    span {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
+    }
   }
 }
 
 // Animações
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fieldSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes graphicFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.8; }
-  50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-30px) scale(1.2);
+    opacity: 1;
+  }
 }
 
-// Responsivo
+@keyframes testimonialSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Responsividade
 @media (max-width: 1024px) {
   .auth-container {
     flex-direction: column;
@@ -755,486 +635,32 @@
   }
   
   .auth-card {
-    padding: 32px;
+    padding: 32px 24px;
   }
 }
 
 @media (max-width: 768px) {
   .auth-card {
-    padding: 24px;
+    padding: 24px 20px;
+    border-radius: 20px;
   }
   
   .auth-title {
     font-size: 28px;
   }
-  
-  .mode-selector {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .mode-btn {
-    width: 100%;
-  }
 }
 
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.login-card {
-  width: 100%;
-  max-width: 420px;
-  position: relative;
-  z-index: 2;
-  
-  mat-card {
-    border-radius: 24px !important;
-    box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.4),
-      0 15px 30px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(20px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
-    
-    // Animação de entrada mais dinâmica
-    animation: cardSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      background: linear-gradient(90deg, #ff6b6b, #ee5a24, #fd79a8, #e84393);
-      border-radius: 24px 24px 0 0;
-      background-size: 200% 100%;
-      animation: gradientShift 3s ease-in-out infinite;
-    }
-  }
-}
-
-@keyframes cardSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(50px) scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.header-content {
-  text-align: center;
-  width: 100%;
-  padding: 32px 24px 24px;
-  
-  .logo {
-    margin-bottom: 20px;
-    
-    svg {
-      height: 55px;
-      width: auto;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-    }
-  }
-  
-  mat-card-title {
-    font-size: 28px !important;
-    font-weight: 700 !important;
-    color: #2c3e50 !important;
-    margin-bottom: 8px !important;
-    background: linear-gradient(135deg, #3f51b5, #9c27b0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  mat-card-subtitle {
-    font-size: 16px !important;
-    color: #64748b !important;
-    font-weight: 400 !important;
-    line-height: 1.5;
-  }
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 0 24px;
-  margin-top: 8px;
-  
-  mat-form-field {
-    .mat-mdc-form-field-outline {
-      border-radius: 16px !important;
-      border-width: 2px !important;
-      border-color: rgba(255, 255, 255, 0.5) !important;
-    }
-    
-    &.mat-focused {
-      .mat-mdc-form-field-outline-thick {
-        border-color: #ff6b6b !important;
-        border-width: 3px !important;
-      }
-      
-      .mat-mdc-form-field-label {
-        color: #ff6b6b !important;
-      }
-    }
-    
-    .mat-mdc-form-field-icon-suffix {
-      color: #ff6b6b !important;
-      font-size: 22px;
-      
-      mat-icon {
-        font-family: 'Material Icons' !important;
-        font-weight: normal;
-        font-style: normal;
-        font-size: 22px !important;
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
-        display: inline-block;
-        white-space: nowrap;
-        word-wrap: normal;
-        direction: ltr;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-      }
-    }
-    
-    .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.9) !important;
-      font-weight: 600 !important;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    input {
-      font-size: 16px;
-      padding: 18px 16px;
-      color: #ffffff !important;
-      font-weight: 600 !important;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-      
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.6) !important;
-        font-weight: 400;
-      }
-      
-      &:focus {
-        outline: none;
-      }
-    }
-    
-    // Hover effect
-    &:hover .mat-mdc-form-field-outline {
-      border-color: rgba(255, 255, 255, 0.8) !important;
-    }
-    
-    // Error states
-    &.mat-form-field-invalid {
-      .mat-mdc-form-field-outline-thick {
-        border-color: #e53e3e !important;
-      }
-      
-      .mat-mdc-form-field-label {
-        color: #e53e3e !important;
-      }
-    }
-    
-    mat-error {
-      color: #e53e3e !important;
-      font-weight: 500;
-      font-size: 13px;
-      margin-top: 4px;
-    }
-  }
-}
-
-.full-width {
-  width: 100%;
-}
-
-.login-button {
-  height: 56px !important;
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  margin-top: 32px !important;
-  border-radius: 16px !important;
-  color: #ffffff !important;
-  border: none !important;
-  text-transform: none !important;
-  letter-spacing: 0.5px !important;
-  
-  // Gradiente moderno do sistema
-  background: linear-gradient(135deg, #ff6b6b 0%, #e84393 50%, #c44569 100%) !important;
-  box-shadow: 
-    0 8px 32px rgba(255, 107, 107, 0.4),
-    0 4px 16px rgba(232, 67, 147, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  
-  // Efeito shimmer animado
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg, 
-      transparent, 
-      rgba(255, 255, 255, 0.4), 
-      transparent
-    );
-    transition: left 0.6s ease;
-  }
-  
-  &:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 
-      0 12px 40px rgba(238, 90, 36, 0.4),
-      0 8px 24px rgba(255, 107, 107, 0.3) !important;
-    background: linear-gradient(135deg, #ff7675 0%, #fd79a8 25%, #e84393 75%, #a29bfe 100%) !important;
-    
-    &::before {
-      left: 100%;
-    }
-  }
-  
-  &:active {
-    transform: translateY(-1px) scale(0.98);
-  }
-  
-  &:disabled {
-    background: linear-gradient(135deg, #b2bec3, #ddd) !important;
-    transform: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-    cursor: not-allowed;
-    opacity: 0.7;
-  }
-  
-  // Conteúdo do botão
-  .loading-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    justify-content: center;
-  }
-  
-  mat-icon {
-    margin-right: 8px;
-    font-size: 20px !important;
-    color: #ffffff !important;
-    font-family: 'Material Icons' !important;
-    font-weight: normal;
-    font-style: normal;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-  
-  span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-}
-
-mat-divider {
-  margin: 24px 0 !important;
-  opacity: 0.1;
-}
-
-.card-actions {
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 0 24px 32px;
-  
-  .register-text {
-    text-align: center;
-    margin: 0;
-    color: #64748b;
-    font-size: 16px;
-    font-weight: 500;
-    
-    .register-link {
-      color: #ff6b6b;
-      text-decoration: none;
-      font-weight: 700;
-      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      transition: all 0.3s ease;
-      position: relative;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-        transition: width 0.3s ease;
-      }
-      
-      &:hover {
-        background: linear-gradient(135deg, #fd79a8, #e84393);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        
-        &::after {
-          width: 100%;
-        }
-      }
-    }
-  }
-}
-
-// Responsive Design
 @media (max-width: 480px) {
-  .login-container {
-    padding: 16px;
-    background-attachment: scroll;
-    // Garante que a imagem funcione bem no mobile
-    background-size: cover;
-    
-    // Imagem de background para mobile
-    background-image: url('/login-background.jpg');
+  .auth-card {
+    padding: 20px 16px;
+    border-radius: 16px;
   }
   
-  .login-card {
-    max-width: 100%;
-    
-    mat-card {
-      border-radius: 16px !important;
-    }
+  .auth-title {
+    font-size: 24px;
   }
   
-  .header-content {
-    padding: 24px 20px 20px;
-    
-    mat-card-title {
-      font-size: 24px !important;
-    }
-    
-    mat-card-subtitle {
-      font-size: 14px !important;
-    }
+  .auth-subtitle {
+    font-size: 14px;
   }
-  
-  .login-form {
-    padding: 0 20px;
-    gap: 16px;
-    
-    mat-form-field input {
-      font-size: 16px; // Evita zoom no iOS
-    }
-  }
-  
-  .card-actions {
-    padding: 0 20px 24px;
-  }
-}
-
-@media (max-width: 360px) {
-  .header-content .logo svg {
-    height: 45px;
-  }
-  
-  .header-content mat-card-title {
-    font-size: 22px !important;
-  }
-}
-
-// Melhorias de acessibilidade
-@media (prefers-reduced-motion: reduce) {
-  .login-card mat-card {
-    animation: none;
-  }
-  
-  .login-container::before {
-    animation: none;
-  }
-  
-  .login-button {
-    transition: none !important;
-    
-    &::before {
-      transition: none;
-    }
-    
-    &:hover {
-      transform: none;
-    }
-  }
-}
-
-// Tema escuro
-@media (prefers-color-scheme: dark) {
-  .login-card mat-card {
-    background: rgba(30, 30, 30, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .header-content mat-card-subtitle {
-    color: #ffffff !important;
-  }
-  
-  .card-actions .register-text {
-    color: #cbd5e1; /* um cinza claro, ainda suave */
-  }
-}
-
-// Angular Material Overrides
-::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-form-field-outline {
-  border-color: rgba(255, 255, 255, 0.4) !important;
-}
-
-::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline.mat-focused .mat-mdc-form-field-outline-thick {
-  border-color: #ff6b6b !important;
-}
-
-::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-  color: #ff6b6b !important;
-}
-
-::ng-deep .mat-mdc-form-field .mat-icon {
-  color: #ffffff !important;
-}
-
-::ng-deep .mat-mdc-form-field input {
-  color: #ffffff !important;
-  caret-color: #ffffff !important;
-  font-weight: 500;
 }

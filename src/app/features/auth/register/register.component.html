@@ -1,156 +1,190 @@
-<div class="register-container planwise-bg-primary">
-  <div class="register-card">
-    <mat-card class="planwise-card">
-      <mat-card-header>
-        <div class="header-content">
-          <div class="logo">
-            <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#3f51b5;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#9c27b0;stop-opacity:1" />
-                </linearGradient>
-              </defs>
-              <text x="10" y="40" font-family="Roboto, sans-serif" font-size="32" font-weight="700" fill="url(#logoGradient)">
-                PlanWise
-              </text>
-            </svg>
-          </div>
-          <mat-card-title class="planwise-text-primary">Criar sua conta</mat-card-title>
-          <mat-card-subtitle class="planwise-text-muted">Comece a gerenciar suas finanças hoje mesmo</mat-card-subtitle>
+<div class="auth-container">
+  <!-- Coluna Esquerda - Formulário -->
+  <div class="auth-form-section">
+    <div class="auth-card">
+      <!-- Logo -->
+      <div class="logo">
+        <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <text x="10" y="40" font-family="Roboto, sans-serif" font-size="32" font-weight="700" fill="url(#logoGradient)">
+            PlanWise
+          </text>
+        </svg>
+      </div>
+
+      <!-- Título -->
+      <h1 class="auth-title">Criar sua conta</h1>
+      <p class="auth-subtitle">Comece a gerenciar suas finanças hoje mesmo</p>
+
+      <!-- Formulário -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+        
+        <!-- Nome -->
+        <div class="p-field full-width">
+          <label for="name" class="p-label">
+            <i class="pi pi-user"></i>
+            Nome completo
+          </label>
+          <input 
+            pInputText 
+            id="name"
+            type="text" 
+            formControlName="name" 
+            placeholder="Digite seu nome completo"
+            autocomplete="name"
+            class="p-inputtext"
+            [class.p-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched && registerForm.get('name')?.dirty">
+            Nome é obrigatório
+          </small>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('name')?.hasError('minlength') && registerForm.get('name')?.touched && registerForm.get('name')?.dirty">
+            Nome deve ter no mínimo 3 caracteres
+          </small>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('name')?.hasError('maxlength') && registerForm.get('name')?.touched && registerForm.get('name')?.dirty">
+            Nome deve ter no máximo 50 caracteres
+          </small>
         </div>
-      </mat-card-header>
 
-      <mat-card-content>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-          
-          <!-- Name Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nome completo</mat-label>
-            <input 
-              matInput 
-              type="text" 
-              formControlName="name" 
-              placeholder="Seu nome completo"
-              autocomplete="name">
-            <mat-icon matSuffix>person_outline</mat-icon>
-            <mat-error *ngIf="registerForm.get('name')?.hasError('required')">
-              Nome é obrigatório
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('name')?.hasError('minlength')">
-              Nome deve ter no mínimo 3 caracteres
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('name')?.hasError('maxlength')">
-              Nome deve ter no máximo 50 caracteres
-            </mat-error>
-          </mat-form-field>
+        <!-- Email -->
+        <div class="p-field full-width">
+          <label for="email" class="p-label">
+            <i class="pi pi-envelope"></i>
+            Email
+          </label>
+          <input 
+            pInputText 
+            id="email"
+            type="email" 
+            formControlName="email" 
+            placeholder="Digite seu email"
+            autocomplete="email"
+            class="p-inputtext"
+            [class.p-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched && registerForm.get('email')?.dirty">
+            Email é obrigatório
+          </small>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched && registerForm.get('email')?.dirty">
+            Email inválido
+          </small>
+        </div>
 
-          <!-- Email Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Email</mat-label>
-            <input 
-              matInput 
-              type="email" 
-              formControlName="email" 
-              placeholder="seu@email.com"
-              autocomplete="email">
-            <mat-icon matSuffix>mail_outline</mat-icon>
-            <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
-              Email é obrigatório
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
-              Email inválido
-            </mat-error>
-          </mat-form-field>
+        <!-- Senha -->
+        <div class="p-field full-width">
+          <label for="password" class="p-label">
+            <i class="pi pi-lock"></i>
+            Crie uma senha segura
+          </label>
+          <p-password 
+            id="password"
+            formControlName="password"
+            placeholder="Crie uma senha segura"
+            autocomplete="new-password"
+            [toggleMask]="true"
+            [feedback]="true"
+            [class.p-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            styleClass="p-inputtext">
+          </p-password>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched && registerForm.get('password')?.dirty">
+            Senha é obrigatória
+          </small>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched && registerForm.get('password')?.dirty">
+            Senha deve ter no mínimo 6 caracteres
+          </small>
+        </div>
 
-          <!-- Password Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Senha</mat-label>
-            <input 
-              matInput 
-              [type]="hidePassword ? 'password' : 'text'" 
-              formControlName="password"
-              placeholder="Crie uma senha segura"
-              autocomplete="new-password">
-            <button 
-              mat-icon-button 
-              matSuffix 
-              type="button"
-              (click)="hidePassword = !hidePassword"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
-              Senha é obrigatória
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-              Senha deve ter no mínimo 6 caracteres
-            </mat-error>
-            <mat-error *ngIf="registerForm.get('password')?.hasError('pattern')">
-              Senha deve ter ao menos: 1 letra maiúscula, 1 minúscula e 1 número
-            </mat-error>
-          </mat-form-field>
+        <!-- Confirmar Senha -->
+        <div class="p-field full-width">
+          <label for="confirmPassword" class="p-label">
+            <i class="pi pi-lock"></i>
+            Confirmar senha
+          </label>
+          <p-password 
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirme sua senha"
+            autocomplete="new-password"
+            [toggleMask]="true"
+            [feedback]="false"
+            [class.p-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+            styleClass="p-inputtext">
+          </p-password>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.dirty">
+            Confirmação de senha é obrigatória
+          </small>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.dirty">
+            As senhas não coincidem
+          </small>
+        </div>
 
-          <!-- Confirm Password Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Confirmar senha</mat-label>
-            <input 
-              matInput 
-              [type]="hideConfirmPassword ? 'password' : 'text'" 
-              formControlName="confirmPassword"
-              placeholder="Digite a senha novamente"
-              autocomplete="new-password">
-            <button 
-              mat-icon-button 
-              matSuffix 
-              type="button"
-              (click)="hideConfirmPassword = !hideConfirmPassword"
-              [attr.aria-label]="'Hide confirm password'"
-              [attr.aria-pressed]="hideConfirmPassword">
-              <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
-              Confirmação de senha é obrigatória
-            </mat-error>
-            <mat-error *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
-              As senhas não coincidem
-            </mat-error>
-          </mat-form-field>
+        <!-- Botão Submit -->
+        <p-button 
+          type="submit" 
+          label="Criar conta"
+          icon="pi pi-user-plus"
+          [loading]="loadingService.isCurrentlyLoading"
+          [disabled]="registerForm.invalid"
+          styleClass="auth-button full-width">
+        </p-button>
 
-          <!-- Submit Button -->
-          <button 
-            mat-raised-button 
-            color="primary" 
-            type="submit" 
-            class="register-button full-width"
-            [disabled]="registerForm.invalid || loadingService.isCurrentlyLoading">
-            
-            <span *ngIf="!loadingService.isCurrentlyLoading">
-              <mat-icon>person_add_alt</mat-icon>
-              Criar conta
-            </span>
-            
-            <span *ngIf="loadingService.isCurrentlyLoading" class="loading-content">
-              <mat-spinner diameter="20"></mat-spinner>
-              Criando conta...
-            </span>
-          </button>
+        <!-- Link para login -->
+        <div class="auth-links">
+          <p>
+            Já tem uma conta? 
+            <a routerLink="/auth/login" class="auth-link">Entrar agora</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        </form>
-      </mat-card-content>
+  <!-- Coluna Direita - Visual -->
+  <div class="auth-visual-section">
+    <!-- Gráfico Abstrato -->
+    <div class="abstract-graphic">
+      <div class="graphic-ring ring-1"></div>
+      <div class="graphic-ring ring-2"></div>
+      <div class="graphic-ring ring-3"></div>
+      <div class="graphic-particles">
+        <div class="particle" *ngFor="let particle of particles"></div>
+      </div>
+    </div>
 
-      <mat-divider></mat-divider>
-
-      <mat-card-actions class="card-actions">
-        <p class="login-text">
-          Já tem uma conta? 
-          <a routerLink="/auth/login" class="login-link">
-            Entrar agora
-          </a>
+    <!-- Card de Depoimento -->
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p class="testimonial-text">
+          "Graças ao PlanWise, consegui organizar minhas finanças de forma eficiente! 
+          Interface intuitiva, recursos completos e resultados excelentes. 
+          Altamente recomendado!"
         </p>
-      </mat-card-actions>
-
-    </mat-card>
+        <div class="testimonial-author">
+          <strong>Maria Silva</strong>
+          <span>Usuária Satisfeita</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

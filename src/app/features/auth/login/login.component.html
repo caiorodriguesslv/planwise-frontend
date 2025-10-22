@@ -24,17 +24,19 @@
       <!-- Seletor de Modo -->
       <div class="mode-selector" [class.register-mode]="!isLoginMode">
         <button 
+          type="button"
           class="mode-btn" 
           [class.active]="isLoginMode"
           (click)="setLoginMode()">
-          <mat-icon>login</mat-icon>
+          <i class="pi pi-sign-in"></i>
           Entrar
         </button>
         <button 
+          type="button"
           class="mode-btn" 
           [class.active]="!isLoginMode"
           (click)="setRegisterMode()">
-          <mat-icon>person_add</mat-icon>
+          <i class="pi pi-user-plus"></i>
           Criar Conta
         </button>
       </div>
@@ -43,119 +45,122 @@
       <form [formGroup]="currentForm" (ngSubmit)="onSubmit()" class="auth-form">
         
         <!-- Nome (apenas no register) -->
-        <mat-form-field appearance="outline" class="full-width" *ngIf="!isLoginMode">
-          <mat-label>Nome completo</mat-label>
+        <div class="form-field" *ngIf="!isLoginMode">
+          <label for="name" class="field-label">
+            <i class="pi pi-user"></i>
+            Nome completo
+          </label>
           <input 
-            matInput 
+            pInputText 
+            id="name"
             type="text" 
             formControlName="name" 
-            placeholder="Seu nome completo"
-            autocomplete="name">
-          <mat-icon matSuffix>person_outline</mat-icon>
-          <mat-error *ngIf="currentForm.get('name')?.hasError('required')">
+            placeholder="Digite seu nome completo"
+            autocomplete="name"
+            [class.p-invalid]="currentForm.get('name')?.invalid && currentForm.get('name')?.touched">
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('name')?.hasError('required') && currentForm.get('name')?.touched">
             Nome é obrigatório
-          </mat-error>
-        </mat-form-field>
+          </small>
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('name')?.hasError('minlength') && currentForm.get('name')?.touched">
+            Nome deve ter no mínimo 3 caracteres
+          </small>
+        </div>
 
         <!-- Email -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
+        <div class="form-field">
+          <label for="email" class="field-label">
+            <i class="pi pi-envelope"></i>
+            Email
+          </label>
           <input 
-            matInput 
+            pInputText 
+            id="email"
             type="email" 
             formControlName="email" 
-            placeholder="seu@email.com"
-            autocomplete="email">
-          <mat-icon matSuffix>mail_outline</mat-icon>
-          <mat-error *ngIf="currentForm.get('email')?.hasError('required')">
+            placeholder="Digite seu email"
+            autocomplete="email"
+            [class.p-invalid]="currentForm.get('email')?.invalid && currentForm.get('email')?.touched">
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('email')?.hasError('required') && currentForm.get('email')?.touched">
             Email é obrigatório
-          </mat-error>
-          <mat-error *ngIf="currentForm.get('email')?.hasError('email')">
+          </small>
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('email')?.hasError('email') && currentForm.get('email')?.touched">
             Email inválido
-          </mat-error>
-        </mat-form-field>
+          </small>
+        </div>
 
         <!-- Senha -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Senha</mat-label>
-          <input 
-            matInput 
-            [type]="hidePassword ? 'password' : 'text'" 
+        <div class="form-field">
+          <label for="password" class="field-label">
+            <i class="pi pi-lock"></i>
+            {{ isLoginMode ? 'Senha' : 'Crie uma senha segura' }}
+          </label>
+          <p-password 
+            id="password"
             formControlName="password"
-            [placeholder]="isLoginMode ? 'Sua senha' : 'Crie uma senha segura'"
-            [autocomplete]="isLoginMode ? 'current-password' : 'new-password'">
-          <button 
-            mat-icon-button 
-            matSuffix 
-            type="button"
-            (click)="hidePassword = !hidePassword"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          <mat-error *ngIf="currentForm.get('password')?.hasError('required')">
+            [placeholder]="isLoginMode ? 'Digite sua senha' : 'Crie uma senha segura'"
+            [autocomplete]="isLoginMode ? 'current-password' : 'new-password'"
+            [toggleMask]="true"
+            [feedback]="!isLoginMode"
+            [class.p-invalid]="currentForm.get('password')?.invalid && currentForm.get('password')?.touched"
+            styleClass="w-full">
+          </p-password>
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('password')?.hasError('required') && currentForm.get('password')?.touched">
             Senha é obrigatória
-          </mat-error>
-          <mat-error *ngIf="currentForm.get('password')?.hasError('minlength')">
+          </small>
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('password')?.hasError('minlength') && currentForm.get('password')?.touched">
             Senha deve ter no mínimo 6 caracteres
-          </mat-error>
-        </mat-form-field>
+          </small>
+        </div>
 
         <!-- Confirmar Senha (apenas no register) -->
-        <mat-form-field appearance="outline" class="full-width" *ngIf="!isLoginMode">
-          <mat-label>Confirmar senha</mat-label>
-          <input 
-            matInput 
-            [type]="hideConfirmPassword ? 'password' : 'text'" 
+        <div class="form-field" *ngIf="!isLoginMode">
+          <label for="confirmPassword" class="field-label">
+            <i class="pi pi-lock"></i>
+            Confirmar senha
+          </label>
+          <p-password 
+            id="confirmPassword"
             formControlName="confirmPassword"
-            placeholder="Digite a senha novamente"
-            autocomplete="new-password">
-          <button 
-            mat-icon-button 
-            matSuffix 
-            type="button"
-            (click)="hideConfirmPassword = !hideConfirmPassword"
-            [attr.aria-label]="'Hide confirm password'"
-            [attr.aria-pressed]="hideConfirmPassword">
-            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          <mat-error *ngIf="currentForm.get('confirmPassword')?.hasError('required')">
+            placeholder="Confirme sua senha"
+            autocomplete="new-password"
+            [toggleMask]="true"
+            [feedback]="false"
+            [class.p-invalid]="currentForm.get('confirmPassword')?.invalid && currentForm.get('confirmPassword')?.touched"
+            styleClass="w-full">
+          </p-password>
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.get('confirmPassword')?.hasError('required') && currentForm.get('confirmPassword')?.touched">
             Confirmação de senha é obrigatória
-          </mat-error>
-          <mat-error *ngIf="currentForm.hasError('passwordMismatch') && currentForm.get('confirmPassword')?.touched">
+          </small>
+          <small 
+            class="error-message" 
+            *ngIf="currentForm.hasError('passwordMismatch') && currentForm.get('confirmPassword')?.touched">
             As senhas não coincidem
-          </mat-error>
-        </mat-form-field>
+          </small>
+        </div>
 
         <!-- Botão Submit -->
-        <button 
-          mat-raised-button 
+        <p-button 
           type="submit" 
-          class="auth-button full-width"
-          [disabled]="currentForm.invalid || loadingService.isCurrentlyLoading">
-          
-          <span *ngIf="!loadingService.isCurrentlyLoading">
-            <mat-icon>{{ isLoginMode ? 'login' : 'person_add' }}</mat-icon>
-            {{ isLoginMode ? 'Entrar' : 'Criar conta' }}
-          </span>
-          
-          <span *ngIf="loadingService.isCurrentlyLoading" class="loading-content">
-            <mat-spinner diameter="20"></mat-spinner>
-            {{ isLoginMode ? 'Entrando...' : 'Criando conta...' }}
-          </span>
-        </button>
-
-        <!-- Links de alternância -->
-        <div class="auth-links">
-          <p *ngIf="isLoginMode">
-            Não tem uma conta? 
-            <a (click)="setRegisterMode()" class="auth-link">Criar conta gratuita</a>
-          </p>
-          <p *ngIf="!isLoginMode">
-            Já tem uma conta? 
-            <a (click)="setLoginMode()" class="auth-link">Entrar agora</a>
-          </p>
-        </div>
+          [label]="isLoginMode ? 'Entrar' : 'Criar conta'"
+          [icon]="isLoginMode ? 'pi pi-sign-in' : 'pi pi-user-plus'"
+          [loading]="loadingService.isCurrentlyLoading"
+          [disabled]="currentForm.invalid"
+          styleClass="auth-button w-full">
+        </p-button>
       </form>
     </div>
   </div>

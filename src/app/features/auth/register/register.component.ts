@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-// Material Design imports
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDividerModule } from '@angular/material/divider';
+// PrimeNG imports
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { LoadingService } from '../../../core/services/loading.service';
@@ -22,22 +19,21 @@ import { LoadingService } from '../../../core/services/loading.service';
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatDividerModule
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    FormsModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
 
+  // Formulário de registro
   registerForm: FormGroup;
-  hidePassword = true;
-  hideConfirmPassword = true;
+  
+  // Partículas para o gráfico
+  particles = Array.from({ length: 20 }, (_, i) => ({ id: i }));
 
   constructor(
     private fb: FormBuilder,
@@ -45,7 +41,7 @@ export class RegisterComponent implements OnInit {
     public loadingService: LoadingService,
     private router: Router
   ) {
-    this.registerForm = this.createForm();
+    this.registerForm = this.createRegisterForm();
   }
 
   ngOnInit(): void {
@@ -55,46 +51,29 @@ export class RegisterComponent implements OnInit {
   /**
    * Cria o formulário de registro
    */
-  private createForm(): FormGroup {
-    return this.fb.group({
+  private createRegisterForm(): FormGroup {
+    const form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6), this.passwordPatternValidator]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
-  }
-
-  /**
-   * Validador para padrão de senha
-   */
-  private passwordPatternValidator(control: AbstractControl): {[key: string]: any} | null {
-    const value = control.value;
-    if (!value) return null;
     
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumeric = /[0-9]/.test(value);
-    
-    if (!hasUpperCase || !hasLowerCase || !hasNumeric) {
-      return { 'pattern': true };
-    }
-    
-    return null;
+    // Marcar como untouched para não mostrar erros inicialmente
+    form.markAsUntouched();
+    return form;
   }
 
   /**
    * Validador para verificar se as senhas coincidem
    */
-  private passwordMatchValidator(control: AbstractControl): {[key: string]: any} | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
     
-    if (!password || !confirmPassword) return null;
-    
-    if (password.value !== confirmPassword.value) {
-      return { 'passwordMismatch': true };
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { passwordMismatch: true };
     }
-    
     return null;
   }
 
@@ -135,6 +114,7 @@ export class RegisterComponent implements OnInit {
     Object.keys(this.registerForm.controls).forEach(key => {
       const control = this.registerForm.get(key);
       control?.markAsTouched();
+      control?.markAsDirty();
     });
   }
 }
