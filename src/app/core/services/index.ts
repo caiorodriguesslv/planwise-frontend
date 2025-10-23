@@ -3,6 +3,7 @@ export * from './auth.service';
 export * from './auth-sync.service';
 export * from './category.service';
 export * from './expense.service';
+export * from './income.service';
 export * from './http.service';
 export * from './loading.service';
 export * from './notification.service';

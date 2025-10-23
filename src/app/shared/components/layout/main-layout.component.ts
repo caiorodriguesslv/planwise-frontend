@@ -53,12 +53,10 @@ export class MainLayoutComponent implements OnInit {
           route: '/dashboard/expenses'
         },
         {
-          id: 'income',
+          id: 'incomes',
           label: 'Receitas',
           icon: 'trending_up',
-          route: '/dashboard/income',
-          disabled: true,
-          badge: 'Em breve'
+          route: '/dashboard/incomes'
         },
         {
           id: 'categories',
@@ -157,6 +155,18 @@ export class MainLayoutComponent implements OnInit {
     '/dashboard/expenses/new': {
       title: 'Nova Despesa',
       subtitle: 'Adicione uma nova despesa ao seu controle'
+    },
+    '/dashboard/incomes': {
+      title: 'Receitas',
+      subtitle: 'Gerencie e monitore todas as suas entradas'
+    },
+    '/dashboard/incomes/list': {
+      title: 'Lista de Receitas',
+      subtitle: 'Todas as suas receitas organizadas'
+    },
+    '/dashboard/incomes/new': {
+      title: 'Nova Receita',
+      subtitle: 'Adicione uma nova receita ao seu controle'
     },
     '/dashboard/categories': {
       title: 'Categorias',

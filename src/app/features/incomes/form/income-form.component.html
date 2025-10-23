@@ -1,0 +1,271 @@
+<div class="income-form-container">
+  <!-- Header aprimorado -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="onCancel()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="header-content">
+        <div class="title-section">
+          <div class="title-icon">
+            <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
+          </div>
+          <div class="title-text">
+            <h1 class="planwise-text-primary">{{ isEditMode ? 'Editar Receita' : 'Nova Receita' }}</h1>
+            <p class="planwise-text-muted">{{ isEditMode ? 'Modifique os dados da receita' : 'Adicione uma nova receita ao seu controle' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="progress-indicator" *ngIf="!isEditMode">
+        <span class="step active">1</span>
+        <span class="step-label">Criar Receita</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form moderno -->
+  <div class="form-wrapper">
+    <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()" class="income-form">
+    
+    <!-- Seção: Informações Básicas -->
+    <div class="form-section basic-info">
+      <div class="section-header">
+        <div class="section-icon planwise-icon-cyan">
+          <mat-icon>description</mat-icon>
+        </div>
+        <div class="section-content">
+          <h3 class="planwise-text-primary">Informações Básicas</h3>
+          <p class="planwise-text-muted">Dados principais da receita</p>
+        </div>
+      </div>
+      
+      <div class="section-body">
+        <div class="field-group">
+          <!-- Description -->
+          <div class="field-wrapper full-width">
+            <mat-form-field appearance="outline" class="modern-field">
+              <input matInput 
+                     formControlName="description"
+                     placeholder="Descrição da Receita"
+                     maxlength="100">
+              <mat-hint align="end">
+                {{ incomeForm.get('description')?.value?.length || 0 }}/100 caracteres
+              </mat-hint>
+              <mat-error *ngIf="incomeForm.get('description')?.hasError('required')">
+                Descrição é obrigatória
+              </mat-error>
+              <mat-error *ngIf="incomeForm.get('description')?.hasError('minlength')">
+                Descrição deve ter pelo menos 3 caracteres
+              </mat-error>
+              <mat-error *ngIf="incomeForm.get('description')?.hasError('maxlength')">
+                Descrição deve ter no máximo 100 caracteres
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Category -->
+          <div class="field-wrapper full-width">
+            <mat-form-field appearance="outline" class="modern-field">
+              <mat-select formControlName="categoryId" placeholder="Categoria">
+                <mat-option disabled value="">
+                  📂 Escolha uma categoria
+                </mat-option>
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                  💰 {{ category.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="incomeForm.get('categoryId')?.hasError('required')">
+                Categoria é obrigatória
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Seção: Informações Financeiras -->
+    <div class="form-section financial-info">
+      <div class="section-header">
+        <div class="section-icon planwise-icon-green">
+          <mat-icon>account_balance_wallet</mat-icon>
+        </div>
+        <div class="section-content">
+          <h3 class="planwise-text-primary">Informações Financeiras</h3>
+          <p class="planwise-text-muted">Valor e data da receita</p>
+        </div>
+      </div>
+      
+      <div class="section-body">
+        <div class="field-group financial-grid">
+          <!-- Value -->
+          <div class="field-wrapper value-field">
+            <mat-form-field appearance="outline" class="modern-field value-input">
+              <input matInput 
+                     type="number"
+                     formControlName="value"
+                     placeholder="Valor da Receita"
+                     step="0.01"
+                     min="0.01">
+              <span matTextPrefix class="currency-prefix">R$</span>
+              <mat-error *ngIf="incomeForm.get('value')?.hasError('required')">
+                Valor é obrigatório
+              </mat-error>
+              <mat-error *ngIf="incomeForm.get('value')?.hasError('min')">
+                Valor deve ser maior que zero
+              </mat-error>
+            </mat-form-field>
+            
+            <!-- Preview do valor -->
+            <div class="value-preview" *ngIf="incomeForm.get('value')?.value">
+              <div class="preview-chip">
+                <mat-icon>monetization_on</mat-icon>
+                <span>{{ incomeForm.get('value')?.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Date -->
+          <div class="field-wrapper date-field">
+            <mat-form-field appearance="outline" class="modern-field date-field-with-icon">
+              <input matInput 
+                     [matDatepicker]="picker"
+                     formControlName="date"
+                     placeholder="Data da Receita"
+                     [max]="maxDate"
+                     readonly>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="incomeForm.get('date')?.hasError('required')">
+                Data é obrigatória
+              </mat-error>
+              <mat-error *ngIf="incomeForm.get('date')?.hasError('matDatepickerMax')">
+                Data não pode ser futura
+              </mat-error>
+            </mat-form-field>
+            
+            <!-- Preview da data -->
+            <div class="date-preview" *ngIf="incomeForm.get('date')?.value">
+              <div class="preview-chip">
+                <mat-icon>event</mat-icon>
+                <span>{{ incomeForm.get('date')?.value | date:'dd/MM/yyyy' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Resumo Final -->
+    <div class="form-section summary-section planwise-card" *ngIf="incomeForm.valid">
+      <div class="section-header">
+        <div class="section-icon planwise-icon-purple">
+          <mat-icon>summarize</mat-icon>
+        </div>
+        <div class="section-content">
+          <h3 class="planwise-text-primary">Resumo da Receita</h3>
+          <p class="planwise-text-muted">Revise os dados antes de salvar</p>
+        </div>
+      </div>
+      
+      <div class="section-body">
+        <div class="summary-card">
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="item-icon">
+                <mat-icon>description</mat-icon>
+              </div>
+              <div class="item-content">
+                <span class="label">Descrição</span>
+                <span class="value">{{ incomeForm.get('description')?.value }}</span>
+              </div>
+            </div>
+            
+            <div class="summary-item">
+              <div class="item-icon">
+                <mat-icon>category</mat-icon>
+              </div>
+              <div class="item-content">
+                <span class="label">Categoria</span>
+                <span class="value">
+                  <ng-container *ngFor="let category of categories">
+                    <ng-container *ngIf="category.id === +incomeForm.get('categoryId')?.value">
+                      {{ category.name }}
+                    </ng-container>
+                  </ng-container>
+                </span>
+              </div>
+            </div>
+            
+            <div class="summary-item">
+              <div class="item-icon">
+                <mat-icon>account_balance_wallet</mat-icon>
+              </div>
+              <div class="item-content">
+                <span class="label">Valor</span>
+                <span class="value">{{ incomeForm.get('value')?.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+              </div>
+            </div>
+            
+            <div class="summary-item">
+              <div class="item-icon">
+                <mat-icon>event</mat-icon>
+              </div>
+              <div class="item-content">
+                <span class="label">Data</span>
+                <span class="value">{{ incomeForm.get('date')?.value | date:'dd/MM/yyyy' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ações do formulário -->
+    <div class="form-actions">
+      <div class="action-buttons">
+        <button type="button"
+                mat-stroked-button
+                (click)="onCancel()"
+                [disabled]="isSubmitting"
+                class="cancel-btn">
+          <mat-icon>close</mat-icon>
+          Cancelar
+        </button>
+        
+        <button type="button"
+                mat-stroked-button
+                (click)="incomeForm.reset()"
+                [disabled]="isSubmitting || !incomeForm.dirty"
+                class="reset-btn">
+          <mat-icon>refresh</mat-icon>
+          Limpar
+        </button>
+        
+        <button type="submit"
+                mat-raised-button
+                [disabled]="!incomeForm.valid || isSubmitting"
+                class="submit-btn">
+          <div class="btn-content">
+            <mat-spinner diameter="20" *ngIf="isSubmitting" class="btn-spinner"></mat-spinner>
+            <mat-icon *ngIf="!isSubmitting">{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
+            <span>{{ isSubmitting ? 'Salvando...' : (isEditMode ? 'Salvar Alterações' : 'Criar Receita') }}</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </form>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>{{ isEditMode ? 'Carregando receita...' : 'Carregando dados...' }}</p>
+  </div>
+</div>
+

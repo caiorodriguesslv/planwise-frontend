@@ -45,6 +45,7 @@ export const API_ENDPOINTS = {
   },
   
   // Receitas
+  incomes: '/api/incomes',
   INCOME: {
     LIST: '/income',
     CREATE: '/income',

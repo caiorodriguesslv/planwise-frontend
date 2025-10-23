@@ -22,6 +22,10 @@ export const dashboardRoutes: Routes = [
         loadChildren: () => import('../expenses/expenses.routes').then(m => m.expenseRoutes)
       },
       {
+        path: 'incomes',
+        loadChildren: () => import('../incomes/incomes.routes').then(m => m.INCOMES_ROUTES)
+      },
+      {
         path: 'categories',
         loadChildren: () => import('../categories/categories.routes').then(m => m.categoryRoutes)
       }

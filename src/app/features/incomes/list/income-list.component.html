@@ -1,0 +1,222 @@
+<!-- Dashboard Content -->
+<div class="dashboard-content">
+  
+  <!-- Header principal -->
+  <div class="page-header">
+    <div class="page-title">
+      <div class="page-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="title-content">
+        <h1>Minhas Receitas</h1>
+        <p>Gerencie e monitore todas as suas entradas</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" class="new-income-btn" (click)="createNew()">
+      <mat-icon>add</mat-icon>
+      Nova Receita
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card income">
+      <div class="stat-icon">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Total de Receitas</h3>
+        <p class="amount">{{ stats.total | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <span class="subtitle">Este mês</span>
+      </div>
+    </div>
+
+    <div class="stat-card balance">
+      <div class="stat-icon">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Total de Transações</h3>
+        <p class="amount">{{ totalElements || 0 }}</p>
+        <span class="subtitle">Receitas registradas</span>
+      </div>
+    </div>
+
+    <div class="stat-card goals">
+      <div class="stat-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stat-info">
+        <h3>Média por Receita</h3>
+        <p class="amount">{{ stats.average | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <span class="subtitle">Valor médio</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <mat-card class="filters-card">
+    <mat-card-header class="filters-header">
+      <mat-card-title>
+        <mat-icon>filter_list</mat-icon>
+        Filtros de Busca
+      </mat-card-title>
+      <div class="filters-actions">
+        <span class="active-filters" *ngIf="getActiveFiltersCount() > 0">
+          {{ getActiveFiltersCount() }} filtro(s) ativo(s)
+        </span>
+        <button mat-button (click)="clearFilters()" [class.disabled]="getActiveFiltersCount() === 0">
+          <mat-icon>clear</mat-icon>
+          Limpar
+        </button>
+      </div>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filters-form">
+        <div class="filter-grid">
+          <mat-form-field appearance="outline" class="filter-search">
+            <mat-label>Buscar receitas</mat-label>
+            <input matInput 
+                   formControlName="search" 
+                   placeholder="Digite a descrição da receita...">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-date">
+            <mat-label>Data inicial</mat-label>
+            <input matInput 
+                   [matDatepicker]="startPicker" 
+                   formControlName="startDate">
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-date">
+            <mat-label>Data final</mat-label>
+            <input matInput 
+                   [matDatepicker]="endPicker" 
+                   formControlName="endDate">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabela de Receitas -->
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div class="table-container">
+        
+        <!-- Loading -->
+        <div *ngIf="isLoading" class="table-loading">
+          <mat-spinner diameter="50"></mat-spinner>
+          <p>Carregando receitas...</p>
+        </div>
+
+        <!-- Tabela -->
+        <table mat-table [dataSource]="incomes" *ngIf="!isLoading" class="incomes-table">
+          
+          <!-- Descrição Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef class="description-column">Descrição</th>
+            <td mat-cell *matCellDef="let income" class="description-cell">
+              <div class="cell-content">
+                <mat-icon class="cell-icon income-icon">account_balance_wallet</mat-icon>
+                <span class="cell-text">{{ income.description }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Valor Column -->
+          <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef class="value-column">Valor</th>
+            <td mat-cell *matCellDef="let income" class="value-cell">
+              <span class="value-badge income-value">
+                {{ income.value | currency:'BRL':'symbol':'1.2-2' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Data Column -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef class="date-column">Data</th>
+            <td mat-cell *matCellDef="let income" class="date-cell">
+              <div class="cell-content">
+                <mat-icon class="cell-icon">event</mat-icon>
+                <span class="cell-text">{{ income.date | date:'dd/MM/yyyy' }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Categoria Column -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef class="category-column">Categoria</th>
+            <td mat-cell *matCellDef="let income" class="category-cell">
+              <mat-chip class="category-chip income-chip">
+                {{ income.category?.name || 'Sem categoria' }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Ações Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actions-column">Ações</th>
+            <td mat-cell *matCellDef="let income" class="actions-cell">
+              <div class="action-buttons">
+                <button mat-icon-button 
+                        class="action-btn view-btn" 
+                        (click)="viewIncome(income)"
+                        matTooltip="Visualizar">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button 
+                        class="action-btn edit-btn" 
+                        (click)="editIncome(income)"
+                        matTooltip="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button 
+                        class="action-btn delete-btn" 
+                        (click)="deleteIncome(income)"
+                        matTooltip="Excluir">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="income-row"></tr>
+
+          <!-- Empty State -->
+          <tr class="mat-row empty-row" *matNoDataRow>
+            <td class="mat-cell empty-cell" [attr.colspan]="displayedColumns.length">
+              <div class="empty-state">
+                <mat-icon class="empty-icon">inbox</mat-icon>
+                <h3>Nenhuma receita encontrada</h3>
+                <p>Adicione sua primeira receita clicando no botão "Nova Receita"</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <!-- Paginação -->
+      <mat-paginator 
+        [length]="totalElements"
+        [pageSize]="pageRequest.size"
+        [pageIndex]="pageRequest.page"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+        *ngIf="!isLoading && incomes.length > 0"
+        class="incomes-paginator">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+

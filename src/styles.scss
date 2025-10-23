@@ -1,14 +1,19 @@
-// Angular Material themes - Configuração simplificada
+// ========================================
+// PLANWISE - GLOBAL STYLES
+// ========================================
+// Apenas estilos verdadeiramente globais
+// Estilos específicos devem estar nos componentes
+
+// Angular Material themes
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 // PrimeNG icons
 @import 'primeicons/primeicons.css';
 
 // ========================================
-// PLANWISE GLOBAL THEME SYSTEM
+// CSS VARIABLES (Design Tokens)
 // ========================================
 
-// Color Palette - Baseado na imagem exemplo
 :root {
   // Primary Colors
   --planwise-cyan: #00d4ff;
@@ -19,6 +24,8 @@
   --planwise-orange-dark: #ff9800;
   --planwise-red: #ff6b6b;
   --planwise-red-dark: #ee5a52;
+  --planwise-green: #22c55e;
+  --planwise-green-dark: #16a34a;
   
   // Background Colors
   --planwise-bg-primary: #0f0f23;
@@ -31,293 +38,15 @@
   --planwise-text-muted: rgba(255, 255, 255, 0.6);
   
   // Border Colors
-  --planwise-border: rgba(0, 0, 0, 0.2);
-  --planwise-border-light: rgba(0, 0, 0, 0.1);
-  --planwise-border-dark: rgba(0, 0, 0, 0.3);
-  
-  // Form Colors
-  --planwise-form-bg: rgba(0, 0, 0, 0.1);
-  --planwise-form-border: rgba(0, 0, 0, 0.2);
+  --planwise-border: rgba(255, 255, 255, 0.2);
+  --planwise-border-light: rgba(255, 255, 255, 0.1);
+  --planwise-border-dark: rgba(255, 255, 255, 0.3);
 }
 
 // ========================================
-// GLOBAL UTILITY CLASSES
+// GLOBAL RESET
 // ========================================
 
-// Background Classes
-.planwise-bg-primary {
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) !important;
-}
-
-.planwise-bg-card {
-  background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-  border: 1px solid var(--planwise-border-dark) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-  border-radius: 20px !important;
-}
-
-.planwise-bg-card-hover {
-  transition: all 0.3s ease !important;
-  
-  &:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
-  }
-}
-
-// Text Classes
-.planwise-text-primary {
-  color: var(--planwise-text-primary) !important;
-}
-
-.planwise-text-secondary {
-  color: var(--planwise-text-secondary) !important;
-}
-
-.planwise-text-muted {
-  color: var(--planwise-text-muted) !important;
-}
-
-// Icon Classes
-.planwise-icon-cyan {
-  background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-cyan-dark)) !important;
-  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4) !important;
-}
-
-.planwise-icon-purple {
-  background: linear-gradient(135deg, var(--planwise-purple), var(--planwise-purple-dark)) !important;
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
-}
-
-.planwise-icon-orange {
-  background: linear-gradient(135deg, var(--planwise-orange), var(--planwise-orange-dark)) !important;
-  box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4) !important;
-}
-
-.planwise-icon-red {
-  background: linear-gradient(135deg, var(--planwise-red), var(--planwise-red-dark)) !important;
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4) !important;
-}
-
-// Card Classes
-.planwise-card {
-  @extend .planwise-bg-card;
-  @extend .planwise-bg-card-hover;
-  padding: 28px !important;
-  position: relative !important;
-  overflow: hidden !important;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-    pointer-events: none;
-  }
-}
-
-.planwise-card-icon {
-  width: 64px !important;
-  height: 64px !important;
-  border-radius: 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: relative !important;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-    border-radius: 18px;
-    z-index: -1;
-  }
-  
-  mat-icon {
-    font-size: 32px !important;
-    color: white !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
-  }
-}
-
-// ========================================
-// ANGULAR MATERIAL OVERRIDES
-// ========================================
-
-// Force dark theme for all components
-.mat-mdc-card {
-  background: linear-gradient(135deg, var(--planwise-bg-secondary) 0%, var(--planwise-bg-tertiary) 100%) !important;
-  color: var(--planwise-text-primary) !important;
-  border: 1px solid var(--planwise-border) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-  border-radius: 20px !important;
-}
-
-.mat-mdc-card-header {
-  background: transparent !important;
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-card-content {
-  background: transparent !important;
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-card-title {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-card-subtitle {
-  color: var(--planwise-text-muted) !important;
-}
-
-// Force dark theme for form fields
-.mat-mdc-form-field {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-text-field-wrapper {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-form-field-input-control {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-form-field-label {
-  color: var(--planwise-text-muted) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-form-field-outline {
-  color: rgba(255, 255, 255, 0.3) !important;
-}
-
-.mat-mdc-form-field .mat-mdc-form-field-outline-thick {
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-
-// Force dark theme for tables
-.mat-mdc-table {
-  background: transparent !important;
-}
-
-.mat-mdc-header-row {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-.mat-mdc-header-cell {
-  color: var(--planwise-text-primary) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-.mat-mdc-row {
-  background: transparent !important;
-}
-
-.mat-mdc-cell {
-  color: var(--planwise-text-primary) !important;
-  background: transparent !important;
-}
-
-.mat-mdc-row:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-}
-
-// Force dark theme for chips
-.mat-mdc-chip {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-chip:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-}
-
-// Force dark theme for paginator
-.mat-mdc-paginator {
-  background: transparent !important;
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-paginator .mat-mdc-paginator-page-size {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-paginator .mat-mdc-paginator-range-label {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-paginator .mat-mdc-icon-button {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-paginator .mat-mdc-icon-button:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-// Force dark theme for icons
-.mat-mdc-icon {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-icon-button {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-icon-button:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-// Force dark theme for progress spinner
-.mat-mdc-progress-spinner {
-  color: var(--planwise-text-primary) !important;
-}
-
-.mat-mdc-progress-spinner circle {
-  stroke: var(--planwise-text-primary) !important;
-}
-
-// Material Icons - Garantir que funcionem corretamente
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-}
-
-// Força o estilo correto para mat-icon
-mat-icon {
-  font-family: 'Material Icons' !important;
-  font-weight: normal !important;
-  font-style: normal !important;
-  display: inline-block !important;
-  line-height: 1 !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  word-wrap: normal !important;
-  white-space: nowrap !important;
-  direction: ltr !important;
-  -webkit-font-smoothing: antialiased !important;
-  text-rendering: optimizeLegibility !important;
-}
-
-// Global styles
 * {
   margin: 0;
   padding: 0;
@@ -333,9 +62,144 @@ body {
   margin: 0;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   min-height: 100vh;
+  color: var(--planwise-text-primary);
 }
 
-// Utility classes
+// ========================================
+// MATERIAL ICONS FIX
+// ========================================
+
+.material-icons,
+mat-icon {
+  font-family: 'Material Icons' !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  word-wrap: normal !important;
+  white-space: nowrap !important;
+  direction: ltr !important;
+  -webkit-font-smoothing: antialiased !important;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  text-rendering: optimizeLegibility !important;
+}
+
+// ========================================
+// ANGULAR MATERIAL THEME OVERRIDES
+// ========================================
+// Apenas overrides essenciais para tema escuro
+
+// Cards
+.mat-mdc-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+  color: var(--planwise-text-primary) !important;
+  border: 1px solid var(--planwise-border-light) !important;
+}
+
+// Form Fields
+.mat-mdc-form-field {
+  color: var(--planwise-text-primary) !important;
+  
+  .mat-mdc-text-field-wrapper {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .mat-mdc-form-field-input-control,
+  .mat-mdc-select-value {
+    color: var(--planwise-text-primary) !important;
+  }
+  
+  .mat-mdc-form-field-label {
+    color: var(--planwise-text-muted) !important;
+  }
+}
+
+// Tables
+.mat-mdc-table {
+  background: transparent !important;
+  
+  .mat-mdc-header-row {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .mat-mdc-header-cell {
+    color: var(--planwise-text-primary) !important;
+  }
+  
+  .mat-mdc-cell {
+    color: var(--planwise-text-primary) !important;
+  }
+  
+  .mat-mdc-row:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+}
+
+// Chips
+.mat-mdc-chip {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--planwise-text-primary) !important;
+}
+
+// Paginator
+.mat-mdc-paginator {
+  background: transparent !important;
+  color: var(--planwise-text-primary) !important;
+  
+  .mat-mdc-icon-button {
+    color: var(--planwise-text-primary) !important;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+}
+
+// Buttons
+.mat-mdc-icon-button {
+  color: var(--planwise-text-primary) !important;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+// Progress Spinner
+.mat-mdc-progress-spinner circle {
+  stroke: var(--planwise-cyan) !important;
+}
+
+// ========================================
+// SNACKBAR CUSTOMIZATIONS
+// ========================================
+
+.success-snackbar {
+  --mdc-snackbar-container-color: #4caf50 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #f44336 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: #ff9800 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+}
+
+.info-snackbar {
+  --mdc-snackbar-container-color: #2196f3 !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+}
+
+// ========================================
+// UTILITY CLASSES
+// ========================================
+
 .full-width {
   width: 100%;
 }
@@ -344,6 +208,7 @@ body {
   text-align: center;
 }
 
+// Spacing utilities
 .mt-1 { margin-top: 8px; }
 .mt-2 { margin-top: 16px; }
 .mt-3 { margin-top: 24px; }
@@ -359,420 +224,25 @@ body {
 .p-3 { padding: 24px; }
 .p-4 { padding: 32px; }
 
-// Card styles
-.card-container {
-  margin: 16px;
+// ========================================
+// SCROLLBAR CUSTOMIZATION
+// ========================================
+// Apenas para navegadores Webkit
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.card-header {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-// Loading spinner
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-// Snackbar customizations
-.success-snackbar {
-  --mdc-snackbar-container-color: #4caf50 !important;
-  --mdc-snackbar-supporting-text-color: white !important;
-  --mat-snack-bar-button-color: white !important;
-}
-
-.error-snackbar {
-  --mdc-snackbar-container-color: #f44336 !important;
-  --mdc-snackbar-supporting-text-color: white !important;
-  --mat-snack-bar-button-color: white !important;
-}
-
-.warning-snackbar {
-  --mdc-snackbar-container-color: #ff9800 !important;
-  --mdc-snackbar-supporting-text-color: white !important;
-  --mat-snack-bar-button-color: white !important;
-}
-
-.info-snackbar {
-  --mdc-snackbar-container-color: #2196f3 !important;
-  --mdc-snackbar-supporting-text-color: white !important;
-  --mat-snack-bar-button-color: white !important;
-}
-
-.undo-snackbar {
-  --mdc-snackbar-container-color: #424242 !important;
-  --mdc-snackbar-supporting-text-color: white !important;
-  --mat-snack-bar-button-color: #ffeb3b !important;
-}
-
-.loading-snackbar {
-  --mdc-snackbar-container-color: #607d8b !important;
-  --mdc-snackbar-supporting-text-color: white !important;
-}
-
-// Header override para garantir consistência
-::ng-deep .top-header {
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(20px) !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  margin-left: 0 !important;
-  padding: 20px 24px !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 280px !important;
-  transform: none !important;
-  width: calc(100% - 280px) !important;
-  z-index: 1003 !important;
-  height: 80px !important;
-  min-height: 80px !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  overflow: hidden !important;
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 85% 85%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
-      linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
-    pointer-events: none;
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
-}
-
-// Garantir que o conteúdo não fique atrás do header
-::ng-deep .content-area {
-  padding-top: 100px !important;
-  padding: 32px !important;
-}
-
-// Override para form-actions usar tema escuro
-::ng-deep .form-actions {
-  background: transparent !important;
-  border-top: none !important;
-  padding: 24px 0 !important;
-}
-
-// Override para mat-card remover bordas e usar tema escuro
-::ng-deep .mat-mdc-card:not(.expense-detail-container .mat-mdc-card):not(.filters-card):not(.table-card) {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-}
-
-// Override mais específico para formulários
-::ng-deep .expense-form-container .mat-mdc-card {
-  background: transparent !important;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-
-// Override para seções do formulário (exceto category-form)
-::ng-deep .form-section:not(.category-form-container .form-section) {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-}
-
-// Override agressivo para remover todas as bordas (exceto category-form)
-::ng-deep *:not(.category-form-container *):not(.category-form-container) {
-  border-color: transparent !important;
-}
-
-::ng-deep .expense-form-container * {
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-}
-
-// Override específico para mat-card no formulário
-::ng-deep .expense-form-container .mat-mdc-card,
-::ng-deep .expense-form-container .mat-card,
-::ng-deep .expense-form-container [class*="mat-card"] {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-}
-
-// Override agressivo para todos os elementos do formulário
-::ng-deep .expense-form-container {
-  background: transparent !important;
-  
-  * {
-    background: transparent !important;
-    border-color: transparent !important;
-  }
-  
-  // Forçar background transparente em todos os elementos
-  div, section, form, mat-card, mat-form-field, mat-select, mat-button {
-    background: transparent !important;
-  }
-  
-  // Override para mat-form-field
-  .mat-mdc-form-field {
-    background: transparent !important;
-    
-    .mat-mdc-text-field-wrapper {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    .mat-mdc-input-element {
-      color: white !important;
-      background: transparent !important;
-    }
-    
-    .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.7) !important;
-    }
-    
-    .mat-mdc-form-field-hint {
-      color: rgba(255, 255, 255, 0.6) !important;
-    }
-  }
-  
-  // Override para mat-select
-  .mat-mdc-select {
-    background: transparent !important;
-    color: white !important;
-    
-    .mat-mdc-select-value {
-      color: white !important;
-    }
-    
-    .mat-mdc-select-placeholder {
-      color: rgba(255, 255, 255, 0.5) !important;
-    }
-    
-    .mat-mdc-select-arrow {
-      color: white !important;
-    }
-  }
-  
-  // Override para mat-datepicker
-  .mat-datepicker-toggle {
-    color: white !important;
-    background: transparent !important;
-  }
-  
-  // Override para mat-button
-  .mat-mdc-button {
-    background: transparent !important;
-    color: white !important;
-  }
-  
-  // Override para preview chips
-  .preview-chip {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  }
-  
-  // Override específico para formulário
-  form {
-    background: transparent !important;
-  }
-  
-  .expense-form {
-    background: transparent !important;
-  }
-  
-  // Override para todas as divs
-  div {
-    background: transparent !important;
-  }
-  
-  // Override para seções
-  .form-section {
-    background: transparent !important;
-  }
-  
-  .section-header {
-    background: transparent !important;
-  }
-  
-  .section-body {
-    background: transparent !important;
-  }
-  
-  .field-group {
-    background: transparent !important;
-  }
-  
-  .field-wrapper {
-    background: transparent !important;
-  }
-}
-
-// Estilos específicos para category-form-container
-::ng-deep .category-form-container {
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(20px) !important;
-  overflow: hidden !important;
-  position: relative !important;
-  min-height: 100vh !important;
-  padding: 20px !important;
-  padding-top: 0 !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
-}
-
-::ng-deep .category-form-container .page-header {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 20px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3), 
-    0 0 0 1px rgba(255, 255, 255, 0.1), 
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-  position: relative !important;
-  z-index: 2 !important;
-  margin-top: 20px !important;
-  margin-bottom: 24px !important;
-  max-width: 1200px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-::ng-deep .category-form-container .form-section {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-::ng-deep .category-form-container .form-actions {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-// Estilos específicos para expense-detail-container
-::ng-deep .expense-detail-container {
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 30%, #16213e 70%, #0f0f23 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(20px) !important;
-  overflow: hidden !important;
-  position: relative !important;
-  min-height: 100vh !important;
-  padding: 40px !important;
-  max-width: none !important;
-  margin: 0 !important;
-}
-
-::ng-deep .expense-detail-container .main-info-card,
-::ng-deep .expense-detail-container .actions-card,
-::ng-deep .expense-detail-container .history-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-// Override específico para mat-card no expense-detail-container
-::ng-deep .expense-detail-container .mat-mdc-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-// Proteção específica para cards de filtro e listagem
-::ng-deep .filters-card,
-::ng-deep .table-card {
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-// Proteção adicional com maior especificidade
-::ng-deep .filters-card.mat-mdc-card,
-::ng-deep .table-card.mat-mdc-card,
-::ng-deep .filters-card[class*="mat-card"],
-::ng-deep .table-card[class*="mat-card"] {
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 24px !important;
-  box-shadow: 
-    0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(20px) !important;
-}
-
-// Força as bordas a serem brancas - máxima prioridade
-::ng-deep .filters-card *,
-::ng-deep .table-card *,
-::ng-deep .filters-card.mat-mdc-card *,
-::ng-deep .table-card.mat-mdc-card * {
-  border-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-// Override final para garantir bordas brancas
-::ng-deep .filters-card,
-::ng-deep .table-card {
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  border-width: 1px !important;
-  border-style: solid !important;
 }

@@ -3,4 +3,5 @@ export * from './api.model';
 export * from './auth.model';
 export * from './category.model';
 export * from './expense.model';
+export * from './income.model';
 export * from './user.model';

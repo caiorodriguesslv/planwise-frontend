@@ -1,0 +1,2 @@
+export * from './incomes.constants';
+
