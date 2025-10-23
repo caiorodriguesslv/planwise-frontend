@@ -1,3 +1,16 @@
+// ========================================
+// DASHBOARD COMPONENT - PLANWISE
+// ========================================
+// Estilos unificados do dashboard seguindo o padrão visual do sistema
+// Mantém consistência com login, sidebar e demais componentes
+// ========================================
+
+// ==========================================
+// CONTAINER PRINCIPAL DO DASHBOARD
+// ==========================================
+// Container full-width com gradiente de fundo escuro unificado
+// Efeitos de overlay para profundidade visual
+
 .dashboard-content {
   width: 100%;
   max-width: none;
@@ -12,6 +25,7 @@
     0 0 0 1px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   
+  // Overlay com gradientes radiais para profundidade
   &::before {
     content: '';
     position: absolute;
@@ -20,14 +34,15 @@
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.15) 0%, transparent 60%),
-      radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
-      radial-gradient(circle at 50% 50%, rgba(255, 167, 38, 0.08) 0%, transparent 70%),
+      radial-gradient(circle at 15% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at 50% 50%, rgba(255, 167, 38, 0.06) 0%, transparent 70%),
       linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
     pointer-events: none;
     border-radius: 24px;
   }
   
+  // Overlay interno para brilho sutil
   &::after {
     content: '';
     position: absolute;
@@ -35,11 +50,16 @@
     left: 1px;
     right: 1px;
     bottom: 1px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
     border-radius: 23px;
     pointer-events: none;
   }
 }
+
+// ==========================================
+// LOADING SPINNER
+// ==========================================
+// Estado de carregamento centralizado
 
 .loading-container {
   display: flex;
@@ -48,37 +68,48 @@
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
+  position: relative;
+  z-index: 2;
   
   p {
     margin-top: 16px;
-    color: #6b7280;
+    color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
+    font-weight: 500;
   }
 }
+
+// ==========================================
+// GRID DE ESTATÍSTICAS
+// ==========================================
+// Cards de métricas principais (Receitas, Despesas, Metas)
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
   
   .stat-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
     border-radius: 24px;
-    padding: 28px;
+    padding: 32px;
     box-shadow: 
       0 16px 50px rgba(0, 0, 0, 0.3),
-      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.15),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(20px);
     
+    // Overlay de gradiente ciano-roxo sutil
     &::before {
       content: '';
       position: absolute;
@@ -86,10 +117,12 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
       pointer-events: none;
+      border-radius: 24px;
     }
     
+    // Overlay de brilho interno
     &::after {
       content: '';
       position: absolute;
@@ -99,26 +132,35 @@
       bottom: 0;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
       pointer-events: none;
+      border-radius: 24px;
     }
     
+    // Hover effect elegante
     &:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px) scale(1.01);
       box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.35),
-        0 0 0 1px rgba(255, 255, 255, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        0 24px 70px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
+    
+    // ==========================================
+    // ÍCONE DO CARD
+    // ==========================================
+    // Ícone com gradiente específico por tipo
     
     .stat-icon {
-      width: 70px;
-      height: 70px;
+      width: 72px;
+      height: 72px;
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       z-index: 2;
+      flex-shrink: 0;
       
+      // Border externo sutil
       &::before {
         content: '';
         position: absolute;
@@ -126,11 +168,12 @@
         left: -3px;
         right: -3px;
         bottom: -3px;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%);
         border-radius: 23px;
         z-index: -1;
       }
       
+      // Overlay de brilho interno
       &::after {
         content: '';
         position: absolute;
@@ -141,6 +184,7 @@
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
         border-radius: 20px;
         z-index: 1;
+        pointer-events: none;
       }
       
       mat-icon {
@@ -156,117 +200,119 @@
         padding: 0;
         text-align: center;
         vertical-align: middle;
-        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+        filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.5));
         z-index: 3;
         position: relative;
       }
     }
     
+    // ==========================================
+    // INFORMAÇÕES DO CARD
+    // ==========================================
+    // Título, valor e subtítulo
+    
     .stat-info {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+      
       h3 {
-        margin: 0 0 4px 0;
+        margin: 0 0 6px 0;
         font-size: 14px;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.85);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
       
       .amount {
-        margin: 0 0 2px 0;
-        font-size: 24px;
+        margin: 0 0 4px 0;
+        font-size: 28px;
         font-weight: 700;
         color: white;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        line-height: 1.2;
       }
       
       .subtitle {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 500;
       }
     }
     
+    // ==========================================
+    // CORES ESPECÍFICAS POR TIPO DE CARD
+    // ==========================================
+    
+    // Card de Receitas (Ciano)
     &.income .stat-icon {
       background: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #006699 100%);
       box-shadow: 
-        0 12px 35px rgba(0, 212, 255, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 16px 45px rgba(0, 212, 255, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
     
+    // Card de Despesas (Vermelho)
     &.expense .stat-icon {
       background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%);
       box-shadow: 
-        0 12px 35px rgba(255, 107, 107, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 16px 45px rgba(255, 107, 107, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
     
+    // Card de Saldo (Roxo)
     &.balance .stat-icon {
       background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
       box-shadow: 
-        0 12px 35px rgba(139, 92, 246, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 16px 45px rgba(139, 92, 246, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
     
+    // Card de Metas (Laranja)
     &.goals .stat-icon {
       background: linear-gradient(135deg, #ffa726 0%, #ff9800 50%, #f57c00 100%);
       box-shadow: 
-        0 12px 35px rgba(255, 167, 38, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 16px 45px rgba(255, 167, 38, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
   }
 }
 
-.quick-actions {
+// ==========================================
+// SEÇÃO DE GRÁFICOS
+// ==========================================
+// Gráficos dinâmicos com Chart.js
+
+.charts-section {
   margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
   
-  h2 {
-    margin: 0 0 24px 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: white;
-    text-align: center;
-    position: relative;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(135deg, var(--planwise-cyan), var(--planwise-purple));
-      border-radius: 2px;
-    }
-  }
-  
-  .actions-grid {
+  .charts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    width: 100%;
-    margin: 0;
     
-    .action-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    .chart-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
       border-radius: 24px;
-      padding: 32px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 28px;
       box-shadow: 
         0 16px 50px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       position: relative;
       overflow: hidden;
-      min-height: 120px;
       backdrop-filter: blur(20px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       
+      // Overlay de gradiente
       &::before {
         content: '';
         position: absolute;
@@ -274,10 +320,12 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
         pointer-events: none;
+        border-radius: 24px;
       }
       
+      // Overlay de brilho
       &::after {
         content: '';
         position: absolute;
@@ -287,8 +335,154 @@
         bottom: 0;
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
         pointer-events: none;
+        border-radius: 24px;
       }
       
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+          0 20px 60px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+      
+      .chart-header {
+        margin-bottom: 24px;
+        position: relative;
+        z-index: 2;
+        
+        h3 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 700;
+          color: white;
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          
+          i {
+            font-size: 22px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00d4ff;
+            filter: drop-shadow(0 2px 6px rgba(0, 212, 255, 0.4));
+            flex-shrink: 0;
+          }
+        }
+      }
+      
+      .chart-container {
+        position: relative;
+        z-index: 2;
+        height: 320px;
+        padding: 10px;
+        
+        canvas {
+          max-height: 100%;
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// AÇÕES RÁPIDAS
+// ==========================================
+// Grid de botões de ação rápida
+
+.quick-actions {
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+  
+  // Título da seção
+  h2 {
+    margin: 0 0 28px 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    position: relative;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    
+    // Linha decorativa sob o título
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(0, 212, 255, 0.4);
+    }
+  }
+  
+  // Grid de cards de ação
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin: 0;
+    
+    .action-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+      border-radius: 24px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 
+        0 16px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      text-align: center;
+      
+      // Overlay de gradiente sutil
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        pointer-events: none;
+        border-radius: 24px;
+      }
+      
+      // Overlay de brilho
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+        border-radius: 24px;
+      }
+      
+      // Ícone da ação
       .action-icon {
         width: 70px;
         height: 70px;
@@ -299,7 +493,9 @@
         flex-shrink: 0;
         position: relative;
         z-index: 2;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         
+        // Border externo
         &::before {
           content: '';
           position: absolute;
@@ -307,11 +503,12 @@
           left: -3px;
           right: -3px;
           bottom: -3px;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%);
           border-radius: 23px;
           z-index: -1;
         }
         
+        // Overlay de brilho interno
         &::after {
           content: '';
           position: absolute;
@@ -322,6 +519,7 @@
           background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
           border-radius: 20px;
           z-index: 1;
+          pointer-events: none;
         }
         
         mat-icon {
@@ -337,145 +535,148 @@
           padding: 0;
           text-align: center;
           vertical-align: middle;
-          filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+          filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.5));
           z-index: 3;
           position: relative;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
       }
       
+      // Conteúdo da ação
       .action-content {
         flex: 1;
+        position: relative;
+        z-index: 2;
         
         h3 {
-          margin: 0 0 8px 0;
-          font-size: 18px;
+          margin: 0 0 6px 0;
+          font-size: 16px;
           font-weight: 700;
           color: white;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+          line-height: 1.3;
         }
         
         p {
           margin: 0;
-          font-size: 14px;
-          color: rgba(255, 255, 255, 0.8);
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.75);
           line-height: 1.4;
+          font-weight: 500;
         }
       }
       
+      // Hover effect
       &:hover {
-        transform: translateY(-6px);
+        transform: translateY(-8px) scale(1.02);
         box-shadow: 
-          0 20px 60px rgba(0, 0, 0, 0.35),
-          0 0 0 1px rgba(255, 255, 255, 0.15),
-          inset 0 1px 0 rgba(255, 255, 255, 0.25);
+          0 24px 70px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        
+        .action-icon {
+          transform: scale(1.1) rotate(5deg);
+          
+          mat-icon {
+            transform: scale(1.15);
+          }
+        }
       }
       
+      // Cores específicas por tipo de ação
       &.income-action .action-icon {
         background: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #006699 100%);
         box-shadow: 
-          0 12px 35px rgba(0, 212, 255, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          0 16px 45px rgba(0, 212, 255, 0.45),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
       
       &.expense-action .action-icon {
         background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #dc2626 100%);
         box-shadow: 
-          0 12px 35px rgba(255, 107, 107, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          0 16px 45px rgba(255, 107, 107, 0.45),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
       
       &.goal-action .action-icon {
         background: linear-gradient(135deg, #ffa726 0%, #ff9800 50%, #f57c00 100%);
         box-shadow: 
-          0 12px 35px rgba(255, 167, 38, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          0 16px 45px rgba(255, 167, 38, 0.45),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
       
       &.report-action .action-icon {
         background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
         box-shadow: 
-          0 12px 35px rgba(139, 92, 246, 0.4),
-          0 0 0 1px rgba(255, 255, 255, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      }
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .actions-grid {
-      grid-template-columns: 1fr;
-      gap: 16px;
-      padding: 0 16px;
-    }
-    
-    .action-card {
-      padding: 24px;
-      min-height: 100px;
-      
-      .action-icon {
-        width: 56px;
-        height: 56px;
-        
-        mat-icon {
-          font-size: 28px;
-          width: 28px;
-          height: 28px;
-        }
-      }
-      
-      .action-content {
-        h3 {
-          font-size: 16px;
-        }
-        
-        p {
-          font-size: 13px;
-        }
+          0 16px 45px rgba(139, 92, 246, 0.45),
+          0 0 0 1px rgba(255, 255, 255, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
     }
   }
 }
 
+// ==========================================
+// ATIVIDADE RECENTE
+// ==========================================
+// Lista de transações e atividades recentes
+
 .recent-activity {
+  position: relative;
+  z-index: 2;
+  
+  // Header com título e botão refresh
   .activity-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     
     h2 {
       margin: 0;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
       color: white;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
     
     .refresh-btn {
-      color: rgba(255, 255, 255, 0.7) !important;
-      transition: all 0.3s ease !important;
+      color: rgba(255, 255, 255, 0.75) !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 12px !important;
+      width: 44px !important;
+      height: 44px !important;
       
       &:hover:not(:disabled) {
         color: white !important;
-        background: rgba(255, 255, 255, 0.1) !important;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%) !important;
+        border-color: rgba(0, 212, 255, 0.3) !important;
+        transform: scale(1.05) rotate(90deg);
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
       }
       
       &:disabled {
         opacity: 0.5;
+        cursor: not-allowed;
       }
       
       mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
     }
   }
   
+  // Lista de atividades
   .activity-list {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
     border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 
@@ -486,6 +687,7 @@
     position: relative;
     overflow: hidden;
     
+    // Overlay de gradiente
     &::before {
       content: '';
       position: absolute;
@@ -493,10 +695,12 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
       pointer-events: none;
+      border-radius: 24px;
     }
     
+    // Overlay de brilho
     &::after {
       content: '';
       position: absolute;
@@ -506,10 +710,12 @@
       bottom: 0;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
       pointer-events: none;
+      border-radius: 24px;
     }
     
+    // Item individual de atividade
     .activity-item {
-      padding: 20px 28px;
+      padding: 24px 28px;
       display: flex;
       align-items: center;
       gap: 20px;
@@ -524,43 +730,67 @@
       
       &:hover {
         background: rgba(255, 255, 255, 0.08);
-        transform: translateX(4px);
+        transform: translateX(6px);
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background: linear-gradient(180deg, #00d4ff 0%, #8b5cf6 100%);
+          border-radius: 0 4px 4px 0;
+          box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+        }
       }
       
+      // Estado de loading
       &.loading {
         justify-content: center;
         color: rgba(255, 255, 255, 0.7);
+        padding: 40px 28px;
         
         p {
           margin: 0;
           font-weight: 500;
-        }
-      }
-      
-      &.empty {
-        text-align: center;
-        flex-direction: column;
-        color: rgba(255, 255, 255, 0.7);
-        
-        mat-icon {
-          font-size: 48px;
-          color: rgba(255, 255, 255, 0.4);
-          margin-bottom: 8px;
-        }
-        
-        p {
-          margin: 0 0 4px 0;
-          font-weight: 600;
-        }
-        
-        span {
           font-size: 14px;
         }
       }
       
+      // Estado vazio
+      &.empty {
+        text-align: center;
+        flex-direction: column;
+        color: rgba(255, 255, 255, 0.7);
+        padding: 60px 28px;
+        
+        mat-icon {
+          font-size: 56px;
+          width: 56px;
+          height: 56px;
+          color: rgba(255, 255, 255, 0.35);
+          margin-bottom: 12px;
+          filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        p {
+          margin: 0 0 6px 0;
+          font-weight: 600;
+          font-size: 16px;
+          color: white;
+        }
+        
+        span {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+      
+      // Ícone da atividade
       .activity-icon {
-        width: 48px;
-        height: 48px;
+        width: 52px;
+        height: 52px;
         border-radius: 16px;
         display: flex;
         align-items: center;
@@ -569,6 +799,7 @@
         position: relative;
         z-index: 2;
         
+        // Border externo
         &::before {
           content: '';
           position: absolute;
@@ -581,6 +812,7 @@
           z-index: -1;
         }
         
+        // Overlay de brilho
         &::after {
           content: '';
           position: absolute;
@@ -588,16 +820,17 @@
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
           border-radius: 16px;
           z-index: 1;
+          pointer-events: none;
         }
         
         mat-icon {
           color: white;
-          font-size: 24px;
-          width: 24px;
-          height: 24px;
+          font-size: 26px;
+          width: 26px;
+          height: 26px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -606,12 +839,13 @@
           padding: 0;
           text-align: center;
           vertical-align: middle;
-          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
           z-index: 3;
           position: relative;
         }
       }
       
+      // Conteúdo da atividade
       .activity-content {
         flex: 1;
         
@@ -619,27 +853,32 @@
           margin: 0 0 4px 0;
           font-weight: 600;
           color: white;
-          font-size: 14px;
+          font-size: 15px;
+          line-height: 1.4;
         }
         
         span {
-          font-size: 12px;
-          color: rgba(255, 255, 255, 0.6);
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.65);
+          font-weight: 500;
         }
       }
     }
     
+    // Container do botão "Carregar mais"
     .load-more-container {
-      padding: 16px 24px;
+      padding: 20px 28px;
       text-align: center;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 2;
       
       .load-more-btn {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
         color: white !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         border-radius: 16px !important;
-        padding: 14px 28px !important;
+        padding: 14px 32px !important;
         font-weight: 600 !important;
         font-size: 14px !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -651,7 +890,22 @@
           0 0 0 1px rgba(255, 255, 255, 0.1),
           inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
         
+        // Overlay de gradiente
         &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+          border-radius: 16px;
+          z-index: 1;
+          pointer-events: none;
+        }
+        
+        // Overlay de brilho
+        &::after {
           content: '';
           position: absolute;
           top: 0;
@@ -661,26 +915,15 @@
           background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
           border-radius: 16px;
           z-index: 1;
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-          border-radius: 16px;
-          z-index: 1;
+          pointer-events: none;
         }
         
         &:hover {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
-          transform: translateY(-2px);
+          background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%) !important;
+          transform: translateY(-3px);
           box-shadow: 
-            0 12px 35px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(255, 255, 255, 0.2),
+            0 16px 45px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(0, 212, 255, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
         }
         
@@ -702,23 +945,210 @@
   }
 }
 
-// Responsive Design
-@media (max-width: 768px) {
+// ==========================================
+// RESPONSIVIDADE
+// ==========================================
+// Ajustes para diferentes tamanhos de tela
+
+// Tablets
+@media (max-width: 1024px) {
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  .actions-grid {
+  .charts-section .charts-grid {
+    grid-template-columns: 1fr;
+    
+    .chart-card .chart-container {
+      height: 280px;
+    }
+  }
+  
+  .quick-actions .actions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 480px) {
-  .actions-grid {
-    grid-template-columns: 1fr;
+// Mobile grande
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 24px;
   }
   
-  .stat-card {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    
+    .stat-card {
+      padding: 24px;
+      
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        
+        mat-icon {
+          font-size: 30px;
+          width: 30px;
+          height: 30px;
+        }
+      }
+      
+      .stat-info {
+        .amount {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+  
+  .charts-section .charts-grid {
+    .chart-card {
+      padding: 20px;
+      
+      .chart-header h3 {
+        font-size: 16px;
+        
+        i {
+          font-size: 18px;
+          width: 32px;
+          height: 32px;
+        }
+      }
+      
+      .chart-container {
+        height: 260px;
+      }
+    }
+  }
+  
+  .quick-actions {
+    h2 {
+      font-size: 22px;
+    }
+    
+    .actions-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      
+      .action-card {
+        padding: 24px;
+        
+        .action-icon {
+          width: 60px;
+          height: 60px;
+          
+          mat-icon {
+            font-size: 30px;
+            width: 30px;
+            height: 30px;
+          }
+        }
+        
+        .action-content {
+          h3 {
+            font-size: 15px;
+          }
+          
+          p {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  
+  .recent-activity {
+    .activity-header h2 {
+      font-size: 20px;
+    }
+    
+    .activity-list .activity-item {
+      padding: 20px 20px;
+      gap: 16px;
+      
+      .activity-icon {
+        width: 44px;
+        height: 44px;
+        
+        mat-icon {
+          font-size: 22px;
+          width: 22px;
+          height: 22px;
+        }
+      }
+      
+      .activity-content {
+        p {
+          font-size: 14px;
+        }
+        
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+// Mobile pequeno
+@media (max-width: 480px) {
+  .dashboard-content {
     padding: 16px;
+    border-radius: 16px;
+  }
+  
+  .stats-grid {
+    .stat-card {
+      padding: 20px;
+      flex-direction: column;
+      text-align: center;
+      
+      .stat-icon {
+        width: 56px;
+        height: 56px;
+        
+        mat-icon {
+          font-size: 26px;
+          width: 26px;
+          height: 26px;
+        }
+      }
+    }
+  }
+  
+  .charts-section .charts-grid {
+    .chart-card {
+      padding: 16px;
+      
+      .chart-header h3 {
+        font-size: 14px;
+        
+        i {
+          font-size: 16px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+      
+      .chart-container {
+        height: 240px;
+        padding: 5px;
+      }
+    }
+  }
+  
+  .quick-actions .actions-grid .action-card {
+    padding: 20px;
+    
+    .action-icon {
+      width: 52px;
+      height: 52px;
+      
+      mat-icon {
+        font-size: 26px;
+        width: 26px;
+        height: 26px;
+      }
+    }
   }
 }

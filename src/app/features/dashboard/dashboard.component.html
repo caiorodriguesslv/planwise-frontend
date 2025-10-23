@@ -43,6 +43,45 @@
     </div>
   </div>
 
+  <!-- Charts Section -->
+  <div class="charts-section" *ngIf="isNotLoadingStats">
+    <div class="charts-grid">
+      <!-- Gráfico de Despesas por Categoria -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-chart-pie"></i>
+            Despesas por Categoria
+          </h3>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="doughnutChartData"
+            type="doughnut"
+            [options]="doughnutChartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico de Tendências Mensais -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-chart-line"></i>
+            Tendências dos Últimos 6 Meses
+          </h3>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="lineChartData"
+            type="line"
+            [options]="lineChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Quick Actions -->
   <div class="quick-actions">
     <h2>Ações Rápidas</h2>
