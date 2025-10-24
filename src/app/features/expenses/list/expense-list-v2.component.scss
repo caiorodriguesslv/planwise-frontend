@@ -208,21 +208,31 @@
   .new-expense-btn {
     background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #e53935 100%) !important;
     color: white !important;
-    padding: 16px 32px;
-    font-weight: 700;
-    font-size: 15px;
-    border-radius: 18px;
+    padding: 16px 32px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    border-radius: 18px !important;
     box-shadow: 
       0 12px 35px rgba(255, 107, 107, 0.45),
       0 0 0 1px rgba(255, 255, 255, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    text-transform: none;
+      inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: blur(10px) !important;
+    text-transform: none !important;
     position: relative;
     z-index: 2;
     overflow: hidden;
+    
+    // Sobrescrever estilos do Material
+    &.mat-mdc-raised-button {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #e53935 100%) !important;
+      
+      .mat-mdc-button-persistent-ripple,
+      .mat-mdc-button-ripple {
+        background-color: transparent !important;
+      }
+    }
     
     // Overlay de brilho
     &::before {
