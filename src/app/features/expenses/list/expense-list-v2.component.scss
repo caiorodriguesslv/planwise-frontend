@@ -206,14 +206,14 @@
   }
   
   .new-expense-btn {
-    background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 50%, #6d28d9 100%) !important;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #e53935 100%) !important;
     color: white !important;
     padding: 16px 32px;
     font-weight: 700;
     font-size: 15px;
     border-radius: 18px;
     box-shadow: 
-      0 12px 35px rgba(0, 212, 255, 0.45),
+      0 12px 35px rgba(255, 107, 107, 0.45),
       0 0 0 1px rgba(255, 255, 255, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -246,12 +246,12 @@
     }
     
     &:hover {
-      background: linear-gradient(135deg, #0099cc 0%, #7c3aed 50%, #5b21b6 100%) !important;
+      background: linear-gradient(135deg, #ee5a52 0%, #e53935 50%, #c62828 100%) !important;
       transform: translateY(-3px) scale(1.02);
       box-shadow: 
-        0 12px 35px rgba(239, 68, 68, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 16px 45px rgba(255, 107, 107, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
   }
 }
@@ -597,6 +597,10 @@
     pointer-events: none;
   }
   
+  // Propriedades diretas devem vir antes das regras aninhadas
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  
   // Força bordas brancas em todos os elementos filhos
   * {
     border-color: rgba(255, 255, 255, 0.2) !important;
@@ -608,9 +612,6 @@
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-color: rgba(255, 255, 255, 0.2) !important;
   }
-  
-  overflow: hidden;
-  backdrop-filter: blur(20px);
   
   &::before {
     content: '';

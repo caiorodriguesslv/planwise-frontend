@@ -4,3 +4,4 @@ export * from './detail/income-detail.component';
 export * from './incomes.routes';
 export * from './incomes.module';
 
+

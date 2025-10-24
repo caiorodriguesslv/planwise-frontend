@@ -91,18 +91,16 @@ export class MainLayoutComponent implements OnInit {
       title: 'Relatórios',
       items: [
         {
+          id: 'analytics',
+          label: 'Gráficos',
+          icon: 'bar_chart',
+          route: '/dashboard/analytics'
+        },
+        {
           id: 'reports',
           label: 'Relatórios',
           icon: 'analytics',
           route: '/dashboard/reports',
-          disabled: true,
-          badge: 'Em breve'
-        },
-        {
-          id: 'charts',
-          label: 'Gráficos',
-          icon: 'bar_chart',
-          route: '/dashboard/charts',
           disabled: true,
           badge: 'Em breve'
         }
@@ -179,6 +177,10 @@ export class MainLayoutComponent implements OnInit {
     '/dashboard/categories/new': {
       title: 'Nova Categoria',
       subtitle: 'Crie uma nova categoria para organizar suas despesas'
+    },
+    '/dashboard/analytics': {
+      title: 'Análise de Dados',
+      subtitle: 'Visualizações avançadas e insights em tempo real'
     },
     '/dashboard/profile': {
       title: 'Meu Perfil',

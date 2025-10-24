@@ -45,16 +45,17 @@ export const API_ENDPOINTS = {
   },
   
   // Receitas
-  incomes: '/api/incomes',
+  incomes: '/incomes',
   INCOME: {
-    LIST: '/income',
-    CREATE: '/income',
-    GET_BY_ID: '/income/:id',
-    UPDATE: '/income/:id',
-    DELETE: '/income/:id',
-    BY_CATEGORY: '/income/category/:categoryId',
-    BY_DATE_RANGE: '/income/date-range',
-    SUMMARY: '/income/summary'
+    LIST: '/incomes',
+    CREATE: '/incomes',
+    GET_BY_ID: '/incomes/:id',
+    UPDATE: '/incomes/:id',
+    DELETE: '/incomes/:id',
+    BY_CATEGORY: '/incomes/category/:categoryId',
+    BY_DATE_RANGE: '/incomes/date-range',
+    SUMMARY: '/incomes/summary',
+    STATS: '/incomes/stats'
   },
   
   // Relatórios

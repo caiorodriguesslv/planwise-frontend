@@ -28,6 +28,11 @@ export const dashboardRoutes: Routes = [
       {
         path: 'categories',
         loadChildren: () => import('../categories/categories.routes').then(m => m.categoryRoutes)
+      },
+      {
+        path: 'analytics',
+        loadChildren: () => import('../analytics/analytics.routes').then(m => m.ANALYTICS_ROUTES),
+        title: 'Analytics - PlanWise'
       }
     ]
   }

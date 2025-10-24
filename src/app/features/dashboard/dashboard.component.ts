@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -7,15 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subject, takeUntil, catchError, of, map, forkJoin } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 
 import { AuthService } from '../../core/services/auth.service';
 import { ExpenseService } from '../../core/services/expense.service';
 import { CategoryService } from '../../core/services/category.service';
 import { NotificationService } from '../../core/services/notification.service';
-
-// Importar configuração do Chart.js
-import '../../core/config/chart.config';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,10 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   currentPage: number = 0;
   pageSize: number = 5;
 
-  // Gráficos
-  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-
-  // Gráfico de Despesas por Categoria (Doughnut)
+  // Dados dos gráficos
   public doughnutChartData: ChartData<'doughnut'> = {
     labels: [],
     datasets: [{
@@ -64,191 +58,180 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         'rgba(0, 212, 255, 0.8)',     // Ciano
         'rgba(139, 92, 246, 0.8)',    // Roxo
         'rgba(255, 167, 38, 0.8)',    // Laranja
-        'rgba(255, 107, 107, 0.6)',   // Vermelho claro
-        'rgba(0, 212, 255, 0.6)',     // Ciano claro
-        'rgba(139, 92, 246, 0.6)',    // Roxo claro
-        'rgba(255, 167, 38, 0.6)',    // Laranja claro
+        'rgba(34, 197, 94, 0.8)',     // Verde
+        'rgba(236, 72, 153, 0.8)',    // Rosa
       ],
       borderColor: [
         'rgba(255, 107, 107, 1)',
         'rgba(0, 212, 255, 1)',
         'rgba(139, 92, 246, 1)',
         'rgba(255, 167, 38, 1)',
-        'rgba(255, 107, 107, 0.8)',
-        'rgba(0, 212, 255, 0.8)',
-        'rgba(139, 92, 246, 0.8)',
-        'rgba(255, 167, 38, 0.8)',
+        'rgba(34, 197, 94, 1)',
+        'rgba(236, 72, 153, 1)',
       ],
       borderWidth: 2,
       hoverOffset: 15
     }]
   };
 
-  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+  public doughnutChartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
+    aspectRatio: 1.5,
+    cutout: '65%',
     plugins: {
       legend: {
         display: true,
         position: 'bottom',
         labels: {
           color: 'rgba(255, 255, 255, 0.9)',
-          padding: 15,
           font: {
             size: 12,
+            family: 'Roboto, sans-serif',
             weight: 500
           },
+          padding: 15,
           usePointStyle: true,
           pointStyle: 'circle'
         }
       },
       tooltip: {
-        enabled: true,
-        backgroundColor: 'rgba(10, 10, 26, 0.95)',
-        titleColor: 'rgba(255, 255, 255, 1)',
-        bodyColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#ffffff',
+        bodyColor: '#ffffff',
         borderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
         padding: 12,
-        cornerRadius: 8,
         displayColors: true,
         callbacks: {
-          label: function(context) {
+          label: (context) => {
             const label = context.label || '';
             const value = context.parsed || 0;
-            const total = (context.dataset.data as number[]).reduce((acc, val) => acc + val, 0);
-            const percentage = ((value / total) * 100).toFixed(1);
-            return `${label}: R$ ${value.toFixed(2)} (${percentage}%)`;
+            return `${label}: R$ ${value.toFixed(2)}`;
           }
         }
       }
-    },
-    cutout: '65%',
-    animation: {
-      animateRotate: true,
-      animateScale: true
     }
   };
 
-  // Gráfico de Tendências Mensais (Line)
   public lineChartData: ChartData<'line'> = {
     labels: [],
     datasets: [
       {
-        data: [],
         label: 'Despesas',
-        borderColor: 'rgba(255, 107, 107, 1)',
+        data: [],
+        borderColor: 'rgb(255, 107, 107)',
         backgroundColor: 'rgba(255, 107, 107, 0.1)',
-        pointBackgroundColor: 'rgba(255, 107, 107, 1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255, 107, 107, 1)',
+        borderWidth: 3,
         fill: true,
         tension: 0.4,
-        borderWidth: 3,
         pointRadius: 5,
-        pointHoverRadius: 7
+        pointHoverRadius: 8,
+        pointBackgroundColor: 'rgb(255, 107, 107)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(255, 107, 107)',
+        pointHoverBorderWidth: 3
       },
       {
-        data: [],
         label: 'Receitas',
-        borderColor: 'rgba(0, 212, 255, 1)',
+        data: [],
+        borderColor: 'rgb(0, 212, 255)',
         backgroundColor: 'rgba(0, 212, 255, 0.1)',
-        pointBackgroundColor: 'rgba(0, 212, 255, 1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(0, 212, 255, 1)',
+        borderWidth: 3,
         fill: true,
         tension: 0.4,
-        borderWidth: 3,
         pointRadius: 5,
-        pointHoverRadius: 7
+        pointHoverRadius: 8,
+        pointBackgroundColor: 'rgb(0, 212, 255)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(0, 212, 255)',
+        pointHoverBorderWidth: 3
       }
     ]
   };
 
-  public lineChartOptions: ChartConfiguration<'line'>['options'] = {
+  public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
+    aspectRatio: 2,
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
+    scales: {
+      x: {
+        border: {
+          display: false
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)'
+        },
+        ticks: {
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            size: 11,
+            family: 'Roboto, sans-serif',
+            weight: 500
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        border: {
+          display: false
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)'
+        },
+        ticks: {
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            size: 11,
+            family: 'Roboto, sans-serif',
+            weight: 500
+          },
+          callback: function(value) {
+            return 'R$ ' + value;
+          }
+        }
+      }
+    },
     plugins: {
       legend: {
         display: true,
         position: 'top',
         labels: {
           color: 'rgba(255, 255, 255, 0.9)',
-          padding: 15,
           font: {
             size: 12,
+            family: 'Roboto, sans-serif',
             weight: 500
           },
+          padding: 15,
           usePointStyle: true,
           pointStyle: 'circle'
         }
       },
       tooltip: {
-        enabled: true,
-        mode: 'index',
-        intersect: false,
-        backgroundColor: 'rgba(10, 10, 26, 0.95)',
-        titleColor: 'rgba(255, 255, 255, 1)',
-        bodyColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#ffffff',
+        bodyColor: '#ffffff',
         borderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
         padding: 12,
-        cornerRadius: 8,
         displayColors: true,
         callbacks: {
-          label: function(context) {
+          label: (context) => {
             const label = context.dataset.label || '';
             const value = context.parsed.y || 0;
             return `${label}: R$ ${value.toFixed(2)}`;
           }
         }
       }
-    },
-    scales: {
-      x: {
-        display: true,
-        grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
-          drawTicks: false
-        },
-        ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
-          font: {
-            size: 11
-          },
-          padding: 8
-        },
-        border: {
-          display: false
-        }
-      },
-      y: {
-        display: true,
-        grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
-          drawTicks: false
-        },
-        ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
-          font: {
-            size: 11
-          },
-          padding: 8,
-          callback: function(value) {
-            return 'R$ ' + value;
-          }
-        },
-        border: {
-          display: false
-        }
-      }
-    },
-    interaction: {
-      mode: 'nearest',
-      axis: 'x',
-      intersect: false
     }
   };
 
@@ -266,7 +249,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.loadDashboardStats();
     this.loadRecentActivities();
-    this.loadChartData();
+    this.loadExpensesByCategoryChart();
+    this.loadMonthlyTrendsChart();
   }
 
   ngAfterViewInit(): void {
@@ -437,15 +421,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate([route]);
   }
 
-  // ==========================================
-  // MÉTODOS PARA CARREGAR DADOS DOS GRÁFICOS
-  // ==========================================
-
-  private loadChartData(): void {
-    this.loadExpensesByCategoryChart();
-    this.loadMonthlyTrendsChart();
-  }
-
+  // Carrega gráfico de despesas por categoria
   private loadExpensesByCategoryChart(): void {
     forkJoin({
       expenses: this.expenseService.getAllExpensesList(),
@@ -454,9 +430,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.destroy$)
     ).subscribe({
       next: ({ expenses, categories }) => {
+        // Criar mapa de categorias para lookup rápido
+        const categoryMap = new Map<number, string>();
+        categories.forEach(cat => categoryMap.set(cat.id, cat.name));
+
         // Agrupar despesas por categoria
         const expensesByCategory = new Map<string, number>();
-        
         expenses.forEach(expense => {
           const categoryName = expense.category?.name || 'Sem Categoria';
           const currentValue = expensesByCategory.get(categoryName) || 0;
@@ -466,95 +445,82 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         // Converter para arrays para o gráfico
         const labels: string[] = [];
         const data: number[] = [];
-
-        expensesByCategory.forEach((value, key) => {
-          labels.push(key);
+        
+        expensesByCategory.forEach((value, category) => {
+          labels.push(category);
           data.push(value);
         });
 
         // Atualizar dados do gráfico
-        if (labels.length > 0) {
-          this.doughnutChartData = {
-            labels: labels,
-            datasets: [{
-              data: data,
-              backgroundColor: this.doughnutChartData.datasets[0].backgroundColor,
-              borderColor: this.doughnutChartData.datasets[0].borderColor,
-              borderWidth: 2,
-              hoverOffset: 15
-            }]
-          };
-        } else {
-          // Dados de exemplo se não houver despesas
-          this.doughnutChartData = {
-            labels: ['Alimentação', 'Transporte', 'Moradia', 'Lazer'],
-            datasets: [{
-              data: [400, 200, 800, 120],
-              backgroundColor: this.doughnutChartData.datasets[0].backgroundColor,
-              borderColor: this.doughnutChartData.datasets[0].borderColor,
-              borderWidth: 2,
-              hoverOffset: 15
-            }]
-          };
-        }
-
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro ao carregar dados do gráfico de categorias:', error);
-      }
-    });
-  }
-
-  private loadMonthlyTrendsChart(): void {
-    this.expenseService.getAllExpensesList().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (expenses) => {
-        // Obter últimos 6 meses
-        const currentDate = new Date();
-        const monthLabels: string[] = [];
-        const expensesData: number[] = [];
-        const incomesData: number[] = [];
-
-        for (let i = 5; i >= 0; i--) {
-          const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
-          const monthName = date.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
-          monthLabels.push(monthName.charAt(0).toUpperCase() + monthName.slice(1));
-
-          // Calcular total de despesas do mês
-          const monthExpenses = expenses.filter(expense => {
-            const expenseDate = new Date(expense.date + 'T00:00:00');
-            return expenseDate.getMonth() === date.getMonth() && 
-                   expenseDate.getFullYear() === date.getFullYear();
-          }).reduce((total, expense) => total + expense.value, 0);
-
-          expensesData.push(monthExpenses);
-          incomesData.push(0); // Por enquanto, sem receitas
-        }
-
-        // Atualizar dados do gráfico (sempre mostrar, mesmo se vazio)
-        this.lineChartData = {
-          labels: monthLabels,
-          datasets: [
-            {
-              ...this.lineChartData.datasets[0],
-              data: expensesData,
-              label: 'Despesas'
-            },
-            {
-              ...this.lineChartData.datasets[1],
-              data: incomesData,
-              label: 'Receitas'
-            }
-          ]
+        this.doughnutChartData = {
+          ...this.doughnutChartData,
+          labels: labels,
+          datasets: [{
+            ...this.doughnutChartData.datasets[0],
+            data: data
+          }]
         };
 
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Erro ao carregar dados do gráfico de tendências:', error);
+        console.error('Erro ao carregar gráfico de despesas por categoria:', error);
       }
     });
+  }
+
+  // Carrega gráfico de tendências mensais
+  private loadMonthlyTrendsChart(): void {
+    this.expenseService.getAllExpensesList()
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (expenses) => {
+          // Obter últimos 6 meses
+          const months: string[] = [];
+          const expensesByMonth: number[] = [];
+          const incomesByMonth: number[] = []; // Por enquanto vazio
+          
+          const currentDate = new Date();
+          
+          for (let i = 5; i >= 0; i--) {
+            const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+            const monthName = date.toLocaleDateString('pt-BR', { month: 'short' });
+            months.push(monthName);
+            
+            // Calcular total de despesas do mês
+            const monthExpenses = expenses.filter(expense => {
+              const expenseDate = new Date(expense.date + 'T00:00:00');
+              return expenseDate.getMonth() === date.getMonth() && 
+                     expenseDate.getFullYear() === date.getFullYear();
+            }).reduce((total, expense) => total + expense.value, 0);
+            
+            expensesByMonth.push(monthExpenses);
+            incomesByMonth.push(0); // Por enquanto sem receitas
+          }
+
+          // Atualizar dados do gráfico
+          this.lineChartData = {
+            ...this.lineChartData,
+            labels: months,
+            datasets: [
+              {
+                ...this.lineChartData.datasets[0],
+                data: expensesByMonth
+              },
+              {
+                ...this.lineChartData.datasets[1],
+                data: incomesByMonth
+              }
+            ]
+          };
+
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Erro ao carregar gráfico de tendências:', error);
+        }
+      });
   }
 }

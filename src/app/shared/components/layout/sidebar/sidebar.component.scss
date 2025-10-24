@@ -822,4 +822,51 @@
       }
     }
   }
+  
+  // Item de Gráficos (Gradient Cyan-Purple com destaques)
+  &[title="Gráficos"] {
+    &:hover:not(.disabled):not(.active) {
+      .nav-icon {
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+        
+        mat-icon {
+          background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+    }
+    
+    &.active {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      box-shadow: 
+        0 4px 16px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      
+      .active-indicator {
+        background: linear-gradient(180deg, #00d4ff 0%, #8b5cf6 100%);
+        box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+      }
+      
+      .nav-icon {
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
+        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        
+        mat-icon {
+          background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
+        }
+      }
+      
+      .nav-text {
+        color: #00d4ff;
+        font-weight: 600;
+      }
+    }
+  }
 }

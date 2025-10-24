@@ -1,0 +1,187 @@
+<div class="analytics-container">
+  <!-- Header -->
+  <div class="analytics-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <mat-icon>analytics</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Análise de Dados</h1>
+        <p>Visualizações avançadas e insights em tempo real</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+    <p>Carregando dados...</p>
+  </div>
+
+  <!-- Charts Grid -->
+  <div class="charts-wrapper" *ngIf="!isLoading">
+    
+    <!-- Row 1: 3 columns -->
+    <div class="charts-row row-3">
+      
+      <!-- Distribuição Total -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-chart-pie"></i>
+            Distribuição Total
+          </h3>
+        </div>
+        <div class="chart-container small">
+          <canvas baseChart 
+                  [data]="distributionChartData" 
+                  type="doughnut" 
+                  [options]="creditsChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-footer">
+          <div class="stat-item">
+            <span class="label">Tipos</span>
+            <span class="value">{{ distributionChartData.labels?.length || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receitas vs Despesas -->
+      <div class="chart-card large">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-chart-line"></i>
+            Receitas vs Despesas (12 Meses)
+          </h3>
+          <div class="chart-actions">
+            <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+          </div>
+        </div>
+        <div class="chart-container medium">
+          <canvas baseChart 
+                  [data]="financialTrendsChartData" 
+                  type="line" 
+                  [options]="dynamicsChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-footer stats-row">
+          <div class="stat-item">
+            <span class="label">Despesas</span>
+            <span class="value red">Total</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Receitas</span>
+            <span class="value cyan">Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: 3 columns -->
+    <div class="charts-row row-3">
+
+      <!-- Despesas por Categoria -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-chart-bar"></i>
+            Top Despesas por Categoria
+          </h3>
+        </div>
+        <div class="chart-container small">
+          <canvas baseChart 
+                  [data]="categoryExpensesChartData" 
+                  type="bar" 
+                  [options]="retailChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-footer">
+          <div class="stat-item">
+            <span class="label">Categorias</span>
+            <span class="value">{{ categoryExpensesChartData.labels?.length || 0 }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Categorias por Tipo -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-tags"></i>
+            Categorias por Tipo
+          </h3>
+        </div>
+        <div class="chart-container medium">
+          <canvas baseChart 
+                  [data]="financeChartData" 
+                  type="bar" 
+                  [options]="financeChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-footer stats-list">
+          <div class="region-stat">
+            <span class="color-dot cyan"></span>
+            <span class="label">Receitas</span>
+            <span class="value">{{ getDatasetValue(0, 0) }}</span>
+          </div>
+          <div class="region-stat">
+            <span class="color-dot red"></span>
+            <span class="label">Despesas</span>
+            <span class="value">{{ getDatasetValue(0, 1) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Balanço Mensal -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-sitemap"></i>
+            Balanço Últimos 6 Meses
+          </h3>
+        </div>
+        <div class="chart-container medium">
+          <canvas baseChart 
+                  [data]="statisticChartData" 
+                  type="polarArea" 
+                  [options]="statisticChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-footer stats-grid">
+          <div class="stat-item">
+            <span class="label">Períodos</span>
+            <span class="value">{{ statisticChartData.labels?.length || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 3 Categorias -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>
+            <i class="pi pi-wave-pulse"></i>
+            Top 3 Categorias (12 Meses)
+          </h3>
+        </div>
+        <div class="chart-container medium">
+          <canvas baseChart 
+                  [data]="activityChartData" 
+                  type="line" 
+                  [options]="activityChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-footer stats-row">
+          <div class="stat-item" *ngFor="let dataset of activityChartData.datasets; let i = index">
+            <span class="label">{{ dataset.label }}</span>
+            <span class="value" [ngClass]="i === 0 ? 'cyan' : (i === 1 ? 'purple' : 'orange')">
+              R$ {{ calculateDatasetTotal(dataset.data) | number:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
