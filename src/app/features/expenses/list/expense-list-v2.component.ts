@@ -19,12 +19,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Services e Models
 import { ExpenseService } from '../../../core/services/expense.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { LoadingService } from '../../../core/services/loading.service';
 import { ExpenseResponse, ExpenseFilters, ExpenseStats } from '../../../core/models/expense.model';
 import { PageRequest } from '../../../core/models/api.model';
 
@@ -47,7 +46,8 @@ import { PageRequest } from '../../../core/models/api.model';
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
   ],
   templateUrl: './expense-list-v2.component.html',
   styleUrls: ['./expense-list-v2.component.scss']
@@ -78,8 +78,6 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
   constructor(
     private expenseService: ExpenseService,
     private notificationService: NotificationService,
-    private authService: AuthService,
-    private loadingService: LoadingService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder
@@ -154,7 +152,7 @@ export class ExpenseListV2Component implements OnInit, OnDestroy {
       )
       .subscribe(stats => {
         this.stats = stats;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       });
   }
 

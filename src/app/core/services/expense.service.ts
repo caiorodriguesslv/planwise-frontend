@@ -212,13 +212,7 @@ export class ExpenseService {
    * Obter estatísticas das despesas
    */
   getExpenseStats(filters?: ExpenseFilters): Observable<ExpenseStats> {
-    if (filters?.startDate && filters?.endDate) {
-      return this.getTotalExpenseByDateRange(filters.startDate, filters.endDate)
-        .pipe(map(total => ({ total, count: 0, average: 0 })));
-    }
-    
-    return this.getTotalExpense()
-      .pipe(map(total => ({ total, count: 0, average: 0 })));
+    return this.httpService.get<ExpenseStats>(`${this.baseEndpoint}/stats`);
   }
 
   /**

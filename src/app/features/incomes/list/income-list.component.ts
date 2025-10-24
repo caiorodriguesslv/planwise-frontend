@@ -19,12 +19,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Services e Models
 import { IncomeService } from '../../../core/services/income.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { LoadingService } from '../../../core/services/loading.service';
 import { IncomeResponse, IncomeFilters, IncomeStats } from '../../../core/models/income.model';
 import { PageRequest } from '../../../core/models/api.model';
 
@@ -47,7 +46,8 @@ import { PageRequest } from '../../../core/models/api.model';
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
   ],
   templateUrl: './income-list.component.html',
   styleUrls: ['./income-list.component.scss']
@@ -77,8 +77,6 @@ export class IncomeListComponent implements OnInit, OnDestroy {
   constructor(
     private incomeService: IncomeService,
     private notificationService: NotificationService,
-    private authService: AuthService,
-    private loadingService: LoadingService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder
@@ -153,7 +151,7 @@ export class IncomeListComponent implements OnInit, OnDestroy {
       )
       .subscribe(stats => {
         this.stats = stats;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       });
   }
 

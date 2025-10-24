@@ -211,9 +211,168 @@
   }
 }
 
-// Stats Grid - Esconder (não usado no padrão de categorias)
+// Stats Grid - Cards de estatísticas
 .stats-grid {
-  display: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+  
+  .stat-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+      border-radius: 20px;
+      pointer-events: none;
+    }
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 16px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+        color: white;
+        z-index: 2;
+        position: relative;
+      }
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+        border-radius: 19px;
+        z-index: 1;
+      }
+    }
+    
+    .stat-info {
+      flex: 1;
+      
+      h3 {
+        margin: 0 0 8px 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .amount {
+        margin: 0 0 4px 0;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      
+      .subtitle {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+    
+    // Card de Receitas (Cyan/Green)
+    &.income {
+      .stat-icon {
+        background: linear-gradient(135deg, #00d4ff 0%, #22c55e 50%, #16a34a 100%);
+        box-shadow: 0 8px 20px rgba(0, 212, 255, 0.5);
+      }
+      
+      .amount {
+        background: linear-gradient(135deg, #00d4ff 0%, #0ec5c5 50%, #22c55e 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -moz-background-clip: text;
+        -moz-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+      }
+    }
+    
+    // Card de Transações (Cyan)
+    &.balance {
+      .stat-icon {
+        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #006699 100%);
+        box-shadow: 0 8px 20px rgba(0, 212, 255, 0.5);
+      }
+      
+      .amount {
+        background: linear-gradient(135deg, #00d4ff 0%, #00b4d8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -moz-background-clip: text;
+        -moz-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+      }
+    }
+    
+    // Card de Média (Green/Purple)
+    &.goals {
+      .stat-icon {
+        background: linear-gradient(135deg, #22c55e 0%, #8b5cf6 50%, #6d28d9 100%);
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.5);
+      }
+      
+      .amount {
+        background: linear-gradient(135deg, #22c55e 0%, #8b5cf6 50%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -moz-background-clip: text;
+        -moz-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 // Filters Card - Padrão moderno
@@ -445,52 +604,160 @@
         }
       }
       
+      .actions-column {
+        text-align: center !important;
+        width: 160px !important;
+      }
+      
+      .actions-cell {
+        text-align: center !important;
+        padding: 8px 16px !important;
+        
+        > div {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+        }
+      }
+      
       .action-buttons {
-        display: flex;
-        gap: 8px;
-        justify-content: flex-end;
+        display: flex !important;
+        gap: 12px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 4px 0 !important;
+        margin: 0 auto !important;
+        width: fit-content !important;
         
         .action-btn {
-          width: 38px;
-          height: 38px;
-          border-radius: 10px;
-          transition: all 0.2s ease;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          width: 40px;
+          height: 40px;
+          min-width: 40px;
+          min-height: 40px;
+          border-radius: 12px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(10px);
+          position: relative;
+          overflow: hidden;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          }
           
           mat-icon {
             font-size: 20px;
             width: 20px;
             height: 20px;
+            position: relative;
+            z-index: 1;
           }
           
+          // Botão Visualizar (Cyan/Blue)
           &.view-btn {
-            color: #00d4ff;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 153, 204, 0.08) 100%);
+            border-color: rgba(0, 212, 255, 0.2);
+            
+            mat-icon {
+              background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              color: transparent;
+            }
             
             &:hover {
-              background: rgba(0, 212, 255, 0.15);
-              border-color: rgba(0, 212, 255, 0.3);
-              transform: scale(1.05);
+              background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 153, 204, 0.2) 100%);
+              border-color: rgba(0, 212, 255, 0.4);
+              transform: translateY(-2px) scale(1.05);
+              box-shadow: 0 8px 16px rgba(0, 212, 255, 0.3);
+              
+              &::before {
+                opacity: 1;
+              }
+              
+              mat-icon {
+                filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.6));
+              }
+            }
+            
+            &:active {
+              transform: translateY(0) scale(0.98);
             }
           }
           
+          // Botão Editar (Orange/Yellow)
           &.edit-btn {
-            color: #8b5cf6;
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.08) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border-color: rgba(251, 146, 60, 0.2);
+            
+            mat-icon {
+              background: linear-gradient(135deg, #fb923c 0%, #f59e0b 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              color: transparent;
+            }
             
             &:hover {
-              background: rgba(139, 92, 246, 0.15);
-              border-color: rgba(139, 92, 246, 0.3);
-              transform: scale(1.05);
+              background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+              border-color: rgba(251, 146, 60, 0.4);
+              transform: translateY(-2px) scale(1.05);
+              box-shadow: 0 8px 16px rgba(251, 146, 60, 0.3);
+              
+              &::before {
+                opacity: 1;
+              }
+              
+              mat-icon {
+                filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.6));
+              }
+            }
+            
+            &:active {
+              transform: translateY(0) scale(0.98);
             }
           }
           
+          // Botão Excluir (Red/Pink)
           &.delete-btn {
-            color: #ff6b6b;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%);
+            border-color: rgba(239, 68, 68, 0.2);
+            
+            mat-icon {
+              background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              color: transparent;
+            }
             
             &:hover {
-              background: rgba(255, 107, 107, 0.15);
-              border-color: rgba(255, 107, 107, 0.3);
-              transform: scale(1.05);
+              background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%);
+              border-color: rgba(239, 68, 68, 0.4);
+              transform: translateY(-2px) scale(1.05);
+              box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+              
+              &::before {
+                opacity: 1;
+              }
+              
+              mat-icon {
+                filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.6));
+              }
+            }
+            
+            &:active {
+              transform: translateY(0) scale(0.98);
             }
           }
         }
