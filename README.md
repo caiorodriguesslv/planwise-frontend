@@ -20,11 +20,15 @@ Sistema web para controle e planejamento financeiro pessoal, permitindo gerencia
 - Tendências mensais de receitas e despesas
 - Atividades recentes
 
+  ![Dashboard](docs/4.jpeg)
+
 ### 💸 Gestão de Despesas
 - Cadastro de despesas
 - Categorização
 - Visualização detalhada
 - Histórico completo
+  
+![Despesas](docs/3.jpeg)
 
 ### 💰 Gestão de Receitas
 - Cadastro de receitas
@@ -32,10 +36,14 @@ Sistema web para controle e planejamento financeiro pessoal, permitindo gerencia
 - Visualização detalhada
 - Histórico completo
 
+![Receitas](docs/2.jpeg)
+
 ### 🏷️ Categorias
 - Criação de categorias personalizadas
 - Categorias para receitas e despesas
 - Gerenciamento completo
+
+![Categorias](docs/1.jpeg)
 
 ### 📈 Análises
 - Relatórios financeiros
