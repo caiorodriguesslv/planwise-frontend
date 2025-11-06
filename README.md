@@ -1,59 +1,141 @@
-# PlanwiseFrontend
+# 💰 PlanWise - Sistema de Controle Financeiro Pessoal
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+Sistema web para controle e planejamento financeiro pessoal, permitindo gerenciar receitas, despesas, categorias e visualizar análises financeiras através de gráficos e relatórios.
 
-## Development server
+## 🚀 Tecnologias
 
-To start a local development server, run:
+- **Angular 20** - Framework web
+- **Angular Material** - Componentes UI
+- **PrimeNG** - Componentes adicionais
+- **Chart.js** - Gráficos e visualizações
+- **TypeScript** - Linguagem de programação
+- **RxJS** - Programação reativa
+- **Express** - Server-side rendering
 
+## ✨ Funcionalidades
+
+### 📊 Dashboard
+- Visão geral das finanças do mês atual
+- Gráficos de despesas por categoria
+- Tendências mensais de receitas e despesas
+- Atividades recentes
+
+### 💸 Gestão de Despesas
+- Cadastro de despesas
+- Categorização
+- Visualização detalhada
+- Histórico completo
+
+### 💰 Gestão de Receitas
+- Cadastro de receitas
+- Categorização
+- Visualização detalhada
+- Histórico completo
+
+### 🏷️ Categorias
+- Criação de categorias personalizadas
+- Categorias para receitas e despesas
+- Gerenciamento completo
+
+### 📈 Análises
+- Relatórios financeiros
+- Gráficos interativos
+- Exportação de dados (PDF e Excel)
+- Análise de tendências
+
+### 🔐 Autenticação
+- Login e registro de usuários
+- Controle de acesso
+- Sessão segura
+
+## 🛠️ Instalação
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+
+### Passos
+
+1. Clone o repositório:
 ```bash
-ng serve
+git clone <url-do-repositorio>
+cd planwise-frontend
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. Instale as dependências:
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. Configure o ambiente:
+   - Ajuste a URL da API em `src/environments/environment.ts`
 
+4. Execute o projeto:
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
+5. Acesse no navegador:
+```
+http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📦 Scripts Disponíveis
 
-## Running unit tests
+- `npm start` - Inicia o servidor de desenvolvimento
+- `npm run build` - Gera build de produção
+- `npm run watch` - Build com watch mode
+- `npm test` - Executa os testes
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🌐 Configuração da API
 
-```bash
-ng test
+O sistema requer uma API backend. Configure a URL no arquivo:
+```
+src/environments/environment.ts
 ```
 
-## Running end-to-end tests
+URL padrão: `http://localhost:8080/api`
 
-For end-to-end (e2e) testing, run:
+## 📱 Estrutura do Projeto
 
-```bash
-ng e2e
+```
+src/
+├── app/
+│   ├── core/           # Serviços, guards, interceptors
+│   ├── features/       # Módulos de funcionalidades
+│   │   ├── analytics/  # Análises financeiras
+│   │   ├── auth/       # Autenticação
+│   │   ├── categories/ # Gestão de categorias
+│   │   ├── dashboard/  # Dashboard principal
+│   │   ├── expenses/   # Gestão de despesas
+│   │   └── incomes/    # Gestão de receitas
+│   └── shared/         # Componentes compartilhados
+├── assets/             # Recursos estáticos
+├── environments/       # Configurações de ambiente
+└── styles/             # Estilos globais
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🎨 Interface
 
-## Additional Resources
+- Design moderno e responsivo
+- Tema dark personalizado
+- Gráficos interativos
+- Experiência de usuário intuitiva
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📄 Licença
+
+Este projeto é privado e de uso interno.
+
+## 👥 Equipe
+
+Desenvolvido pela equipe PlanWise
+
+## 📞 Suporte
+
+Para suporte, entre em contato: suporte@planwise.com
+
+---
+
+**Versão:** 1.0.0
+

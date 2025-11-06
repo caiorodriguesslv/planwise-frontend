@@ -47,8 +47,7 @@
   backdrop-filter: blur(20px);
   box-shadow: 
     0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 0 0 1px rgba(255, 255, 255, 0.1);
 
   .header-content {
     display: flex;
@@ -65,8 +64,7 @@
       justify-content: center;
       box-shadow: 
         0 12px 35px rgba(0, 212, 255, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 0 0 1px rgba(255, 255, 255, 0.1);
 
       mat-icon {
         font-size: 36px;
@@ -105,8 +103,7 @@
     border-radius: 12px;
     box-shadow: 
       0 12px 35px rgba(0, 212, 255, 0.4),
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      0 0 0 1px rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
 
     mat-icon {
@@ -117,8 +114,7 @@
       transform: translateY(-2px);
       box-shadow: 
         0 16px 45px rgba(0, 212, 255, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 0 0 1px rgba(255, 255, 255, 0.3);
     }
   }
 }
@@ -180,8 +176,7 @@
   backdrop-filter: blur(20px);
   box-shadow: 
     0 16px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 0 0 1px rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -196,15 +191,21 @@
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.03) 0%, rgba(139, 92, 246, 0.03) 100%);
     pointer-events: none;
     border-radius: 20px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    z-index: 0;
   }
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: 
       0 24px 70px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(255, 255, 255, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      0 0 0 1px rgba(255, 255, 255, 0.2);
     border-color: rgba(0, 212, 255, 0.3);
+    
+    &::before {
+      opacity: 1;
+    }
   }
 
   // Card large (2 colunas)

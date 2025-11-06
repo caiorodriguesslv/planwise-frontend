@@ -11,6 +11,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 
 import { AuthService } from '../../core/services/auth.service';
 import { ExpenseService } from '../../core/services/expense.service';
+import { IncomeService } from '../../core/services/income.service';
 import { CategoryService } from '../../core/services/category.service';
 import { NotificationService } from '../../core/services/notification.service';
 
@@ -240,6 +241,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public authService: AuthService,
     private expenseService: ExpenseService,
+    private incomeService: IncomeService,
     private categoryService: CategoryService,
     private notificationService: NotificationService,
     private router: Router,
@@ -275,38 +277,45 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   private loadExpenseStats(): void {
     // Calcular período do mês atual
     const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
 
-    this.expenseService.getAllExpensesList()
-    .pipe(
+    // Carregar despesas e receitas em paralelo
+    forkJoin({
+      expenses: this.expenseService.getAllExpensesList(),
+      incomes: this.incomeService.getAllIncomesList()
+    }).pipe(
       takeUntil(this.destroy$),
-      map((allExpenses: any[]) => {
-        // Filtrar e calcular total em uma única operação
-        const filteredExpenses = allExpenses.filter((expense: any) => {
-          // Parsear a data corretamente - assumindo formato YYYY-MM-DD
+      map(({ expenses, incomes }) => {
+        // Filtrar e calcular total de despesas do mês atual
+        const filteredExpenses = expenses.filter((expense: any) => {
           const expenseDate = new Date(expense.date + 'T00:00:00');
           const expenseYear = expenseDate.getFullYear();
           const expenseMonth = expenseDate.getMonth();
-          const currentYear = currentDate.getFullYear();
-          const currentMonth = currentDate.getMonth();
           
-          // Verificar se está no mês atual
           return expenseYear === currentYear && expenseMonth === currentMonth;
         });
         
-        const total = filteredExpenses.reduce((total: number, expense: any) => total + expense.value, 0);
+        const totalExpenses = filteredExpenses.reduce((total: number, expense: any) => total + expense.value, 0);
         
-        // Fallback: se não há despesas filtradas, mostrar total geral
-        if (filteredExpenses.length === 0) {
-          return allExpenses.reduce((total: number, expense: any) => total + expense.value, 0);
-        }
+        // Filtrar e calcular total de receitas do mês atual
+        const filteredIncomes = incomes.filter((income: any) => {
+          const incomeDate = new Date(income.date + 'T00:00:00');
+          const incomeYear = incomeDate.getFullYear();
+          const incomeMonth = incomeDate.getMonth();
+          
+          return incomeYear === currentYear && incomeMonth === currentMonth;
+        });
         
-        return total;
+        const totalIncome = filteredIncomes.reduce((total: number, income: any) => total + income.value, 0);
+        
+        return { totalExpenses, totalIncome };
       })
     )
     .subscribe({
-      next: (totalExpenses: number) => {
+      next: ({ totalExpenses, totalIncome }) => {
         this.totalExpenses = totalExpenses;
-        this.totalIncome = 0; // Por enquanto, sem receitas
+        this.totalIncome = totalIncome;
         this.activeGoals = 0; // Por enquanto, sem metas
         
         this.isLoadingStats = false;
@@ -334,25 +343,38 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isLoadingActivities = true;
     this.cdr.detectChanges();
 
-    // Carregar despesas e categorias recentes
-    const expenses$ = this.expenseService.getAllExpensesList();
-    const categories$ = this.categoryService.getAllCategories();
-
-    expenses$.pipe(
+    // Carregar despesas, receitas e categorias recentes
+    forkJoin({
+      expenses: this.expenseService.getAllExpensesList(),
+      incomes: this.incomeService.getAllIncomesList(),
+      categories: this.categoryService.getAllCategories()
+    }).pipe(
       takeUntil(this.destroy$),
-      map(expenses => expenses.map(expense => ({
-        type: 'expense',
-        id: expense.id,
-        title: expense.description,
-        subtitle: `R$ ${expense.value.toFixed(2)}`,
-        date: expense.date,
-        icon: 'trending_down',
-        color: '#ff6b6b'
-      })))
-    ).subscribe(expenseActivities => {
-      categories$.pipe(
-        takeUntil(this.destroy$),
-        map(categories => categories.map(category => ({
+      map(({ expenses, incomes, categories }) => {
+        // Converter despesas em atividades
+        const expenseActivities = expenses.map(expense => ({
+          type: 'expense',
+          id: expense.id,
+          title: expense.description,
+          subtitle: `R$ ${expense.value.toFixed(2)}`,
+          date: expense.date,
+          icon: 'trending_down',
+          color: '#ff6b6b'
+        }));
+
+        // Converter receitas em atividades
+        const incomeActivities = incomes.map(income => ({
+          type: 'income',
+          id: income.id,
+          title: income.description,
+          subtitle: `R$ ${income.value.toFixed(2)}`,
+          date: income.date,
+          icon: 'trending_up',
+          color: '#00d4ff'
+        }));
+
+        // Converter categorias em atividades
+        const categoryActivities = categories.map(category => ({
           type: 'category',
           id: category.id,
           title: category.name,
@@ -360,31 +382,31 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
           date: category.createdAt,
           icon: 'category',
           color: category.type === 'RECEITA' ? '#00d4ff' : '#ff6b6b'
-        })))
-      ).subscribe(categoryActivities => {
+        }));
+
         // Combinar e ordenar por data
-        const allActivities = [...expenseActivities, ...categoryActivities]
+        return [...expenseActivities, ...incomeActivities, ...categoryActivities]
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      })
+    ).subscribe(allActivities => {
+      if (loadMore) {
+        // Adicionar mais atividades
+        const startIndex = this.currentPage * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        const newActivities = allActivities.slice(startIndex, endIndex);
+        
+        this.recentActivities = [...this.recentActivities, ...newActivities];
+        this.hasMoreActivities = newActivities.length === this.pageSize;
+        this.currentPage++;
+      } else {
+        // Carregar primeira página
+        this.recentActivities = allActivities.slice(0, this.pageSize);
+        this.hasMoreActivities = allActivities.length > this.pageSize;
+        this.currentPage = 1;
+      }
 
-        if (loadMore) {
-          // Adicionar mais atividades
-          const startIndex = this.currentPage * this.pageSize;
-          const endIndex = startIndex + this.pageSize;
-          const newActivities = allActivities.slice(startIndex, endIndex);
-          
-          this.recentActivities = [...this.recentActivities, ...newActivities];
-          this.hasMoreActivities = newActivities.length === this.pageSize;
-          this.currentPage++;
-        } else {
-          // Carregar primeira página
-          this.recentActivities = allActivities.slice(0, this.pageSize);
-          this.hasMoreActivities = allActivities.length > this.pageSize;
-          this.currentPage = 1;
-        }
-
-        this.isLoadingActivities = false;
-        this.cdr.detectChanges();
-      });
+      this.isLoadingActivities = false;
+      this.cdr.detectChanges();
     });
   }
 
@@ -471,16 +493,19 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Carrega gráfico de tendências mensais
   private loadMonthlyTrendsChart(): void {
-    this.expenseService.getAllExpensesList()
+    forkJoin({
+      expenses: this.expenseService.getAllExpensesList(),
+      incomes: this.incomeService.getAllIncomesList()
+    })
       .pipe(
         takeUntil(this.destroy$)
       )
       .subscribe({
-        next: (expenses) => {
+        next: ({ expenses, incomes }) => {
           // Obter últimos 6 meses
           const months: string[] = [];
           const expensesByMonth: number[] = [];
-          const incomesByMonth: number[] = []; // Por enquanto vazio
+          const incomesByMonth: number[] = [];
           
           const currentDate = new Date();
           
@@ -496,8 +521,15 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
                      expenseDate.getFullYear() === date.getFullYear();
             }).reduce((total, expense) => total + expense.value, 0);
             
+            // Calcular total de receitas do mês
+            const monthIncomes = incomes.filter(income => {
+              const incomeDate = new Date(income.date + 'T00:00:00');
+              return incomeDate.getMonth() === date.getMonth() && 
+                     incomeDate.getFullYear() === date.getFullYear();
+            }).reduce((total, income) => total + income.value, 0);
+            
             expensesByMonth.push(monthExpenses);
-            incomesByMonth.push(0); // Por enquanto sem receitas
+            incomesByMonth.push(monthIncomes);
           }
 
           // Atualizar dados do gráfico
