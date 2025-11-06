@@ -129,11 +129,8 @@ Este projeto é privado e de uso interno.
 
 ## 👥 Equipe
 
-Desenvolvido pela equipe PlanWise
+Desenvolvido por Caio Rodrigues
 
-## 📞 Suporte
-
-Para suporte, entre em contato: suporte@planwise.com
 
 ---
 
